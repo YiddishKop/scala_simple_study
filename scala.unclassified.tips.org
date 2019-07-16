@@ -1,0 +1,16 @@
+1. String.split("regrex") 产生的是 Array of small Strings.
+2. Iterator 也可以直接利用 Higher-order methods like map filter, map 之后元素可
+   能发生类型转换,但集合的类型仍然是 Iterator
+
+   #+BEGIN_EXAMPLE
+   Iterator                                Iterator
+   |---------------|                       |---------------|
+   | obj of type A |     map/filter        | obj of type B |
+   | obj of type A | ==================>   | obj of type B |
+   | obj of type A |                       | obj of type B |
+   | obj of type A |                       | obj of type B |
+   |---------------|                       |---------------|
+
+   #+END_EXAMPLE
+
+3. Iterator 很容易的通过 ~toArray~ ~toList~ 转换成 collection 类型.

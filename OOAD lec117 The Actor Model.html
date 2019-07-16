@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-10 五 09:01 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Actor Model</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">The Actor Model</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org237903a">1. OOAD lec117 The Actor Model</a>
+<ul>
+<li><a href="#org1ea7f06">1.1. Actor in scala</a></li>
+<li><a href="#orga64929a">1.2. How Actor solve the Race Condition?</a>
+<ul>
+<li><a href="#orgcbd6503">1.2.1. simple rules must follow</a></li>
+</ul>
+</li>
+<li><a href="#org39a63cd">1.3. What is an <code>Actor</code> ?</a>
+<ul>
+<li><a href="#org8a1dc77">1.3.1. [Q] what is exactly an <code>actor</code> is?</a></li>
+<li><a href="#orge0a81ed">1.3.2. [Q] what <code>mailbox</code>, <code>message queue</code>, <code>lock</code> etc means in <code>actor</code></a></li>
+<li><a href="#orgc7da531">1.3.3. [Q] what are the <code>axioms</code>?</a></li>
+<li><a href="#org64187e5">1.3.4. [Q] <code>1st axioms</code> is something to do with <code>continuation</code>?</a></li>
+<li><a href="#org53cec6d">1.3.5. [Q] <code>1st axiom</code> is more likely a sequential process?</a></li>
+<li><a href="#org8f72674">1.3.6. [Q] what if an actor sends a message to itself, maybe directly or indirectly. would it go into a deadlock?</a></li>
+<li><a href="#org16239ea">1.3.7. [Q] we designate what to do with the next <code>message</code>, how is that difference from creating a new <code>actor</code>?</a></li>
+<li><a href="#orgdc6cf3a">1.3.8. [Q] what then the <code>address</code> of an <code>actor</code> be equivalent to its identity?</a></li>
+<li><a href="#org439bd1e">1.3.9. [Q] how can I at any level of looking at my system whether I have one actor or multiple actors behind an address?</a></li>
+<li><a href="#org1b46d42">1.3.10. [Q] where are these address come from, and how are these actors created?</a></li>
+<li><a href="#orgf44488b">1.3.11. [Q] In that sense, address seem to be like capabilities?</a></li>
+<li><a href="#org841cfa9">1.3.12. [Q] are messages guarantee to be received?</a></li>
+<li><a href="#org1db4328">1.3.13. [Q] what this kind of other properties of the channels between actors?</a></li>
+<li><a href="#org1855fcd">1.3.14. [Q] can actor duplicate messages?</a></li>
+<li><a href="#orgee0c52d">1.3.15. [Q] distinguish the <code>non-deterministic</code>  and <code>indeterministic</code></a></li>
+<li><a href="#org515d0fc">1.3.16. [Q] how do <code>actor</code> related to <code>Petri Net</code></a></li>
+<li><a href="#org75f7afa">1.3.17. [Q] In the actor model, can you know how to express <code>synchronization</code> ?</a></li>
+<li><a href="#orgff64b86">1.3.18. [Q] so, what is an <code>arbitor</code>?</a></li>
+<li><a href="#org9dd27a6">1.3.19. [Q] is this can be said it’s like flip a coin? if yes, it is a <code>non-determinisitc</code>?</a></li>
+<li><a href="#org1f1fbec">1.3.20. [Q] How Future avoid deadlock?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="org237903a" class="outline-2">
+<h2 id="org237903a"><span class="section-number-2">1</span> OOAD lec117 The Actor Model</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Instead of calling methods on your actors, you give them <code>message</code> and each
+actor has an <code>inbox</code> , that <code>inbox</code> acts as a <code>cue</code>, the first message that’s
+received is going to be the first processed
+</p>
+
+<p>
+<a href="https://s17.postimg.cc/5yto2agvj/screenshot_99.png">sequence diagram of objects call</a>
+</p>
+
+
+<div class="figure">
+<p><img src="OOAD lec117 The Actor Model/screenshot_2018-08-10_08-41-41.png" alt="screenshot_2018-08-10_08-41-41.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>sequence diagram of objects call</p>
+</div>
+
+<p>
+If we have 2 threads, one for object <code>A</code>, another for object <code>C</code>, then they
+all call method of <code>B</code>: <code>foo</code> and <code>bar</code>. Both methods may modify the same
+field of B, then this will lead to a conflict: <code>*race condition*</code>.
+</p>
+</div>
+
+<div id="org1ea7f06" class="outline-3">
+<h3 id="org1ea7f06"><span class="section-number-3">1.1</span> Actor in scala</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Actor base trait that should be extended by or mixed to create an Actor with
+the semantics of the 'Actor Model':<a href="http://en.wikipedia.org/wiki/Actor_model">http://en.wikipedia.org/wiki/Actor_model</a>
+</p>
+
+<p>
+An actor has a well-defined (non-cyclic) life-cycle.
+</p>
+<ul class="org-ul">
+<li>RUNNING (created and started actor) - can receive messages</li>
+<li>SHUTDOWN (when 'stop' is invoked) - can't do anything</li>
+</ul>
+
+<p>
+The Actor's own <code>akka.actor.ActorRef</code> is available as <code>self</code>, the current
+message’s sender as <code>sender()</code> and the akka.actor.ActorContext as <code>context</code>.
+The only abstract method is <code>receive</code> which shall return the initial behavior
+of the actor as a partial function (behavior can be changed using
+<code>context.become</code> and <code>context.unbecome</code>).
+</p>
+</div>
+</div>
+
+<div id="orga64929a" class="outline-3">
+<h3 id="orga64929a"><span class="section-number-3">1.2</span> How Actor solve the Race Condition?</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+<a href="https://s17.postimg.cc/qlmz1a52n/screenshot_103.png">Actor Model objects call</a>
+</p>
+
+
+<div class="figure">
+<p><img src="OOAD lec117 The Actor Model/screenshot_2018-08-10_08-46-15.png" alt="screenshot_2018-08-10_08-46-15.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Actor Model objects call</p>
+</div>
+
+
+<ol class="org-ol">
+<li>A would send a message of <code>foo</code> to B</li>
+<li>B would work on that message</li>
+<li>while at same time, C sends a message of <code>bar</code> to B</li>
+<li>this message will sit in an <code>inbox</code> until B is done</li>
+</ol>
+</div>
+
+<div id="orgcbd6503" class="outline-4">
+<h4 id="orgcbd6503"><span class="section-number-4">1.2.1</span> simple rules must follow</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+<span class="underline">Actors must <b>NOT share mutable</b> data each other</span>
+</p>
+
+<p>
+they must NOT send message which contain mutable data, in other word message
+must immutable.
+</p>
+
+<p>
+<span class="underline">make message <b>USING case class</b></span>
+</p>
+
+<p>
+case classes are nice way to make small and mutable data structures, and can
+do pattern matching.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="org39a63cd" class="outline-3">
+<h3 id="org39a63cd"><span class="section-number-3">1.3</span> What is an <code>Actor</code> ?</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+The following youtube video is taught by proposer of Actor:
+</p>
+
+<p>
+<a href="https://youtu.be/7erJ1DV_Tlo">Introduction to Actor Model by Creator of Actor</a>
+</p>
+
+<p>
+And all the following notes are from this video, in an QuestionAndAnswer mode.
+</p>
+
+<blockquote>
+<p>
+The Actor Model provides a higher level of abstraction for writing concurrent
+and distributed systems. It alleviates the developer from having to deal with
+explicit locking and thread management, making it easier to write correct
+concurrent and parallel systems. Actors were defined in the 1973 paper by
+Carl Hewitt but have been popularized by the Erlang language, and used for
+example at Ericsson with great success to build highly concurrent and
+reliable telecom systems.
+</p>
+</blockquote>
+</div>
+
+<div id="org8a1dc77" class="outline-4">
+<h4 id="org8a1dc77"><span class="section-number-4">1.3.1</span> [Q] what is exactly an <code>actor</code> is?</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+&gt; The <code>actor</code> is a fundamental unit of computation, as the fundamental unit of computation ,it must embobdy <code>3</code> things:
+</p>
+<ol class="org-ol">
+<li>processing
+because you’ve got to get something done</li>
+<li>storage
+because you have to be able to remember things</li>
+<li>communication</li>
+</ol>
+</div>
+</div>
+
+<div id="orge0a81ed" class="outline-4">
+<h4 id="orge0a81ed"><span class="section-number-4">1.3.2</span> [Q] what <code>mailbox</code>, <code>message queue</code>, <code>lock</code> etc means in <code>actor</code></h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+One <code>actor</code> is no <code>actor</code>,they must come in <code>systems</code>.
+</p>
+
+<p>
+Each <code>actor</code> in <code>system</code> should have <code>addresses</code>, so that one <code>actor</code> can
+send a <code>message</code> to another <code>actor</code>, there’s no reason an <code>actor</code> like
+factorial can’t have an <code>address</code> for it self so that’s the way you
+implement recursion.
+</p>
+
+<p>
+Fundamental properties of <code>actor</code>:
+</p>
+<ol class="org-ol">
+<li>everything is an <code>actor</code></li>
+<li>an <code>actor</code> has a <code>mailbox</code>,  while a <code>mailbox</code> is an <code>actor</code>, then a <code>mailbox</code> has a <code>mailbox</code> , this is disaster, we need axiom.</li>
+</ol>
+</div>
+</div>
+
+<div id="orgc7da531" class="outline-4">
+<h4 id="orgc7da531"><span class="section-number-4">1.3.3</span> [Q] what are the <code>axioms</code>?</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<ol class="org-ol">
+<li>when an <code>actor</code> receives a <code>message</code>, what can this <code>actror</code> do is it can
+create some more <code>actors</code>. It can send <code>messages</code> to <code>actors</code> that it has
+<code>addresses</code> before, and it can say it can designate(指定) what it’s going
+to do with the next <code>message</code> it receives.</li>
+</ol>
+</div>
+</div>
+
+<div id="org64187e5" class="outline-4">
+<h4 id="org64187e5"><span class="section-number-4">1.3.4</span> [Q] <code>1st axioms</code> is something to do with <code>continuation</code>?</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<p>
+No, <code>continuation</code> was an old idea for Von Neumann machine, <code>continuation</code> is
+the lambda expression that you execute after you finish doing the current
+one, so that’s a <code>single-thread</code> kind of idea. the <code>1st axiom</code> has to do
+with <code>concurrency</code>, eg. if you’re checking account and you have a balance of
+5$, you might receive a deposit <code>message</code> with 6$, now your balance is 11$.
+so, you say when I process the next <code>message</code>, I process it with a balance of
+11$. I don’t change any of the names I have now. I’m just the change
+applies to the next message that comes in.
+</p>
+</div>
+</div>
+
+<div id="org53cec6d" class="outline-4">
+<h4 id="org53cec6d"><span class="section-number-4">1.3.5</span> [Q] <code>1st axiom</code> is more likely a sequential process?</h4>
+<div class="outline-text-4" id="text-1-3-5">
+<p>
+No, yet an <code>actor</code> can deal with one <code>message</code> at a time, but the
+<code>implementers</code> know how to <code>pipeline messages</code> in certain cases and in the
+case when you’re going to process the next message in exactly the same way,
+you’re processing the current message, somebody like factorial, you can do
+all of them at the same time. so factorial can be processing arbitrarily many
+messages at the same time. but comceptually, <code>actor</code> process one <code>message</code> at
+a time, but <code>implementers</code> can kind of make that more concurrent.
+</p>
+</div>
+</div>
+
+<div id="org8f72674" class="outline-4">
+<h4 id="org8f72674"><span class="section-number-4">1.3.6</span> [Q] what if an actor sends a message to itself, maybe directly or indirectly. would it go into a deadlock?</h4>
+<div class="outline-text-4" id="text-1-3-6">
+<p>
+next important thing is <code>Future</code>, the idea of a <code>Future</code> is that you can
+create an <code>actor</code> for any result while it’s still being compted, you don’t
+know whether it’s finished computed or starting. but you can now have an
+<code>address</code> for something. <code>Future</code> are actors you pass them around like we say
+<code>Future</code> a factorial of 100 billion and you might take a long time to compute
+the factorial of 100 billion, but you get the <code>future</code> immediately now, and
+you can pass it around and you can store it, you can send it in a <code>message</code>.
+So now, if you want to send yourself a <code>message</code>, you will not go into a
+<code>deadlock</code>.
+</p>
+</div>
+</div>
+
+<div id="org16239ea" class="outline-4">
+<h4 id="org16239ea"><span class="section-number-4">1.3.7</span> [Q] we designate what to do with the next <code>message</code>, how is that difference from creating a new <code>actor</code>?</h4>
+<div class="outline-text-4" id="text-1-3-7">
+<p>
+because I’m the checking account I have a balance of 5$, and I get it to
++6$, if I created a new actor with a balance of 11$, that would be no good,
+because they expect the old actor to have a balance of 11$.
+</p>
+</div>
+</div>
+
+<div id="orgdc6cf3a" class="outline-4">
+<h4 id="orgdc6cf3a"><span class="section-number-4">1.3.8</span> [Q] what then the <code>address</code> of an <code>actor</code> be equivalent to its identity?</h4>
+<div class="outline-text-4" id="text-1-3-8">
+<p>
+9:08/42:33
+</p>
+
+<p>
+<code>actors</code> and <code>addresses</code> are many to many relationship.
+</p>
+</div>
+</div>
+
+<div id="org439bd1e" class="outline-4">
+<h4 id="org439bd1e"><span class="section-number-4">1.3.9</span> [Q] how can I at any level of looking at my system whether I have one actor or multiple actors behind an address?</h4>
+<div class="outline-text-4" id="text-1-3-9">
+<p>
+you can not tell.
+</p>
+</div>
+</div>
+
+<div id="org1b46d42" class="outline-4">
+<h4 id="org1b46d42"><span class="section-number-4">1.3.10</span> [Q] where are these address come from, and how are these actors created?</h4>
+</div>
+
+<div id="orgf44488b" class="outline-4">
+<h4 id="orgf44488b"><span class="section-number-4">1.3.11</span> [Q] In that sense, address seem to be like capabilities?</h4>
+<div class="outline-text-4" id="text-1-3-11">
+<p>
+yes
+</p>
+</div>
+</div>
+
+<div id="org841cfa9" class="outline-4">
+<h4 id="org841cfa9"><span class="section-number-4">1.3.12</span> [Q] are messages guarantee to be received?</h4>
+<div class="outline-text-4" id="text-1-3-12">
+<p>
+No, just try best.
+</p>
+</div>
+</div>
+
+<div id="org1db4328" class="outline-4">
+<h4 id="org1db4328"><span class="section-number-4">1.3.13</span> [Q] what this kind of other properties of the channels between actors?</h4>
+<div class="outline-text-4" id="text-1-3-13">
+<p>
+there is no channel.
+</p>
+</div>
+</div>
+
+<div id="org1855fcd" class="outline-4">
+<h4 id="org1855fcd"><span class="section-number-4">1.3.14</span> [Q] can actor duplicate messages?</h4>
+<div class="outline-text-4" id="text-1-3-14">
+<p>
+No, a message will be delivered at most once.
+</p>
+</div>
+</div>
+
+<div id="orgee0c52d" class="outline-4">
+<h4 id="orgee0c52d"><span class="section-number-4">1.3.15</span> [Q] distinguish the <code>non-deterministic</code>  and <code>indeterministic</code></h4>
+<div class="outline-text-4" id="text-1-3-15">
+<p>
+<img src="OOAD lec117 The Actor Model/screenshot_2018-08-10_08-59-26.png" alt="screenshot_2018-08-10_08-59-26.png" />
+    <a href="https://s17.postimg.cc/jtrykjlin/screenshot_100.png">the regular process of an Actor model</a>
+</p>
+
+<ul class="org-ul">
+<li>when get <code>start msg</code>, I send myself a <code>go msg</code> and a <code>stop msg</code>;</li>
+<li>when get a <code>go msg</code>, just send myself a <code>go msg</code> and count+1</li>
+<li>when get a <code>stop msg</code>, I stop and report the count.</li>
+</ul>
+
+<p>
+This is something that no <code>non-deterministic</code> Turing machine can do. because
+this thing can stop with a count being arbitrarily large, it wasn’t somebody
+decided how big the count was going to be; the size of the count was
+dependent on how long it took this <code>stop msg</code> to arrive. so this is a way
+where you move from <code>non-determinacy</code> to <code>indeterminacy</code> .
+</p>
+
+<p>
+there is something called <code>state</code>, the <code>state</code> of the computation, which is
+fixed. that’s why it’s possible to prove that if you have a state machine
+model of computation that has to have bounded <code>non-determinism</code>, where’s
+this has a <code>configuration model</code> we have, the local state here, the <code>count</code> .
+this model is more powerful than <code>state based model</code>.
+</p>
+</div>
+</div>
+
+
+<div id="org515d0fc" class="outline-4">
+<h4 id="org515d0fc"><span class="section-number-4">1.3.16</span> [Q] how do <code>actor</code> related to <code>Petri Net</code></h4>
+<div class="outline-text-4" id="text-1-3-16">
+<p>
+[PetriNet]<a href="https://en.wikipedia.org/wiki/Petri_net">https://en.wikipedia.org/wiki/Petri_net</a>?
+</p>
+</div>
+</div>
+
+
+<div id="org75f7afa" class="outline-4">
+<h4 id="org75f7afa"><span class="section-number-4">1.3.17</span> [Q] In the actor model, can you know how to express <code>synchronization</code> ?</h4>
+<div class="outline-text-4" id="text-1-3-17">
+<p>
+Let’s think about the checking accout, checking account is not something you
+can do in functional programming, because the checking account is sitting
+here and there can be many parties out there we don’t know who, who’s going
+to make next withdraw from this checking account into some ATM some place. So
+the way the <code>actor</code> didn’t bother deals with this as an individual <code>actor</code>
+processes one message at a time, but it’s indeterminate which message will
+withdraw will arrive next. So you might have somebody in Tokyo who’s
+depositing $7, while somebody in England is taking out $8, and I might only
+have a balance of $2, and it depends on which the order in which the message
+arrive is indeterminate and the outcome will depend on that whether you get
+your money or not. <code>synchronization</code> in some sense is built into the rule
+that <code>one message is handled at a time</code>, that’s the fundamental where you
+know the primitive point of <code>synchronization</code>. That’s where <code>arbiter</code> comes
+in. <code>arbiter</code> is something that Turing machine can not do.
+</p>
+</div>
+</div>
+
+<div id="orgff64b86" class="outline-4">
+<h4 id="orgff64b86"><span class="section-number-4">1.3.18</span> [Q] so, what is an <code>arbitor</code>?</h4>
+<div class="outline-text-4" id="text-1-3-18">
+<p>
+<code>arbitor</code> is something that you can make out of straight and gates and other
+boolean components, it has 2 inputs, and 2 outputs. Here is the deal, you
+start off with both these <code>0</code>, you’re allowed to put in both of these at the
+same time but ONLY ONE of them will come out as a <code>1</code>. Not both of them. Just
+One. Our computers are becoming absolutely chock-full(塞满) of them, our
+multiprocessor systems have them which make things <code>indeterminate</code>. And so
+now, it’s convenient more difficulty debug our programs because it used to
+be that we put the same input in and run it again and get the same bug, but
+now we put in the same input and it does something completely different, it
+is indeterminacy inside.
+</p>
+
+<p>
+<img src="OOAD lec117 The Actor Model/screenshot_2018-08-10_09-00-47.png" alt="screenshot_2018-08-10_09-00-47.png" />
+   <a href="https://s17.postimg.cc/nddwajbfj/screenshot_101.png">arbitor</a>
+</p>
+</div>
+</div>
+
+<div id="org9dd27a6" class="outline-4">
+<h4 id="org9dd27a6"><span class="section-number-4">1.3.19</span> [Q] is this can be said it’s like flip a coin? if yes, it is a <code>non-determinisitc</code>?</h4>
+<div class="outline-text-4" id="text-1-3-19">
+<p>
+No, we don’t know how long it’s going to take inside of <code>arbitor</code>. It more
+like the <code>arbitor at tennis match</code>.
+</p>
+</div>
+</div>
+
+<div id="org1f1fbec" class="outline-4">
+<h4 id="org1f1fbec"><span class="section-number-4">1.3.20</span> [Q] How Future avoid deadlock?</h4>
+<div class="outline-text-4" id="text-1-3-20">
+<p>
+Probably that line was out of place, there was no <code>deadlock</code> in that
+<code>"recursive"</code> scenario. It was just a possible <code>infinite loop</code>. In general to
+avoid deadlock with actors, the trick is in giving up <code>global consistency</code>.
+Say I have an actor A for a bank account 1 and an actor B for account 10002.
+Both customers want to transfer money to each other. Customer 1 sends a
+message to actor A to remove $5 from itself and the instruction to tell B to
+add $5 to itself. Customer 2 sends a message to B to remove $7 from itself
+and to tell A to add $7 from itself. As you can see, there can be no
+deadlocks here, but the system goes through <code>globally inconsistent</code> states
+and it may get stuck in one of them if there is a <code>message loss</code>.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

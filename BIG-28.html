@@ -1,0 +1,1815 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-10 五 00:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spark SQL-1</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Spark SQL-1</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org219511d">DataFrame and DataSet[T]</a>
+<ul>
+<li><a href="#org817adec">Row is not type safe, RDDs is type safe</a></li>
+<li><a href="#org4f7f006">DataFrame of SparkSession, RDDs of SparkContext</a></li>
+<li><a href="#org62cb16f">DataFrame.show()</a></li>
+<li><a href="#orge9d7522">DataFrame.schema and option</a>
+<ul>
+<li><a href="#orge7d3734">we can have multiple <code>option</code> s</a></li>
+</ul>
+</li>
+<li><a href="#orgd24b8f3">df.select()</a></li>
+<li><a href="#org60ca4b0">DataFrame.limit(n)</a></li>
+<li><a href="#org22506f6">DataFrame.join(df, Seq(column1, column2, &#x2026;))</a></li>
+<li><a href="#orgb4b9d39">DataFrame( or called DataSet[Column])</a></li>
+<li><a href="#org185df00">DataFrame after filter mtype by "TMAX"</a></li>
+<li><a href="#org6e8e4b2">DataFrame after filter mtype by "TMIN"</a></li>
+<li><a href="#org29bd96e">DataFrame.describe()</a></li>
+<li><a href="#org340c4c5">df.limit vs. df.drop</a></li>
+<li><a href="#orge9d4ad3">df.select vs. df.filter vs. df.join</a></li>
+<li><a href="#org7924e2b">df.stat</a></li>
+</ul>
+</li>
+<li><a href="#orgaf8d0e3">StructType</a>
+<ul>
+<li><a href="#org9deb73e">StructType.printTreeString</a></li>
+<li><a href="#org5ceb814">StructType(Array[StructField])</a></li>
+</ul>
+</li>
+<li><a href="#org301e883">Column</a>
+<ul>
+<li><a href="#orgab9b015">Column construction</a></li>
+<li><a href="#org7859bfe">Column operations</a>
+<ul>
+<li><a href="#org3367e75">return <code>Column</code></a></li>
+<li><a href="#org2a237d9">element-vise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3683f0e">DataFrameStatFunctions</a>
+<ul>
+<li><a href="#org46b13ba">from DataFrame to DataFrameStatFunctions</a></li>
+<li><a href="#org3ceb12b">API intro</a></li>
+</ul>
+</li>
+<li><a href="#org9559f8d">org.apache.spark.sql.functions</a></li>
+</ul>
+</div>
+</div>
+<p>
+RDD is like the fundamental abstraction of SPARK, SQL is a new way of working
+with SPARK, and generally recommended for the end-user. why we need SQL,
+because SQL is a <b>higher-level abstaction</b> with more <b>optimization of RDDs</b>.
+The power of RDD is it can hold any data,which has the flexible functions
+apply on them, BUUUT more information and tech details you need to handle:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">partitions</td>
+<td class="org-left">need more optimization</td>
+</tr>
+
+<tr>
+<td class="org-left">transform vs. action</td>
+<td class="org-left">need more optimization</td>
+</tr>
+
+<tr>
+<td class="org-left">when to cache</td>
+<td class="org-left">need more information</td>
+</tr>
+
+<tr>
+<td class="org-left">shuffle or not</td>
+<td class="org-left">need more information</td>
+</tr>
+
+<tr>
+<td class="org-left">type of RDD,what's inside</td>
+<td class="org-left">need more information</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+SQL and the API gives <b>more information</b> you're working with, and it allowes
+to do many <b>optimization</b>, these come from research in <b>Database</b>.
+</p>
+
+<div id="org219511d" class="outline-2">
+<h2 id="org219511d">DataFrame and DataSet[T]</h2>
+<div class="outline-text-2" id="text-org219511d">
+<p>
+in original spark.SQL a type called <code>DataFrame</code>, it was kind of a
+<b>replacement</b> as far as the end-user was concerned for an <b>RDDs</b>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">type</span> <span style="color: #a45bad;">DataFrame</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Dataset</span>[<span style="color: #a45bad;">Row</span>]
+</pre>
+</div>
+
+<p>
+BUUUT, DataFrame is just "looks" like RDDs, significant different underneath
+the hood.
+</p>
+</div>
+<div id="org817adec" class="outline-3">
+<h3 id="org817adec">Row is not type safe, RDDs is type safe</h3>
+<div class="outline-text-3" id="text-org817adec">
+<p>
+which means spark.SQL and DataFrames can not checked at compile time.
+</p>
+
+<p>
+As you can see, <b>DataFrame</b> work with Rows, <b>Row</b> they hold a row of data in
+a way that is <b>not necessarily type safe</b> and this is one reason why
+<b>DataFrame</b> are somewhat <b>significant deviation</b> from the <b>RDDs</b> and from
+kind of the general way that <b>scala</b> approaches, scala typically tries to
+make everything <b>type safe</b>
+</p>
+</div>
+</div>
+
+<div id="org4f7f006" class="outline-3">
+<h3 id="org4f7f006">DataFrame of SparkSession, RDDs of SparkContext</h3>
+<div class="outline-text-3" id="text-org4f7f006">
+<p>
+BTW, SparkSesion is not the replacement of SparkContext, and you can get the
+DataFrame's related SparkContext from the SparkSesion
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">sparkContext</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">SparkContext</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">The Spark context associated with this Spark session.</span>
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">RDD</th>
+<th scope="col" class="org-left">DataFraem</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">type safe</td>
+<td class="org-left">not type safe</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">SparkConf.setAppName.setMaster</td>
+<td class="org-left">SparkSession.builder.master.appName</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">-&gt; SparkContext</td>
+<td class="org-left">-&gt; Builder.getOrCreate</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; SparkSeesion</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">case class StructType(Array[StructField])</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">case class StructField(arg1,arg2,arg3,ag4)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">newscheam: StructType(Array[StructField])</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">sc.textFile</td>
+<td class="org-left">ss.read</td>
+<td class="org-left">ss.read</td>
+</tr>
+
+<tr>
+<td class="org-left">-&gt; RDD[String]</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; DataFrameReader.schema(StructType)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; DataFrameReader.option(key, value)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; DataFrameReader.csv(filePath)</td>
+<td class="org-left">-&gt; DataFrameReader.csv(filePath)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; DataFrame.show():Unit</td>
+<td class="org-left">-&gt; DataFrame.show():Unit</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; DataFrame.schema</td>
+<td class="org-left">-&gt; DataFrame.schema</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-&gt; StructType.printTreeString:Unit</td>
+<td class="org-left">-&gt; StructType.printTreeString:Unit</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">sc.stop</td>
+<td class="org-left">bd.stop</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">SparkSeesion</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">spark</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">SparkSession</span>
+  .builder()
+  .master(<span style="color: #2d9574;">"local[*]"</span>)
+  .appName(<span style="color: #2d9574;">"NOAA Data"</span>)
+  .getOrCreate()
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">SparkContext</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">sc</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">SparkContext</span>(<span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">SparkConf</span>()
+                            .setAppName(<span style="color: #2d9574;">"Temp Data"</span>)
+                            .setMaster(<span style="color: #2d9574;">"local[*]"</span>))
+</pre>
+</div>
+</div>
+</div>
+<div id="org62cb16f" class="outline-3">
+<h3 id="org62cb16f">DataFrame.show()</h3>
+<div class="outline-text-3" id="text-org62cb16f">
+<pre class="example">
+US1MNHN0184,20170101,PRCP,0,,,N,
+US1MNHN0184,20170101,SNOW,0,,,N,
+US1MNHN0184,20170101,SNWD,274,,,N,
+CA1MB000296,20170101,PRCP,0,,,N,
+US1MNCV0008,20170101,PRCP,0,,,N,
+US1MNCV0008,20170101,SNOW,0,,,N,
+ASN00015643,20170101,TMAX,274,,,a,
+ASN00015643,20170101,TMIN,218,,,a,
+ASN00015643,20170101,PRCP,2,,,a,
+US1MISW0005,20170101,PRCP,0,,,N,
+US1MISW0005,20170101,SNOW,0,,,N,
+US1MISW0005,20170101,SNWD,0,,,N,
+ASN00085296,20170101,TMAX,217,,,a,
+ASN00085296,20170101,TMIN,127,,,a
+</pre>
+
+<p>
+DataFrame.show will get a table below:
+</p>
+
+<pre class="example">
+[info] +-----------+--------+----+---+----+----+---+----+
+[info] |        _c0|     _c1| _c2|_c3| _c4| _c5|_c6| _c7|
+[info] +-----------+--------+----+---+----+----+---+----+
+[info] |US1MNHN0184|20170101|PRCP|  0|null|null|  N|null|
+[info] |US1MNHN0184|20170101|SNOW|  0|null|null|  N|null|
+[info] |US1MNHN0184|20170101|SNWD|274|null|null|  N|null|
+[info] |CA1MB000296|20170101|PRCP|  0|null|null|  N|null|
+[info] |US1MNCV0008|20170101|PRCP|  0|null|null|  N|null|
+[info] |US1MNCV0008|20170101|SNOW|  0|null|null|  N|null|
+[info] |ASN00015643|20170101|TMAX|274|null|null|  a|null|
+[info] |ASN00015643|20170101|TMIN|218|null|null|  a|null|
+[info] |ASN00015643|20170101|PRCP|  2|null|null|  a|null|
+[info] |US1MISW0005|20170101|PRCP|  0|null|null|  N|null|
+[info] |US1MISW0005|20170101|SNOW|  0|null|null|  N|null|
+[info] |US1MISW0005|20170101|SNWD|  0|null|null|  N|null|
+[info] |ASN00085296|20170101|TMAX|217|null|null|  a|null|
+[info] |ASN00085296|20170101|TMIN|127|null|null|  a|null|
+[info] |ASN00085296|20170101|PRCP|  0|null|null|  a|null|
+[info] |US1MAMD0069|20170101|PRCP| 56|null|null|  N|null|
+[info] |ASN00040209|20170101|TMAX|293|null|null|  a|null|
+[info] |ASN00040209|20170101|TMIN|250|null|null|  a|null|
+[info] |ASN00040209|20170101|PRCP|  0|null|null|  a|null|
+[info] |ASN00085280|20170101|TMAX|215|null|null|  a|null|
+[info] +-----------+--------+----+---+----+----+---+----+
+</pre>
+</div>
+</div>
+
+<div id="orge9d7522" class="outline-3">
+<h3 id="orge9d7522">DataFrame.schema and option</h3>
+<div class="outline-text-3" id="text-orge9d7522">
+<p>
+customize your own schema, specifing how to read data from souce and how to save it
+                                     ----------------------&#x2013;&#x2014;     ---------&#x2013;&#x2014;
+                                             option                       scehma
+</p>
+<hr />
+<p>
+drf
+</p>
+
+<pre class="example">
+- df : DataFrame
+- ss : SparkSession
+- dfr: DataFrameReader
+
+ss. *read* =&gt; dfr .schema(StructType). =&gt; dfr .option() =&gt; drf .read =&gt; drf . *csv* =&gt; df
+----------    ---------------------------------------------------------------------    -----
+ss                                        dfr                                          df
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">object</span> <span style="color: #a45bad;">implicits</span> <span style="color: #4f97d7; font-weight: bold;">extends</span> <span style="color: #ce537a; font-weight: bold;">SQLImplicits</span> <span style="color: #4f97d7; font-weight: bold;">with</span> <span style="color: #ce537a; font-weight: bold;">Serializable</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">(Scala-specific) Implicit methods available in Scala for converting common Scala objects into DataFrames.</span>
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">schema</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StructType</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">Returns the schema of this Dataset.</span>
+</pre>
+</div>
+
+<p>
+<code>schema</code> gives us more information(<code>StructType</code>) about what data is being stored and what it looks like.
+</p>
+</div>
+
+<div id="orge7d3734" class="outline-4">
+<h4 id="orge7d3734">we can have multiple <code>option</code> s</h4>
+<div class="outline-text-4" id="text-orge7d3734">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">countyData</span> <span style="color: #4f97d7; font-weight: bold;">=</span> spark.read.option(<span style="color: #2d9574;">"header"</span>, <span style="color: #a45bad;">true</span>).option(<span style="color: #2d9574;">"delimiter"</span>, <span style="color: #2d9574;">"</span><span style="color: #a45bad;">\t</span><span style="color: #2d9574;">"</span>).csv(<span style="color: #2d9574;">"data/la.data.64.County"</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="orgd24b8f3" class="outline-3">
+<h3 id="orgd24b8f3">df.select()</h3>
+<div class="outline-text-3" id="text-orgd24b8f3">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">select</span>(col<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">String</span>, cols<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">String</span>*)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">DataFrame</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">Selects a set of columns.</span>
+</pre>
+</div>
+
+<p>
+Note that this method can used to <b>produce new column</b> by the existed columns, in a way of <b>element-vise</b> computing.
+</p>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">tmax</th>
+<th scope="col" class="org-right">tmin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">40</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">32</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">50</td>
+<td class="org-right">10</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<code>averageTemp2017 = combinedTemps2017.select('sid, 'date, ('tmax + 'tmin)/2)</code>
+</p>
+
+<p>
+get the table below:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">(tmax + tmin)/2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">20</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">25</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">21</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="org60ca4b0" class="outline-3">
+<h3 id="org60ca4b0">DataFrame.limit(n)</h3>
+<div class="outline-text-3" id="text-org60ca4b0">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">limit</span>(n<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Int</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Dataset</span>[<span style="color: #a45bad;">T</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Returns a new Dataset by taking the first n rows.</span>
+</pre>
+</div>
+<p>
+Usfull when your dataset is too large, and you want to try your code.
+</p>
+</div>
+</div>
+<div id="org22506f6" class="outline-3">
+<h3 id="org22506f6">DataFrame.join(df, Seq(column1, column2, &#x2026;))</h3>
+<div class="outline-text-3" id="text-org22506f6">
+<!-- This HTML table template is generated by emacs 26.1 -->
+<table border="1">
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;tmax
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      ASN00015643<br />
+      ASN00085296<br />
+      ASN00040209<br />
+      CA005030984
+    </td>
+    <td align="left" valign="top">
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01
+    </td>
+    <td align="left" valign="top">
+      &nbsp;218.0<br />
+      &nbsp;127.0<br />
+      &nbsp;250.0<br />
+      -192.0
+    </td>
+  </tr>
+</table>
+
+<!-- This HTML table template is generated by emacs 26.1 -->
+<table border="1">
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;tmin
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      ASN00015643<br />
+      ASN00085296<br />
+      ASN00040209<br />
+      ASN00085280
+    </td>
+    <td align="left" valign="top">
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01
+    </td>
+    <td align="left" valign="top">
+      &nbsp;218.0<br />
+      &nbsp;127.0<br />
+      &nbsp;250.0<br />
+      &nbsp;156.0
+    </td>
+  </tr>
+</table>
+
+
+<p>
+3 methods for joining DataFrames, separately for join one-column or join multiple-columns
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">join</span>(right<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Dataset</span>[<span style="color: #4f97d7; font-weight: bold;">_</span>], usingColumns<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Seq</span>[<span style="color: #a45bad;">String</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">DataFrame</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Inner equi-join with another DataFrame using the given columns.</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">combinedTemps2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> tmax2017.join(tmin2017,
+                                      tmax2017(<span style="color: #2d9574;">"sid"</span>) === tmin2017(<span style="color: #2d9574;">"sid"</span>) &amp;&amp;
+                                        tmax2017(<span style="color: #2d9574;">"date"</span>) === tmin2017(<span style="color: #2d9574;">"date"</span>))
+</pre>
+</div>
+
+<p>
+<b>column appending</b>: code above will give table like <b>column appending</b>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">sid1</th>
+<th scope="col" class="org-left">date1</th>
+<th scope="col" class="org-left">&#x2026;</th>
+<th scope="col" class="org-left">sid2</th>
+<th scope="col" class="org-left">date2</th>
+<th scope="col" class="org-left">&#x2026;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">combinedTemps2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> tmax2017.join(tmin2017, <span style="color: #a45bad;">Seq</span>(<span style="color: #2d9574;">"sid"</span>, <span style="color: #2d9574;">"date"</span>))
+</pre>
+</div>
+
+<p>
+<b>column mix in</b>: code above will give table like <b>mix in</b>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">sid</th>
+<th scope="col" class="org-left">date</th>
+<th scope="col" class="org-left">&#x2026;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="orgb4b9d39" class="outline-3">
+<h3 id="orgb4b9d39">DataFrame( or called DataSet[Column])</h3>
+<div class="outline-text-3" id="text-orgb4b9d39">
+<p>
+original DataFrame(DataSet[Column])
+[info] <del>-----------</del>----------<del>-----</del>&#x2013;&#x2014;+
+[info] |        sid|      data|mtype|value|
+[info] <del>-----------</del>----------<del>-----</del>&#x2013;&#x2014;+
+[info] |US1MNHN0184|2017-01-01| PRCP|  0.0|
+[info] |US1MNHN0184|2017-01-01| SNOW|  0.0|
+[info] |US1MNHN0184|2017-01-01| SNWD|274.0|
+[info] |CA1MB000296|2017-01-01| PRCP|  0.0|
+[info] |US1MNCV0008|2017-01-01| PRCP|  0.0|
+[info] |US1MNCV0008|2017-01-01| SNOW|  0.0|
+[info] |ASN00015643|2017-01-01| TMAX|274.0|
+[info] |ASN00015643|2017-01-01| TMIN|218.0|
+[info] |ASN00015643|2017-01-01| PRCP|  2.0|
+[info] |US1MISW0005|2017-01-01| PRCP|  0.0|
+[info] |US1MISW0005|2017-01-01| SNOW|  0.0|
+[info] |US1MISW0005|2017-01-01| SNWD|  0.0|
+[info] |ASN00085296|2017-01-01| TMAX|217.0|
+[info] |ASN00085296|2017-01-01| TMIN|127.0|
+[info] |ASN00085296|2017-01-01| PRCP|  0.0|
+[info] |US1MAMD0069|2017-01-01| PRCP| 56.0|
+[info] |ASN00040209|2017-01-01| TMAX|293.0|
+[info] |ASN00040209|2017-01-01| TMIN|250.0|
+[info] |ASN00040209|2017-01-01| PRCP|  0.0|
+[info] |ASN00085280|2017-01-01| TMAX|215.0|
+[info] <del>-----------</del>----------<del>-----</del>&#x2013;&#x2014;+
+</p>
+</div>
+</div>
+<div id="org185df00" class="outline-3">
+<h3 id="org185df00">DataFrame after filter mtype by "TMAX"</h3>
+<div class="outline-text-3" id="text-org185df00">
+<p>
+<code>val tmax2017 = data2017.filter('mtype === "TMAX")</code>
+[info] <del>-----------</del>----------<del>-----</del>-&#x2013;&#x2014;+
+[info] |        sid|      data|mtype| value|
+[info] <del>-----------</del>----------<del>-----</del>-&#x2013;&#x2014;+
+[info] |ASN00015643|2017-01-01| TMAX| 274.0|
+[info] |ASN00085296|2017-01-01| TMAX| 217.0|
+[info] |ASN00040209|2017-01-01| TMAX| 293.0|
+[info] |ASN00085280|2017-01-01| TMAX| 215.0|
+[info] |CA005030984|2017-01-01| TMAX|-109.0|
+[info] |CA003076680|2017-01-01| TMAX| -85.0|
+[info] |CA003072151|2017-01-01| TMAX|-100.0|
+[info] |CA003031094|2017-01-01| TMAX| -79.0|
+[info] |ASN00068151|2017-01-01| TMAX| 254.0|
+[info] |USW00003889|2017-01-01| TMAX| 100.0|
+[info] |USW00003967|2017-01-01| TMAX|  72.0|
+[info] |USW00004131|2017-01-01| TMAX| -85.0|
+[info] |USW00012842|2017-01-01| TMAX| 272.0|
+[info] |USW00012876|2017-01-01| TMAX| 278.0|
+[info] |USW00014719|2017-01-01| TMAX|  89.0|
+[info] |USW00024061|2017-01-01| TMAX| -77.0|
+[info] |USW00024229|2017-01-01| TMAX|  44.0|
+[info] |USW00094626|2017-01-01| TMAX|  11.0|
+[info] |USW00003048|2017-01-01| TMAX| 105.0|
+[info] |USS0018F01S|2017-01-01| TMAX| -34.0|
+[info] <del>-----------</del>----------<del>-----</del>-&#x2013;&#x2014;+
+</p>
+</div>
+</div>
+
+<div id="org6e8e4b2" class="outline-3">
+<h3 id="org6e8e4b2">DataFrame after filter mtype by "TMIN"</h3>
+<div class="outline-text-3" id="text-org6e8e4b2">
+<p>
+val tmin2017 = data2017.filter('mtype <code>=</code> "Tmin")
+[info] <del>-----------</del>----------<del>-----</del>-&#x2013;&#x2014;+
+[info] |        sid|      data|mtype| value|
+[info] <del>-----------</del>----------<del>-----</del>-&#x2013;&#x2014;+
+[info] |ASN00015643|2017-01-01| TMAX| 274.0|
+[info] |ASN00085296|2017-01-01| TMAX| 217.0|
+[info] |ASN00040209|2017-01-01| TMAX| 293.0|
+[info] |ASN00085280|2017-01-01| TMAX| 215.0|
+[info] |CA005030984|2017-01-01| TMAX|-109.0|
+[info] |CA003076680|2017-01-01| TMAX| -85.0|
+[info] |CA003072151|2017-01-01| TMAX|-100.0|
+[info] |CA003031094|2017-01-01| TMAX| -79.0|
+[info] |ASN00068151|2017-01-01| TMAX| 254.0|
+[info] |USW00003889|2017-01-01| TMAX| 100.0|
+[info] |USW00003967|2017-01-01| TMAX|  72.0|
+[info] |USW00004131|2017-01-01| TMAX| -85.0|
+[info] |USW00012842|2017-01-01| TMAX| 272.0|
+[info] |USW00012876|2017-01-01| TMAX| 278.0|
+[info] |USW00014719|2017-01-01| TMAX|  89.0|
+[info] |USW00024061|2017-01-01| TMAX| -77.0|
+[info] |USW00024229|2017-01-01| TMAX|  44.0|
+[info] |USW00094626|2017-01-01| TMAX|  11.0|
+[info] |USW00003048|2017-01-01| TMAX| 105.0|
+[info] |USS0018F01S|2017-01-01| TMAX| -34.0|
+[info] <del>-----------</del>----------<del>-----</del>-&#x2013;&#x2014;+
+</p>
+</div>
+</div>
+<div id="org29bd96e" class="outline-3">
+<h3 id="org29bd96e">DataFrame.describe()</h3>
+<div class="outline-text-3" id="text-org29bd96e">
+<p>
+it will give you many statistical information, a very good way to get a feel of your data ,very convenient.
+</p>
+<ul class="org-ul">
+<li>min</li>
+<li>max</li>
+<li>average</li>
+<li>stdev</li>
+</ul>
+
+<pre class="example">
+[info] +-------+-----------+------------------+
+[info] |summary|        sid|              tmin|
+[info] +-------+-----------+------------------+
+[info] |  count|     126171|            126171|
+[info] |   mean|       null|-58.01841944662402|
+[info] | stddev|       null|136.90434799836595|
+[info] |    min|AE000041196|            -733.0|
+[info] |    max|ZI000067983|             319.0|
+[info] +-------+-----------+------------------+
+</pre>
+</div>
+</div>
+<div id="org340c4c5" class="outline-3">
+<h3 id="org340c4c5">df.limit vs. df.drop</h3>
+<div class="outline-text-3" id="text-org340c4c5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">limit(n)</td>
+<td class="org-left">delete `n` rows to create a new DataFrame</td>
+</tr>
+
+<tr>
+<td class="org-left">drop("columnName")</td>
+<td class="org-left">delete THE column to create a new DataFrame</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+note that <b>limit(1000000)</b> vs <b>limit(10)</b> has little influence to the computations speed
+</p>
+</div>
+</div>
+
+<div id="orge9d4ad3" class="outline-3">
+<h3 id="orge9d4ad3">df.select vs. df.filter vs. df.join</h3>
+<div class="outline-text-3" id="text-orge9d4ad3">
+<p>
+df.select more like do produce new column by existed column
+</p>
+
+<p>
+def.filter more like "select" by some condition :)
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">tmax</th>
+<th scope="col" class="org-right">tmin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">40</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">32</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">50</td>
+<td class="org-right">10</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<code>averageTemp2017 = combinedTemps2017.select('sid, 'date, ('tmax + 'tmin)/2)</code>
+</p>
+
+<p>
+get the table below:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">(tmax + tmin)/2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">20</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">25</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">21</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+<code>val combinedTemps2017 = tmax2017.join(tmin2017, Seq("sid", "date"))</code>
+</p>
+
+<!-- This HTML table template is generated by emacs 26.1 -->
+<table border="1">
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;tmax
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      ASN00015643<br />
+      ASN00085296<br />
+      ASN00040209<br />
+      CA005030984
+    </td>
+    <td align="left" valign="top">
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01
+    </td>
+    <td align="left" valign="top">
+      &nbsp;218.0<br />
+      &nbsp;127.0<br />
+      &nbsp;250.0<br />
+      -192.0
+    </td>
+  </tr>
+</table>
+
+<!-- This HTML table template is generated by emacs 26.1 -->
+<table border="1">
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;tmin
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      ASN00015643<br />
+      ASN00085296<br />
+      ASN00040209<br />
+      ASN00085280
+    </td>
+    <td align="left" valign="top">
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01<br />
+      2017-01-01
+    </td>
+    <td align="left" valign="top">
+      &nbsp;218.0<br />
+      &nbsp;127.0<br />
+      &nbsp;250.0<br />
+      &nbsp;156.0
+    </td>
+  </tr>
+</table>
+
+<p>
+after joining on ("sid", "date")
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">tmax</th>
+<th scope="col" class="org-right">tmin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">40</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">32</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">50</td>
+<td class="org-right">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="org7924e2b" class="outline-3">
+<h3 id="org7924e2b">df.stat</h3>
+<div class="outline-text-3" id="text-org7924e2b">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">stat</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">DataFrameStatFunctions</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">return a DataFrameStatFunctions for working statistic functions support</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="orgaf8d0e3" class="outline-2">
+<h2 id="orgaf8d0e3">StructType</h2>
+<div class="outline-text-2" id="text-orgaf8d0e3">
+</div>
+<div id="org9deb73e" class="outline-3">
+<h3 id="org9deb73e">StructType.printTreeString</h3>
+<div class="outline-text-3" id="text-org9deb73e">
+<p>
+<code>DataFrame.scheme.printTreeString</code> will get tree table below:
+</p>
+
+<pre class="example">
+[info] root
+[info]  |-- _c0: string (nullable = true)
+[info]  |-- _c1: string (nullable = true)
+[info]  |-- _c2: string (nullable = true)
+[info]  |-- _c3: string (nullable = true)
+[info]  |-- _c4: string (nullable = true)
+[info]  |-- _c5: string (nullable = true)
+[info]  |-- _c6: string (nullable = true)
+[info]  |-- _c7: string (nullable = true)
+</pre>
+</div>
+</div>
+
+<div id="org5ceb814" class="outline-3">
+<h3 id="org5ceb814">StructType(Array[StructField])</h3>
+<div class="outline-text-3" id="text-org5ceb814">
+<p>
+The default schema(StructType) will see all the columns as type of String,
+but this mabye not what we want. Define a schema and some options to tell
+Spark, what's the StructType inside of this DataFrame
+</p>
+
+<ol class="org-ol">
+<li>setup a schema for this DataFrame</li>
+<li>for some non-standard-format columns in source data file, tell Spark I
+need a special <code>DataFrameReader</code> to specify what the format is, by
+<code>option("dateFormat", "yyyyMMdd")</code></li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-scala" id="org6602dc8"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">tschema</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">StructType</span>(<span style="color: #a45bad;">Array</span>( <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">ONLY select and modify the front 4 columns</span>
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"sid"</span>,<span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"date"</span>,<span style="color: #a45bad;">DateType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"mtype"</span>,<span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"value"</span>,<span style="color: #a45bad;">DoubleType</span>)
+                         ))
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">data2017 is a DataFrame</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">data2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> spark.read.schema(tschema).option(<span style="color: #2d9574;">"dateFormat"</span>, <span style="color: #2d9574;">"yyyyMMdd"</span>).csv(<span style="color: #2d9574;">"data/2017.csv"</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="org301e883" class="outline-2">
+<h2 id="org301e883">Column</h2>
+<div class="outline-text-2" id="text-org301e883">
+<p>
+DataFrame.filter
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">filter</span>(condition<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Column</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">DataSet</span>[<span style="color: #a45bad;">T</span>]
+</pre>
+</div>
+
+<p>
+A <b>Column</b> is just a column like its name hint. It's computed based on the
+data in <b>DataFrame</b>.
+</p>
+</div>
+
+<div id="orgab9b015" class="outline-3">
+<h3 id="orgab9b015">Column construction</h3>
+<div class="outline-text-3" id="text-orgab9b015">
+<p>
+A new <b>Column</b> can be constructed based on the input columns present in a
+<b>DataFrame</b>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">kinds of Column</th>
+<th scope="col" class="org-left">methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">a specific column get from binded DataFrame</td>
+<td class="org-left">[DataFrameObj]("columnName")</td>
+</tr>
+
+<tr>
+<td class="org-left">a generic column no bind with a DataFrame</td>
+<td class="org-left">col("columnName")</td>
+</tr>
+
+<tr>
+<td class="org-left">extract a struct field</td>
+<td class="org-left">col("columnName.field")</td>
+</tr>
+
+<tr>
+<td class="org-left">scala short hand for a named column</td>
+<td class="org-left">$"columnName"</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">'columnName</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<code>'columnName</code> will convert to a Column by implicit conversion:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">tmax2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data2017.filter($<span style="color: #2d9574;">"mtype"</span> === <span style="color: #2d9574;">"TMAX"</span>)
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">tmin2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data2017.filter(<span style="color: #2d9574;">'mtype</span> === <span style="color: #2d9574;">"TMIN"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org7859bfe" class="outline-3">
+<h3 id="org7859bfe">Column operations</h3>
+<div class="outline-text-3" id="text-org7859bfe">
+</div>
+<div id="org3367e75" class="outline-4">
+<h4 id="org3367e75">return <code>Column</code></h4>
+<div class="outline-text-4" id="text-org3367e75">
+<p>
+good for expression composition, because
+</p>
+
+<p>
+<code>Column '+' Column = Column '===' = Column '*' = Column</code>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">+</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left">*</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left">&gt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>=</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;=&gt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>!</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">return a new Column</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+even <code>===</code> return the Column, BTW, <code>=</code> can be used to <code>Any</code> type, so, Column <code>=</code> value or Column <code>=</code> Column both right
+</p>
+
+<p>
+<code>data2017.filter('mtype === "TMAX")</code>
+<code>df.filter( df("colA") === df("colB") )</code>
+</p>
+
+<p>
+// The following are equivalent:
+</p>
+
+<p>
+peopleDf.filter(\("age" > 15)
+   peopleDf.where(\)"age" &gt; 15)
+peopleDf($"age" &gt; 15)
+</p>
+</div>
+</div>
+
+<div id="org2a237d9" class="outline-4">
+<h4 id="org2a237d9">element-vise</h4>
+<div class="outline-text-4" id="text-org2a237d9">
+<p>
+all these methods are apply to element-vise of two columns
+like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala">averageTemp2017 <span style="color: #4f97d7; font-weight: bold;">=</span> combinedTemps2017.select(<span style="color: #2d9574;">'sid</span>, <span style="color: #2d9574;">'date</span>, (<span style="color: #2d9574;">'tmax</span> + <span style="color: #2d9574;">'tmin</span>)/<span style="color: #a45bad;">2</span>)
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">tmax</th>
+<th scope="col" class="org-right">tmin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">40</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">32</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">50</td>
+<td class="org-right">10</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+get the table below:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">sid</th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">(tmax + tmin)/2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">20</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">25</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">21</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">20170101</td>
+<td class="org-right">30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div id="org3683f0e" class="outline-2">
+<h2 id="org3683f0e">DataFrameStatFunctions</h2>
+<div class="outline-text-2" id="text-org3683f0e">
+</div>
+<div id="org46b13ba" class="outline-3">
+<h3 id="org46b13ba">from DataFrame to DataFrameStatFunctions</h3>
+<div class="outline-text-3" id="text-org46b13ba">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">stat</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">DataFrameStatFunctions</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">return a DataFrameStatFunctions for working statistic functions support</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="org3ceb12b" class="outline-3">
+<h3 id="org3ceb12b">API intro</h3>
+<div class="outline-text-3" id="text-org3ceb12b">
+<p>
+provide some fucntions about <b>statistics</b>
+</p>
+
+<ul class="org-ul">
+<li><code>median</code> (50%)</li>
+<li><code>approxQuantile</code> (25%)</li>
+<li><code>corr</code>
+<ul class="org-ul">
+<li>correlation coefficient of two column (important for DS area)</li>
+<li>helpful for comparing two things to see if they're strongly correlated with</li>
+</ul></li>
+<li><code>cov</code>
+<ul class="org-ul">
+<li>covariance</li>
+</ul></li>
+<li><code>crosstab</code>
+<ul class="org-ul">
+<li>a pair-wise frequency table of the given columns</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="org9559f8d" class="outline-2">
+<h2 id="org9559f8d">org.apache.spark.sql.functions</h2>
+<div class="outline-text-2" id="text-org9559f8d">
+<p>
+This is an <code>object</code>, huge many methods inside of it.
+</p>
+<ul class="org-ul">
+<li>methods for <b>aggregation</b></li>
+<li>methods for <b>date</b></li>
+<li>methods for <b>mathematics</b></li>
+<li>etc</li>
+</ul>
+
+<p>
+So, many time you will <code>import org.apache.spark.sql.fucntions._</code>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-10 五 09:13 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Future Object API</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Future Object API</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc4606ab">1. How to combine different Futures</a>
+<ul>
+<li><a href="#org9504557">1.1. <code>firstCompletedOf()()</code></a></li>
+<li><a href="#org66a678f">1.2. <code>sequence()()</code></a></li>
+<li><a href="#orgece6758">1.3. Same and Different</a></li>
+</ul>
+</li>
+<li><a href="#orgb43b841">2. Code Snippet</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="orgc4606ab" class="outline-2">
+<h2 id="orgc4606ab"><span class="section-number-2">1</span> How to combine different Futures</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="org9504557" class="outline-3">
+<h3 id="org9504557"><span class="section-number-3">1.1</span> <code>firstCompletedOf()()</code></h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-scala">firstCompletedOf[<span style="color: #a45bad;">T</span>](futures<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">TraversableOnce</span>[<span style="color: #a45bad;">Future</span>[<span style="color: #a45bad;">T</span>]])
+                (<span style="color: #4f97d7;">implicit</span> excutor<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ExecutionContext</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Future</span>[<span style="color: #a45bad;">R</span>]
+
+</pre>
+</div>
+
+<p>
+Argument of the <code>firstCompletedOf()()</code> method is <code>TraversableOnce</code> of
+Futures &#x2014; any collection of Futures on some type T, and it will give back
+the <b>Future completed first</b> upon all Futures in this collection.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">pages</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">List</span>(page1,page2,page3)
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">firstPage</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span>.firstCompletedOf(pages)
+firstPage.foreach(println)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>[Q] but why would you want to create a whole bunch of Futures and only
+deal with the one that completes first ?</li>
+<li>[A] the answer to that is in applications where for example you’re
+<b>getting information from multiple sources and you only need to get it
+from one to complete your task</b>, maybe you’re writing a website that is
+supposed to display is weather information, and you have 3 or 4 source you
+can get the weather information from, but you only need it from one of
+them. so you hit 3 or 4 of them and then you take the one that finished
+first.</li>
+</ul>
+</div>
+</div>
+
+<div id="org66a678f" class="outline-3">
+<h3 id="org66a678f"><span class="section-number-3">1.2</span> <code>sequence()()</code></h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+<pre class="src src-scala">sequence[<span style="color: #a45bad;">A</span>, <span style="color: #a45bad;">M</span>[<span style="color: #a45bad;">X</span>] <span style="color: #4f97d7; font-weight: bold;">&lt;:</span> <span style="color: #a45bad;">Traversable</span>[<span style="color: #a45bad;">X</span>]](in<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">M</span>[<span style="color: #a45bad;">Future</span>[<span style="color: #a45bad;">A</span>]])(<span style="color: #4f97d7;">implicit</span> cbf<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">CanBuildFrom</span>[<span style="color: #a45bad;">M</span>[<span style="color: #a45bad;">Future</span>[<span style="color: #a45bad;">A</span>]], <span style="color: #a45bad;">A</span>, <span style="color: #a45bad;">M</span>[<span style="color: #a45bad;">A</span>]], executor<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ExecutionContext</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Future</span>[<span style="color: #a45bad;">M</span>[<span style="color: #a45bad;">A</span>]]
+</pre>
+</div>
+
+<p>
+you give a Traversable of Futures, and it gives you back a Future of the
+Traversable. I had a different Futures that were all inside of some
+colletion and it will allow me to convert from that collection of Futures of
+some type to a Future of a collection. It is more likely to be the inverse
+of the firstCompletedOf method.
+</p>
+
+<p>
+使用 sequence 时一定要注意，这个 collection of Futures 中的所有 Future 必须确保可以完成，比如这里其中一个网址是 google 在国内访问不了，所以整体
+sequence 一直没有返回。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">pages</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">List</span>(page1,page2,page3)
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">allPages</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span>.sequence(pages)
+allPages.foreach(println)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="orgece6758" class="outline-3">
+<h3 id="orgece6758"><span class="section-number-3">1.3</span> Same and Different</h3>
+<div class="outline-text-3" id="text-1-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">different</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">- firstCompletedOf() tells which one finishes first</td>
+</tr>
+
+<tr>
+<td class="org-left">- sequence() wait for them all to complete</td>
+</tr>
+
+<tr>
+<td class="org-left">- firstCompletedOf: collection of Futures =&gt; one Future</td>
+</tr>
+
+<tr>
+<td class="org-left">- sequence: collection of Futures =&gt; Future of collection</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><b>same</b></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">- they’re helpful when you’re retrieving information from other places</td>
+</tr>
+
+<tr>
+<td class="org-left">- they're both Non-Blocking call</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+
+<div id="orgb43b841" class="outline-2">
+<h2 id="orgb43b841"><span class="section-number-2">2</span> Code Snippet</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+get the first 100 chars of three website:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">page1</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span> {
+  <span style="color: #2d9574;">"Google "</span> + io.<span style="color: #a45bad;">Source</span>.fromURL(<span style="color: #2d9574;">"http://www.google.com"</span>).take(<span style="color: #a45bad;">100</span>).mkString
+}
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">page2</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span> {
+  <span style="color: #2d9574;">"Baidu "</span> + io.<span style="color: #a45bad;">Source</span>.fromURL(<span style="color: #2d9574;">"http://www.baidu.com"</span>).take(<span style="color: #a45bad;">100</span>).mkString
+}
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">page3</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span> {
+  <span style="color: #2d9574;">"Sina "</span> + io.<span style="color: #a45bad;">Source</span>.fromURL(<span style="color: #2d9574;">"http://www.sina.com"</span>).take(<span style="color: #a45bad;">100</span>).mkString
+}
+
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">pages</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">List</span>(page1,page2,page3)
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">&#22240;&#20026;&#20320;&#20063;&#19981;&#30693;&#36947;&#21738;&#20010; Future &#20250;&#20808;&#33719;&#24471;&#20540;</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">&#25152;&#20197;&#36825;&#20010; firstCompletedOf &#23601;&#26174;&#24471;&#38750;&#24120;&#26377;&#29992;&#20102;</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">firstPage</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span>.firstCompletedOf(pages)
+firstPage.foreach(println)
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">what if I want all of 3 pages</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">'allPages' is a Future of collection</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">&#25152;&#26377; Future &#24517;&#39035;&#12304;&#30830;&#20445;&#21487;&#20197;&#23436;&#25104;&#12305;&#65292;&#27604;&#22914;&#36825;&#37324;&#20854;&#20013;&#19968;&#20010;&#32593;&#22336;&#26159; google</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">&#22312;&#22269;&#20869;&#35775;&#38382;&#19981;&#20102;&#65292;&#25152;&#20197;&#25972;&#20307; sequence &#19968;&#30452;&#27809;&#26377;&#36820;&#22238;&#12290;</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">allPages</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Future</span>.sequence(pages)
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">&#21516;&#26679;&#30340;&#21487;&#20197;&#36890;&#36807; sequence &#20989;&#25968;&#26469;&#33719;&#21462;&#19968;&#20010; Future of a collection</span>
+allPages.foreach(println)
+
+<span style="color: #a45bad;">Thread</span>.sleep(<span style="color: #a45bad;">5000</span>)
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

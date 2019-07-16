@@ -1,0 +1,1362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-11 六 03:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Abstract Data Type</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Abstract Data Type</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org46c95fe">1. Abstract Data Types</a>
+<ul>
+<li><a href="#org456e158">1.1. Definition</a>
+<ul>
+<li><a href="#orgbc561a7">1.1.1. ADT</a></li>
+<li><a href="#org0966814">1.1.2. Stack</a></li>
+<li><a href="#orga9319f2">1.1.3. Queue</a></li>
+<li><a href="#orgaf97f06">1.1.4. O-notation</a></li>
+</ul>
+</li>
+<li><a href="#org6b17001">1.2. Q&amp;A</a>
+<ul>
+<li><a href="#org5dacc2d">1.2.1. [Q] why CAN NOT new Array directly with type variabel ?</a></li>
+<li><a href="#org83de7f3">1.2.2. [A] why CAN NOT new Array directly with type variabel ?</a></li>
+<li><a href="#org750dab7">1.2.3. [Q] why <code>new Array.length * 2</code> will give O(1) time complexity ?</a></li>
+<li><a href="#orgf20cf2f">1.2.4. [A] why <code>new Array.length * 2</code> will give O(1) time complexity</a></li>
+<li><a href="#org9bee096">1.2.5. [Q] why not setting the location of poped of dequeued value to 0?</a></li>
+<li><a href="#orgf830fba">1.2.6. [A] why not setting the location of poped of dequeued value to 0</a></li>
+<li><a href="#org5f0e56d">1.2.7. [Q] why <code>+=</code> return <code>Seq.this.type</code></a></li>
+<li><a href="#org4bcee84">1.2.8. [A] why <code>+=</code> return <code>Seq.this.type</code></a></li>
+<li><a href="#orgffe6b19">1.2.9. [Q] how to give a <code>variable</code> whose <code>type is type variable</code> a default value</a></li>
+<li><a href="#orgfb07594">1.2.10. [A1] how to give a <code>variable</code> whose <code>type is type variable</code> a default value</a></li>
+<li><a href="#orgccca7bd">1.2.11. [A2] how to give a <code>variable</code> whose <code>type is type variable</code> a default value</a></li>
+</ul>
+</li>
+<li><a href="#org0c461d7">1.3. Inspiration</a></li>
+<li><a href="#org33366cc">1.4. Stack and Queue</a></li>
+<li><a href="#org4abaceb">1.5. Linked List Based Stack</a></li>
+<li><a href="#org6d66552">1.6. Linked List Based Queue</a></li>
+<li><a href="#orgc76bd1c">1.7. Array based Stack</a></li>
+<li><a href="#orgddf369a">1.8. Array based Queue</a></li>
+<li><a href="#orgffab2de">1.9. The List/Seq ADT</a>
+<ul>
+<li><a href="#orge91ae63">1.9.1. API</a></li>
+</ul>
+</li>
+<li><a href="#org3b0bf2a">1.10. Nature of Arrays and Linked Lists</a>
+<ul>
+<li><a href="#org54f4b07">1.10.1. what is an Array</a></li>
+<li><a href="#org11a9669">1.10.2. what is an Linked List</a></li>
+</ul>
+</li>
+<li><a href="#org05eec48">1.11. Mutable Singly LinkedList</a>
+<ul>
+<li><a href="#org37b249c">1.11.1. scala.collection.mutable.Buffer</a></li>
+</ul>
+</li>
+<li><a href="#org2911807">1.12. Mutable Double Linked List</a>
+<ul>
+<li><a href="#orgfc611ca">1.12.1. No need keep head and tail point</a></li>
+<li><a href="#orgfd45b1a">1.12.2. Double linked list is better thant Single one</a></li>
+<li><a href="#org61d5311">1.12.3. Sentinel Node</a></li>
+</ul>
+</li>
+<li><a href="#orgd304225">1.13. Immutable Singly Linked List</a>
+<ul>
+<li><a href="#org71c8fb3">1.13.1. Immutable SLL vs. mutable SLL</a></li>
+<li><a href="#orgdf813d0">1.13.2. NO immutable DLL</a></li>
+<li><a href="#orgad05b5f">1.13.3. [Q] what does key word <code>sealed</code> means?</a></li>
+<li><a href="#org9cda242">1.13.4. [Q] why defined a subclass like this, stange format?</a></li>
+<li><a href="#orgda3e355">1.13.5. [Q] How to make a containter can <b>lift element's type automatically</b> like <code>List</code></a></li>
+<li><a href="#orge4fbf87">1.13.6. [A] How to make a containter can <b>lift element's type automatically</b> like <code>List</code></a></li>
+<li><a href="#org60dc92c">1.13.7. [+A] vs. [-A] vs. [A]</a></li>
+</ul>
+</li>
+<li><a href="#orgfbfd4f7">1.14. How to design a Recursion Type like immutable List</a></li>
+<li><a href="#org1100b6c">1.15. Priority Queue</a>
+<ul>
+<li><a href="#org446b7c0">1.15.1. Priority Queue vs. regular Queue</a></li>
+<li><a href="#orgabb57ca">1.15.2. example: Sorted Priority Queue</a></li>
+<li><a href="#org84d9050">1.15.3. Time complexity on Soted Pirority vs. Non-sorted Priority</a></li>
+<li><a href="#org977313a">1.15.4. Why DLL is better than other linked list</a></li>
+<li><a href="#org3d60bf8">1.15.5. Function as Constructor argument</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="org46c95fe" class="outline-2">
+<h2 id="org46c95fe"><span class="section-number-2">1</span> Abstract Data Types</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="org456e158" class="outline-3">
+<h3 id="org456e158"><span class="section-number-3">1.1</span> Definition</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="orgbc561a7" class="outline-4">
+<h4 id="orgbc561a7"><span class="section-number-4">1.1.1</span> ADT</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+a way of storing information and getting that information back , <b>abstract</b> have the likely means as <b>abstract method</b>, that is we specify <b>what they do but not how they do them</b>.
+</p>
+</div>
+</div>
+<div id="org0966814" class="outline-4">
+<h4 id="org0966814"><span class="section-number-4">1.1.2</span> Stack</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+who comes the <b>longest</b> who server <b>first</b>
+</p>
+</div>
+</div>
+<div id="orga9319f2" class="outline-4">
+<h4 id="orga9319f2"><span class="section-number-4">1.1.3</span> Queue</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+who comes the <b>shortest</b> who server <b>first</b>
+</p>
+</div>
+</div>
+<div id="orgaf97f06" class="outline-4">
+<h4 id="orgaf97f06"><span class="section-number-4">1.1.4</span> O-notation</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+mathematical definition of this is how many operations are happening, that <b>number winds up growing more slowly</b> than some certain point.
+</p>
+
+<p>
+<a href="https://s14.postimg.cc/wo9dyeojl/screenshot_109.png">O-notation illustration</a>
+</p>
+
+<p>
+g(n) is O(f(n)), if there exist c and m such that c*f(n)&gt;g(n) for all n&gt;m
+</p>
+</div>
+</div>
+</div>
+
+<div id="org6b17001" class="outline-3">
+<h3 id="org6b17001"><span class="section-number-3">1.2</span> Q&amp;A</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="org5dacc2d" class="outline-4">
+<h4 id="org5dacc2d"><span class="section-number-4">1.2.1</span> [Q] why CAN NOT new Array directly with type variabel ?&#xa0;&#xa0;&#xa0;<span class="tag"><span class="scala">scala</span>&#xa0;<span class="question">question</span></span></h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+why code below error?
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">ERROR</span>
+<span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">data</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">A</span>](<span style="color: #a45bad;">10</span>)
+</pre>
+</div>
+
+<p>
+because when you new an Array, it's will be given a default value to every element at run-time, so if you declare an Array of Int, you get Array of <code>0</code> at run-time; if you declare an Array of String, you get Array of <code>null</code> at run-time. But, if declaration of Array has a type variable, then issue comes, type variable can be anything, compiler don't know what kind of element you will put in.
+</p>
+</div>
+</div>
+
+<div id="org83de7f3" class="outline-4">
+<h4 id="org83de7f3"><span class="section-number-4">1.2.2</span> [A] why CAN NOT new Array directly with type variabel ?&#xa0;&#xa0;&#xa0;<span class="tag"><span class="scala">scala</span>&#xa0;<span class="answer">answer</span></span></h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+tell compiler <code>A</code> has a <code>Manifest</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">ArrayStack</span>[<span style="color: #a45bad;">A</span> <span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Manifest</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">MyStack</span>[<span style="color: #a45bad;">A</span>] {
+<span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">data</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">A</span>](<span style="color: #a45bad;">10</span>)
+</pre>
+</div>
+
+<p>
+<code>[A : Manifest]</code> is some syntactic sugar that' going on in the background.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">arr</span>[<span style="color: #a45bad;">T</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">T</span>](<span style="color: #a45bad;">0</span>)                          <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">does not compile</span>
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">arr</span>[<span style="color: #a45bad;">T</span>](<span style="color: #4f97d7;">implicit</span> m<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Manifest</span>[<span style="color: #a45bad;">T</span>]) <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">T</span>](<span style="color: #a45bad;">0</span>) <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">compiles</span>
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">arr</span>[<span style="color: #a45bad;">T</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Manifest</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">T</span>](<span style="color: #a45bad;">0</span>)                <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">shorthand for the preceding</span>
+</pre>
+</div>
+
+<p>
+A Manifest[T] is an opaque descriptor for type T. Its supported use is to give access to the erasure of the type as a Class instance, as is necessary for the creation of native Arrays if the class is not known at compile time.
+</p>
+</div>
+</div>
+
+<div id="org750dab7" class="outline-4">
+<h4 id="org750dab7"><span class="section-number-4">1.2.3</span> [Q] why <code>new Array.length * 2</code> will give O(1) time complexity ?&#xa0;&#xa0;&#xa0;<span class="tag"><span class="scala">scala</span>&#xa0;<span class="question">question</span></span></h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+why code below still has O(1) time-complexity ?
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">still O(1)</span>
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">push</span>(o<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>) {
+  <span style="color: #4f97d7;">if</span>(top &gt;= data.length) {
+    <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">O(n) complexity if ~data.length + n~</span>
+    <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">val tmp = new Array[A](data.length * 2)</span>
+    <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">O(1) complexity if ~data.length * 2~</span>
+    <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">tmp</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">A</span>](data.length * <span style="color: #a45bad;">2</span>)
+    <span style="color: #4f97d7;">for</span> (i <span style="color: #4f97d7;">&lt;-</span> data.indices) tmp(i) <span style="color: #4f97d7;">=</span> data(i)
+    data <span style="color: #4f97d7;">=</span> tmp
+  }
+  data(top) <span style="color: #4f97d7;">=</span> o
+  top += <span style="color: #a45bad;">1</span>
+}
+</pre>
+</div>
+
+<blockquote>
+<p>
+32 + 16 + 8 + 4 + 2 + 1 = 2*32
+1 + 1/2 + 1/4 + 1/8 + &#x2026; = 2
+</p>
+</blockquote>
+
+<p>
+any length will go down to a double thing, even things go to inifinite. and the times we have tod do copy operations goes down logarithmically and so on average when you add up all of my copies it will wind up adding up to basically two times the number of things that I've pushed on which is still O(1)
+</p>
+</div>
+</div>
+
+<div id="orgf20cf2f" class="outline-4">
+<h4 id="orgf20cf2f"><span class="section-number-4">1.2.4</span> [A] why <code>new Array.length * 2</code> will give O(1) time complexity&#xa0;&#xa0;&#xa0;<span class="tag"><span class="scala">scala</span>&#xa0;<span class="question">question</span></span></h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+please just keep in mind, I really don't understand it.
+</p>
+</div>
+</div>
+
+<div id="org9bee096" class="outline-4">
+<h4 id="org9bee096"><span class="section-number-4">1.2.5</span> [Q] why not setting the location of poped of dequeued value to 0?</h4>
+<div class="outline-text-4" id="text-1-2-5">
+<p>
+why not <code>data(front)=0</code> and <code>data(pop)=0</code>?
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">dequeue, doesn't set ~data(front) = 0~</span>
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">dequeue</span>()<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span> <span style="color: #4f97d7;">=</span> {
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">fr</span> <span style="color: #4f97d7;">=</span> data(front)
+  front += <span style="color: #a45bad;">1</span>
+  fr
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">pop, doesn't set ~data(front) = 0~</span>
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">pop</span>()<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span> <span style="color: #4f97d7;">=</span> {
+  top -= <span style="color: #a45bad;">1</span>
+  data(top)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="orgf830fba" class="outline-4">
+<h4 id="orgf830fba"><span class="section-number-4">1.2.6</span> [A] why not setting the location of poped of dequeued value to 0</h4>
+<div class="outline-text-4" id="text-1-2-6">
+<p>
+<b>No need to</b> also <b>Can not</b>
+</p>
+<ol class="org-ol">
+<li>No need to
+In Array based Queue and Stack, we use and ONLY use <b>index</b> to trace the location and all value can be <b>rewrite</b>.</li>
+<li>Can not
+We don't exactly know the type of `A`&#x2014;type variable, we can not give a value to an variable unknown type.</li>
+</ol>
+
+<p>
+The <b>most important</b> thing is <b>NEVER EVRE</b> deal with element of collection directly, because its type is <b>UNKNOWN</b>
+</p>
+</div>
+</div>
+
+<div id="org5f0e56d" class="outline-4">
+<h4 id="org5f0e56d"><span class="section-number-4">1.2.7</span> [Q] why <code>+=</code> return <code>Seq.this.type</code></h4>
+<div class="outline-text-4" id="text-1-2-7">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Appends a single element to this buffer.</span>
+<span style="color: #4f97d7;">abstract</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">+=</span>(elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Buffer</span>.<span style="color: #4f97d7;">this</span>.<span style="color: #4f97d7;">type</span>
+
+<span style="color: #8D8D84;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Prepends a single element to this buffer.</span>
+<span style="color: #4f97d7;">abstract</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">+=:</span>(elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Buffer</span>.<span style="color: #4f97d7;">this</span>.<span style="color: #4f97d7;">type</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="org4bcee84" class="outline-4">
+<h4 id="org4bcee84"><span class="section-number-4">1.2.8</span> [A] why <code>+=</code> return <code>Seq.this.type</code></h4>
+<div class="outline-text-4" id="text-1-2-8">
+<p>
+Only by this way, you can <b>chain</b> the operator <code>+=</code> or <code>+=:</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #a45bad;">1</span> +=: <span style="color: #a45bad;">8</span> +=: lst += <span style="color: #a45bad;">5</span> += <span style="color: #a45bad;">7</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="orgffe6b19" class="outline-4">
+<h4 id="orgffe6b19"><span class="section-number-4">1.2.9</span> [Q] how to give a <code>variable</code> whose <code>type is type variable</code> a default value</h4>
+<div class="outline-text-4" id="text-1-2-9">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">MutableDLL</span>[<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">mutable</span>.<span style="color: #a45bad;">Buffer</span>[<span style="color: #a45bad;">A</span>]{
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Node</span>(<span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">data</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">prev</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Node</span>, <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">next</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Node</span>)
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">Not sure about the type A, we can not do assignment directly</span>
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">end</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Node</span>(??? ,<span style="color: #a45bad;">null</span>, <span style="color: #a45bad;">null</span>)
+}
+</pre>
+</div>
+
+<p>
+<code>private var end = new Node(??? ,null, null)</code>
+because of the type of data we don't know now, so we can not give it a value. but as a concrete instance, <code>end Node</code> must have a value for his 1st Ctor argument.
+</p>
+</div>
+</div>
+
+<div id="orgfb07594" class="outline-4">
+<h4 id="orgfb07594"><span class="section-number-4">1.2.10</span> [A1] how to give a <code>variable</code> whose <code>type is type variable</code> a default value</h4>
+<div class="outline-text-4" id="text-1-2-10">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">MutableDLL</span>[<span style="color: #a45bad;">A</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Manifest</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">mutable</span>.<span style="color: #a45bad;">Buffer</span>[<span style="color: #a45bad;">A</span>]{
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Node</span>(<span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">data</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">prev</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Node</span>, <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">next</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Node</span>)
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">end</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Node</span>(<span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">A</span>](<span style="color: #a45bad;">1</span>)(<span style="color: #a45bad;">0</span>),<span style="color: #a45bad;">null</span>, <span style="color: #a45bad;">null</span>)
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><b>By <code>[A : Manifest]</code> we can build an Array wity <code>[A]</code> as element's type</b></li>
+<li><b>By <code>new Array[A](1)(0)</code> we can get the value of A</b></li>
+</ul>
+
+<p>
+what can we do now?
+<b>wrap it by a type constructor, unwrap it by a method of this type constructor</b>
+</p>
+
+<p>
+The simple way to give a value to A, is <b>also do that in run-time</b>, means we also delegate this work to the guy who give a specific type of A.
+</p>
+
+<p>
+But how can we do that?
+</p>
+
+<p>
+<b>wrap</b> it in an container before ,then <b>unwrap</b> it by expression. Good news is we also don't deal with the element data directly. <code>wrap</code> is a type constructor and <code>unwrap</code> is an method defined in that type constructor.
+</p>
+</div>
+</div>
+
+<div id="orgccca7bd" class="outline-4">
+<h4 id="orgccca7bd"><span class="section-number-4">1.2.11</span> [A2] how to give a <code>variable</code> whose <code>type is type variable</code> a default value</h4>
+<div class="outline-text-4" id="text-1-2-11">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">MutableDLList</span>[<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">mutable</span>.<span style="color: #a45bad;">Buffer</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">delegate this task to place holder ~_~, like some syntactic sugar</span>
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">default</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">_</span>
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Node</span>(<span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">data</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">prev</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Node</span>, <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">next</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Node</span>)
+  <span style="color: #4f97d7;">private</span> <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">end</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Node</span>(default, <span style="color: #a45bad;">null</span>, <span style="color: #a45bad;">null</span>)
+  <span style="color: #8D8D84;">//</span><span style="color: #2aa1ae; background-color: #292e34;">...</span>
+}
+</pre>
+</div>
+
+<p>
+What does work is <code>var a: A = _</code> (note var instead of val). As Chuck says in his answer, this initialises the variable to a default value. From the Scala Language Specification:
+</p>
+
+<blockquote>
+<p>
+0 if T is Int or one of its subrange types,
+0L if T is Long,
+0.0d if T is Double,
+0.0f if T is Float,
+false if T is Boolean,
+() if T is Unit,
+null for all other types T.
+</p>
+</blockquote>
+
+<p>
+means that you can use place holder &#x2014; <code>_</code> as a runtime initializer. which doesn't need to <b>wrap</b> it by creating an Array with precondition of adding <code>[A : Manifest]</code>, also doesn't need to <b>unwrap</b> it by certain method of the type constructor
+</p>
+</div>
+</div>
+</div>
+<div id="org0c461d7" class="outline-3">
+<h3 id="org0c461d7"><span class="section-number-3">1.3</span> Inspiration</h3>
+<div class="outline-text-3" id="text-1-3">
+<ol class="org-ol">
+<li>The most important thing about ADT is NEVER deal with element of collection directly, because its type is <b>UNKNOWN</b></li>
+</ol>
+</div>
+</div>
+<div id="org33366cc" class="outline-3">
+<h3 id="org33366cc"><span class="section-number-3">1.4</span> Stack and Queue</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+just copy code here, to illustrate
+</p>
+</div>
+</div>
+<div id="org4abaceb" class="outline-3">
+<h3 id="org4abaceb"><span class="section-number-3">1.5</span> Linked List Based Stack</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+just copy code here, to illustrate
+</p>
+</div>
+</div>
+<div id="org6d66552" class="outline-3">
+<h3 id="org6d66552"><span class="section-number-3">1.6</span> Linked List Based Queue</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+just copy code here, to illustrate
+</p>
+</div>
+</div>
+<div id="orgc76bd1c" class="outline-3">
+<h3 id="orgc76bd1c"><span class="section-number-3">1.7</span> Array based Stack</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+just copy code here, to illustrate
+</p>
+</div>
+</div>
+<div id="orgddf369a" class="outline-3">
+<h3 id="orgddf369a"><span class="section-number-3">1.8</span> Array based Queue</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+we don't need to allocate more memory like Array based Stack, instead we can <b>make it circular</b>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">for</span>(i <span style="color: #4f97d7;">&lt;-</span> <span style="color: #a45bad;">0</span> until data.length-<span style="color: #a45bad;">1</span>)
+  tmp(i) <span style="color: #4f97d7;">=</span> data((i + front)% data.length)
+</pre>
+</div>
+
+<p>
+<a href="https://s9.postimg.cc/fch0suni7/screenshot_110.png">circle and reverse by <code>for</code> and <code>%</code></a>
+</p>
+</div>
+</div>
+
+<div id="orgffab2de" class="outline-3">
+<h3 id="orgffab2de"><span class="section-number-3">1.9</span> The List/Seq ADT</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+In the java libraries there's an Interface, an abstract type called <b>List</b>,
+in scala it's probably better represented by <b>Seq</b>, <code>List</code> in scala we have
+play with, underneath the hood, it implement the <b>Seq</b> trait
+</p>
+
+<p>
+we can have two version of List: unmutable and mutable, which can be
+recoganized by the return type of the method in API:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">add</span>(a<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">A</span>, index<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>)<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Unit</span>
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">remove</span>(index<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>)<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Unit</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">add</span>(a<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">A</span>, index<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>)<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">MyList</span>[<span style="color: #a45bad;">A</span>]
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">remove</span>(index<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>)<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">MyList</span>[<span style="color: #a45bad;">A</span>]
+</pre>
+</div>
+
+<p>
+you can find that, mutable-version's method will return Unit, for the reson
+that modification happened in original collection directly; while
+unmutable-version's method will return you a new collection, <b>with elements
+modified</b>.
+</p>
+</div>
+
+<div id="orge91ae63" class="outline-4">
+<h4 id="orge91ae63"><span class="section-number-4">1.9.1</span> API</h4>
+<div class="outline-text-4" id="text-1-9-1">
+<p>
+<a href="http://www.scala-lang.org/api/2.12.4/scala/collection/Seq.html">scala.collection.Seq</a>
+<a href="http://www.scala-lang.org/api/2.12.4/scala/collection/mutable/Buffer.html">scala.collection.mutable.Buffer</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="org3b0bf2a" class="outline-3">
+<h3 id="org3b0bf2a"><span class="section-number-3">1.10</span> Nature of Arrays and Linked Lists</h3>
+<div class="outline-text-3" id="text-1-10">
+</div>
+<div id="org54f4b07" class="outline-4">
+<h4 id="org54f4b07"><span class="section-number-4">1.10.1</span> what is an Array</h4>
+<div class="outline-text-4" id="text-1-10-1">
+<p>
+<a href="https://s18.postimg.cc/o0i4oixvd/screenshot_112.png">Array illustration</a>
+</p>
+
+<p>
+Array really is a contiguous chunk of memory in the computer.
+</p>
+
+<p>
+Array based List is
+</p>
+<ul class="org-ul">
+<li><b>fast at randomly accessing</b></li>
+<li><b>slow at randomly adding and removing</b>.</li>
+</ul>
+</div>
+</div>
+<div id="org11a9669" class="outline-4">
+<h4 id="org11a9669"><span class="section-number-4">1.10.2</span> what is an Linked List</h4>
+<div class="outline-text-4" id="text-1-10-2">
+<p>
+<a href="https://s18.postimg.cc/axmi4tkdl/screenshot_113.png">Linked List illustration</a>
+</p>
+
+
+<p>
+Linked List based List is
+</p>
+<ul class="org-ul">
+<li><b>slow at randomly accessing</b></li>
+<li><b>fast at randomly adding and removing</b>.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="org05eec48" class="outline-3">
+<h3 id="org05eec48"><span class="section-number-3">1.11</span> Mutable Singly LinkedList</h3>
+<div class="outline-text-3" id="text-1-11">
+</div>
+<div id="org37b249c" class="outline-4">
+<h4 id="org37b249c"><span class="section-number-4">1.11.1</span> scala.collection.mutable.Buffer</h4>
+<div class="outline-text-4" id="text-1-11-1">
+<p>
+Buffer is an <b>abstract</b> <b>mutable</b> <code>Seq subtype</code>, so if you want to extends from Buffer, you must implement all the abstract method of it.
+</p>
+
+<ol class="org-ol">
+<li><code>+=</code> and <code>+=:</code>
+<a href="https://s9.postimg.cc/5rfh6qvz3/screenshot_113.png">illustration of prepend and append</a>
+<a href="https://s9.postimg.cc/bgvpqwp8v/screenshot_113.png">illustration of prepend and append if empty</a></li>
+<li><code>remove</code>
+<a href="https://s9.postimg.cc/wwx14xepb/screenshot_113.png">illustration of remove</a>
+<a href="https://s9.postimg.cc/pjm8j871b/screenshot_113.png">if remove the tail Node</a></li>
+<li><p>
+<code>iterator</code>
+<code>iterator</code> in scala, has <code>next()</code> and <code>hasNext()</code>
+The purpose of <code>iterator</code> is you can walk through a linked list or an array or whatever and do it all in the same manner. If they can give you an iterator, you can do the job by making a simple loop by <code>hasNext</code>,~next~ methods.
+</p>
+
+<p>
+Iterator allows you to walk through a list even if you know nothing about its internal structure. Example here, <code>Node</code> is private, nothing outside of this list can walk through Nodes, but we've encapsulated that inside of <code>next()</code> method here(<b>some like a getter method</b>), so code outside doesn't have to know about the <code>Nodes</code>.
+</p></li>
+<li><code>apply</code>
+Never ever walk through a linked list using <code>apply</code>, because a loop embedded inside.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="org2911807" class="outline-3">
+<h3 id="org2911807"><span class="section-number-3">1.12</span> Mutable Double Linked List</h3>
+<div class="outline-text-3" id="text-1-12">
+<p>
+two links between two Nodes, <b>previous</b> and <b>next</b>
+</p>
+
+<p>
+<a href="https://s31.postimg.cc/9f3pcjtpn/screenshot_124.png">Double Lined List</a>
+</p>
+</div>
+
+<div id="orgfc611ca" class="outline-4">
+<h4 id="orgfc611ca"><span class="section-number-4">1.12.1</span> No need keep head and tail point</h4>
+<div class="outline-text-4" id="text-1-12-1">
+<p>
+Don't kepp head(hd) and tail(tl) point here, for 2 reasons:
+</p>
+<blockquote>
+<ol class="org-ol">
+<li>head and tail point make code complex
+everytime we modify head and tail point in code, will be an boundary condition.</li>
+<li>Double linked list is more like a circle, NO need to keep a head and tail information.</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<div id="orgfd45b1a" class="outline-4">
+<h4 id="orgfd45b1a"><span class="section-number-4">1.12.2</span> Double linked list is better thant Single one</h4>
+<div class="outline-text-4" id="text-1-12-2">
+<p>
+Double vs Single linked list
+</p>
+<ol class="org-ol">
+<li>Single linked list has only a few application where that's helpful.</li>
+<li>Double linked list is more helpful, because we make a list circular.</li>
+</ol>
+</div>
+</div>
+
+<div id="org61d5311" class="outline-4">
+<h4 id="org61d5311"><span class="section-number-4">1.12.3</span> Sentinel Node</h4>
+<div class="outline-text-4" id="text-1-12-3">
+<p>
+Must keep in mind that, there is a special Node in Double linked list, often called <b>sentinel</b>, but actually it's an <b>END</b> Node.
+</p>
+
+<blockquote>
+<p>
+headNode.prev &#x2014;&gt; endNode
+endNode.next &#x2014;&gt; headNode
+tailNode.next &#x2014;&gt; endNode
+endNode.prev &#x2014;&gt; tailNode
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div id="orgd304225" class="outline-3">
+<h3 id="orgd304225"><span class="section-number-3">1.13</span> Immutable Singly Linked List</h3>
+<div class="outline-text-3" id="text-1-13">
+<p>
+Immutable means, you CAN NOT change anything.
+</p>
+</div>
+<div id="org71c8fb3" class="outline-4">
+<h4 id="org71c8fb3"><span class="section-number-4">1.13.1</span> Immutable SLL vs. mutable SLL</h4>
+<div class="outline-text-4" id="text-1-13-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">immutable SLL</th>
+<th scope="col" class="org-left">mutalbe SLL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">* the type itself is a <code>Node</code></td>
+<td class="org-left">* a <code>Node</code> defined inside</td>
+</tr>
+
+<tr>
+<td class="org-left">* <b>only</b> keep track <b>first</b> Node</td>
+<td class="org-left">* keep track <b>head</b> and <b>tail</b> Node</td>
+</tr>
+
+<tr>
+<td class="org-left">* don't do things at tail</td>
+<td class="org-left">* do things at tail</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+why we can <code>cons</code> element to the <code>list</code> so efficiently, because we implemented <code>list</code> with <code>linked list</code>, this operation ONLY add one element at head without changing the original list.
+</p>
+</div>
+</div>
+
+<div id="orgdf813d0" class="outline-4">
+<h4 id="orgdf813d0"><span class="section-number-4">1.13.2</span> NO immutable DLL</h4>
+<div class="outline-text-4" id="text-1-13-2">
+<p>
+because the we always define the methods of Double Linked List by handling
+the pointer(prev and next), but that's have no efficient way to do in
+immutable scenario.
+</p>
+
+<p>
+So, when refer to <b>immutable list</b>, that means <b>immutable single linked list</b>
+</p>
+</div>
+</div>
+<div id="orgad05b5f" class="outline-4">
+<h4 id="orgad05b5f"><span class="section-number-4">1.13.3</span> [Q] what does key word <code>sealed</code> means?</h4>
+<div class="outline-text-4" id="text-1-13-3">
+<p>
+means you only allowed to extend this class inside of this file, I want that because I don't want other people to be able to make subtypes of this.That gives me control over exactly what subtypes exist.
+</p>
+</div>
+</div>
+
+<div id="org9cda242" class="outline-4">
+<h4 id="org9cda242"><span class="section-number-4">1.13.4</span> [Q] why defined a subclass like this, stange format?</h4>
+<div class="outline-text-4" id="text-1-13-4">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Cons</span>[<span style="color: #a45bad;">A</span>](data<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, next<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>]) <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] {
+<span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">a little like the ~def +=(a:A): Seq.this.type~, convinient when combining multiple of this operator.</span>
+}
+</pre>
+</div>
+
+<p>
+a little like the <code>def +=(a:A): Seq.this.type</code>, convinient when combining multiple of this operator.
+</p>
+</div>
+</div>
+<div id="orgda3e355" class="outline-4">
+<h4 id="orgda3e355"><span class="section-number-4">1.13.5</span> [Q] How to make a containter can <b>lift element's type automatically</b> like <code>List</code></h4>
+<div class="outline-text-4" id="text-1-13-5">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">sealed</span> <span style="color: #4f97d7;">abstract</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">LinearSeq</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">::</span>(elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Cons</span>(elem, <span style="color: #4f97d7;">this</span>)
+}
+<span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Cons</span>[<span style="color: #a45bad;">A</span>](data<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, next<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>]) <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #8D8D84;">//</span><span style="color: #2aa1ae; background-color: #292e34;">...</span>
+}
+<span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">MyNil</span> <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">Nothing</span>] {<span style="color: #8D8D84;">//</span><span style="color: #2aa1ae; background-color: #292e34;">...}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> ERROR!!!</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> MyNil is ImmutableSLL[Nothing] but 2nd argument of Cons is ImmutableSLL[A]</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> */</span>
+<span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Cons</span>(<span style="color: #a45bad;">1</span>,<span style="color: #a45bad;">MyNil</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">val</span> <span style="color: #7590db;">lst1</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">1</span> :: <span style="color: #a45bad;">2</span> :: <span style="color: #a45bad;">3</span> :: <span style="color: #a45bad;">Nil</span>  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">List[Int]</span>
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">lst2</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"hi"</span> :: lst1        <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">List[Any]</span>
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">lst2</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">4</span>.<span style="color: #a45bad;">0</span> :: lst1         <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">List[AnyVal]</span>
+
+<span style="color: #4f97d7;">import</span> collection.mutable
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">buf1</span> <span style="color: #4f97d7;">=</span> mutable.<span style="color: #a45bad;">ListBuffer</span>(<span style="color: #a45bad;">1</span>,<span style="color: #a45bad;">2</span>,<span style="color: #a45bad;">3</span>)
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">buf2</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"hi"</span> +=: buf1       <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">ERROR</span>
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">buf2</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">4</span> +=: buf1          <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">RIGHT</span>
+</pre>
+</div>
+
+<p>
+<code>List</code> type is more flexible, When add element that is of different type, compiler will find <b>the lowest common super type</b> of these things as the result type of A in <code>List</code>.
+</p>
+
+<p>
+<code>Buffer</code> type can NOT do this. If you handle Buffer, you couldn't add stuff to it that was of different types
+</p>
+</div>
+</div>
+<div id="orge4fbf87" class="outline-4">
+<h4 id="orge4fbf87"><span class="section-number-4">1.13.6</span> [A] How to make a containter can <b>lift element's type automatically</b> like <code>List</code></h4>
+<div class="outline-text-4" id="text-1-13-6">
+<p>
+(1) Cons[A] isSubTypeOf ImmutableSLL[A] by extends
+(2) ImmutableSLL[A] isSubTypeOf ImmutableSLL[B] by [+A] and [B &gt;: A]
+==&gt; Cons[A] isSubTypeOf Immutable[B]
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">sealed</span> <span style="color: #4f97d7;">abstract</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">ImmutableSLL</span>[+<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">LinearSeq</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #8D8D84;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;">   (1) Cons[A] isSubTypeOf ImmutableSLL[A] by ~extends~</span>
+<span style="color: #2aa1ae; background-color: #292e34;">   (2) ImmutableSLL[A] isSubTypeOf ImmutableSLL[B] by ~[+A]~ and ~[B &gt;: A]~</span>
+<span style="color: #2aa1ae; background-color: #292e34;">   ==&gt; Cons[A] isSubTypeOf Immutable[B]</span>
+<span style="color: #2aa1ae; background-color: #292e34;">   */</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">::</span>[<span style="color: #a45bad;">B</span> <span style="color: #4f97d7;">&gt;:</span> <span style="color: #a45bad;">A</span>](elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">B</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">B</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Cons</span>(elem, <span style="color: #4f97d7;">this</span>)
+}
+
+<span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Cons</span>[<span style="color: #a45bad;">A</span>](data<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, next<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>]) <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #8D8D84;">//</span><span style="color: #2aa1ae; background-color: #292e34;">...</span>
+}
+</pre>
+</div>
+
+<p>
+List is like what we defined ImmutableSLL,
+</p>
+
+<p>
+val lst1 = 1 :: 2 :: 3 :: Nil  <i>/ List[Int]
+val lst2 = "hi" :: lst1        /</i> List[Any]
+</p>
+
+<blockquote>
+<p>
+(1) "hi" will be lifted to type <code>Any</code> to fit in the type <code>[B]</code> automatically
+(2) <code>new Cons(elem, this)</code> is <code>new Cons(Any, this)</code>
+(3) <code>this</code> will be lifted to type <code>Immutable[Any]</code> to fit in the type <code>[A]</code> automatically
+(4) <code>new Cons(elem, this)</code> is <code>new Cons(Any, Immutable[Any])</code>
+</p>
+</blockquote>
+</div>
+</div>
+
+
+<div id="org60dc92c" class="outline-4">
+<h4 id="org60dc92c"><span class="section-number-4">1.13.7</span> [+A] vs. [-A] vs. [A]</h4>
+<div class="outline-text-4" id="text-1-13-7">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">covariant type</th>
+<th scope="col" class="org-left">contravariant type</th>
+<th scope="col" class="org-left">invariant type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">[+A]</td>
+<td class="org-left">[-A]</td>
+<td class="org-left">[A]</td>
+</tr>
+
+<tr>
+<td class="org-left">List[A] &lt;: List[SupA]</td>
+<td class="org-left">List[A] &gt;: List[SupA]</td>
+<td class="org-left">List[A] !!! List[SupA]</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+so, when you declare an <b>covariant</b> type variable [+A], then you can <b>use a Suptype of A as the augument or return type</b> of a method in defintion of class, like here:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">::</span>        (elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Cons</span>(elem, <span style="color: #4f97d7;">this</span>)
+<span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">::</span>[<span style="color: #a45bad;">B</span> <span style="color: #4f97d7;">&gt;:</span> <span style="color: #a45bad;">A</span>](elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">B</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">B</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Cons</span>(elem, <span style="color: #4f97d7;">this</span>)
+</pre>
+</div>
+
+<p>
+<code>[B &gt;: A], B, TypeCtor[B]</code> is classical use case
+</p>
+</div>
+</div>
+</div>
+<div id="orgfbfd4f7" class="outline-3">
+<h3 id="orgfbfd4f7"><span class="section-number-3">1.14</span> How to design a Recursion Type like immutable List</h3>
+<div class="outline-text-3" id="text-1-14">
+<p>
+there 3 important component must included:
+</p>
+<blockquote>
+<ol class="org-ol">
+<li>[+A]
+<ol class="org-ol">
+<li>cons-like method on [B&gt;:A]</li>
+</ol></li>
+<li>base subtype
+<ol class="org-ol">
+<li>a wrapper type of Nothing</li>
+<li>length() 0</li>
+<li>apply() exception</li>
+<li>isEmpty() true</li>
+<li>head() exception</li>
+<li>tail() exception</li>
+</ol></li>
+
+<li>step-one-further subtype
+<ol class="org-ol">
+<li>a wrapper type of [A]</li>
+<li>with 2 arguments, ele and recursion type</li>
+<li>length() recur fn</li>
+<li>apply() recur fn</li>
+<li>isEmpty() false</li>
+<li>head() ele</li>
+<li>tail() recursion type</li>
+</ol></li>
+</ol>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">package</span> <span style="color: #2d9574;">adt</span>
+
+<span style="color: #4f97d7;">import</span> collection.immutable.<span style="color: #a45bad;">LinearSeq</span>
+
+<span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">like a recursion type, analagous to the recursion function</span>
+<span style="color: #4f97d7;">sealed</span> <span style="color: #4f97d7;">abstract</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">ImmutableSLL</span>[+<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">LinearSeq</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">(1) Cons[A] isSubTypeOf ImmutableSLL[A] by extends</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">(2) ImmutableSLL[A] isSubTypeOf ImmutableSLL[B] by [+A] and [B &gt;: A]</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">==&gt; Cons[A] isSubTypeOf Immutable[B]</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">::</span>[<span style="color: #a45bad;">B</span> <span style="color: #4f97d7;">&gt;:</span> <span style="color: #a45bad;">A</span>](elem<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">B</span>)<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">B</span>] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Cons</span>(elem, <span style="color: #4f97d7;">this</span>)
+}
+
+
+<span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">like step-one-further case of recursion</span>
+<span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Cons</span>[<span style="color: #a45bad;">A</span>](data<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>, next<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>]) <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] {
+
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">a little like the ~def +=(a:A): Seq.this.type~, convinient when combining multiple of this operator.</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">length</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Int</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">1</span> + next.length
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">apply</span>(n<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>)<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">A</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">if</span> (n==<span style="color: #a45bad;">0</span>) head <span style="color: #4f97d7;">else</span> next(n - <span style="color: #a45bad;">1</span>)
+  <span style="color: #4f97d7;">override</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">isEmpty</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">false</span>
+  <span style="color: #4f97d7;">override</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">head</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span> <span style="color: #4f97d7;">=</span> data
+  <span style="color: #4f97d7;">override</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">tail</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">A</span>] <span style="color: #4f97d7;">=</span> ???
+}
+
+<span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">like base case of recursion</span>
+<span style="color: #4f97d7;">object</span> <span style="color: #a45bad;">MyNil</span> <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">ImmutableSLL</span>[<span style="color: #a45bad;">Nothing</span>] {
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">length</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">0</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">apply</span>(n<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>) <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">throw</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">IllegalArgumentException</span>(<span style="color: #2d9574;">"Can't index into MyNil"</span>)
+  <span style="color: #4f97d7;">override</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">isEmpty</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">true</span>
+  <span style="color: #4f97d7;">override</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">head</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">throw</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">IllegalArgumentException</span>(<span style="color: #2d9574;">"Can't index into MyNil"</span>)
+  <span style="color: #4f97d7;">override</span> <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">tail</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">throw</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">IllegalArgumentException</span>(<span style="color: #2d9574;">"Can't index into MyNil"</span>)
+
+}
+
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org1100b6c" class="outline-3">
+<h3 id="org1100b6c"><span class="section-number-3">1.15</span> Priority Queue</h3>
+<div class="outline-text-3" id="text-1-15">
+<p>
+Like a Queue, but has a different nature of methods.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">O(1) or O(n)</span>
+<span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">when use heap instead of array and linked list, O(n) will spped up to O(logn)</span>
+<span style="color: #4f97d7;">trait</span> <span style="color: #ce537a;">MyPriorityQueue</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">dequeue</span>()<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">enqueue</span>(o<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>)<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Unit</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">isEmpty</span><span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Boolean</span>
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">peek</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>
+}
+</pre>
+</div>
+</div>
+
+<div id="org446b7c0" class="outline-4">
+<h4 id="org446b7c0"><span class="section-number-4">1.15.1</span> Priority Queue vs. regular Queue</h4>
+<div class="outline-text-4" id="text-1-15-1">
+<p>
+Besides take the <code>linked list</code> or <code>array</code> into account, we also should care about the <code>sorted</code> or <code>non-sorted</code>, this means there are 4 kinds of implementation.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">linked list</th>
+<th scope="col" class="org-left">array</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">sorted</td>
+<td class="org-left">x</td>
+<td class="org-left">x</td>
+</tr>
+
+<tr>
+<td class="org-left">non-ordered</td>
+<td class="org-left">x</td>
+<td class="org-left">x</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="orgabb57ca" class="outline-4">
+<h4 id="orgabb57ca"><span class="section-number-4">1.15.2</span> example: Sorted Priority Queue</h4>
+<div class="outline-text-4" id="text-1-15-2">
+<p>
+Element with higher priority should be handled first, and it's ensentially a queue, so the higher the fronter.
+</p>
+
+<blockquote>
+<p>
+9    7    4    3    2
+^                   ^
+head                tail
+higher priority     lower priority
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="org84d9050" class="outline-4">
+<h4 id="org84d9050"><span class="section-number-4">1.15.3</span> Time complexity on Soted Pirority vs. Non-sorted Priority</h4>
+<div class="outline-text-4" id="text-1-15-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">non-sorted</th>
+<th scope="col" class="org-left">sorted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">dequeue</td>
+<td class="org-left">O(n)</td>
+<td class="org-left">O(1)</td>
+</tr>
+
+<tr>
+<td class="org-left">enqueue</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">O(n)</td>
+</tr>
+
+<tr>
+<td class="org-left">isEmpty</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">O(1)</td>
+</tr>
+
+<tr>
+<td class="org-left">peek</td>
+<td class="org-left">O(n)</td>
+<td class="org-left">O(1)</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>
+If sorted, then you can call peek() many times efficiently, because it only O(1).
+</p>
+</blockquote>
+
+
+<p>
+So, if choose linked list version, you may want the sorted, becasue the method peek() is only O(1), and can be run many times efficiently.
+</p>
+</div>
+</div>
+
+<div id="org977313a" class="outline-4">
+<h4 id="org977313a"><span class="section-number-4">1.15.4</span> Why DLL is better than other linked list</h4>
+<div class="outline-text-4" id="text-1-15-4">
+<p>
+When use <b>soreted</b> version, means once an element comes in, it should be in the place decided by the order of priority, means that the Priority Queue is an sorted list, and the new element should insert into proper place to maintain the order.
+</p>
+
+<p>
+(1) dequeue() always from the first element
+(2) enqueue() may happends at any place, you must find the proper location to place the coming element
+</p>
+
+<p>
+becasue of (2), as for the linked list, we may choose the <b>Mutable Double Lined List</b>.
+</p>
+</div>
+</div>
+
+<div id="org3d60bf8" class="outline-4">
+<h4 id="org3d60bf8"><span class="section-number-4">1.15.5</span> Function as Constructor argument</h4>
+<div class="outline-text-4" id="text-1-15-5">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">SortedDLLPriorityQueue</span>[<span style="color: #a45bad;">A</span> <span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Manifest</span>](lt<span style="color: #4f97d7;">:</span> (<span style="color: #a45bad;">A</span>,<span style="color: #a45bad;">A</span>) <span style="color: #4f97d7;">=&gt;</span> <span style="color: #a45bad;">Boolean</span>) <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">MyPriorityQueue</span>[<span style="color: #a45bad;">A</span>] {
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">enqueue</span>(o<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">A</span>) {
+    <span style="color: #4f97d7;">var</span> <span style="color: #dc752f; background-color: #292b2e; font-weight: bold;">rover</span> <span style="color: #4f97d7;">=</span> end.prev
+    <span style="color: #8D8D84;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;">     lt: (A,A)=&gt;Boolean used here</span>
+<span style="color: #2aa1ae; background-color: #292e34;">     */</span>
+    <span style="color: #4f97d7;">while</span>(rover != end &amp;&amp; lt( rover.data , o )) rover <span style="color: #4f97d7;">=</span> rover.prev
+    <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">n</span> <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">new</span> <span style="color: #ce537a;">Node</span>(o, rover, rover.next)
+    rover.next.prev <span style="color: #4f97d7;">=</span> n
+    rover.next <span style="color: #4f97d7;">=</span> n
+  }
+}
+</pre>
+</div>
+
+<p>
+Different <code>[A]</code>, different function to compare the Priority. So, the compare function is an element <b>type related thing</b>, you need a separate compare function according to type A.
+</p>
+
+<p>
+Different [A] means different <code>SortedDLLPriorityQueue</code>, so this compare function deserve to be a higher abstraction &#x2014; lifted to be an argument.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

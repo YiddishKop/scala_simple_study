@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-11 六 03:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java.io packages</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Java.io packages</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org07c102a">1. The java.io Package</a>
+<ul>
+<li><a href="#orge74ad87">1.1. java.io.File</a></li>
+<li><a href="#org49494dd">1.2. java.io.Input/OutputStream&lt;abs&gt;</a>
+<ul>
+<li><a href="#orgfb9626d">1.2.1. java.io.FileInput/OutputStream</a></li>
+<li><a href="#org1591789">1.2.2. handle Exception by try-catch-finally</a></li>
+<li><a href="#orgb41e5f0">1.2.3. <span class="todo TODO">TODO</span> handle Exception by Loan Pattern</a></li>
+</ul>
+</li>
+<li><a href="#orgd756001">1.3. java.io.Reader/Writer</a>
+<ul>
+<li><a href="#org90140b5">1.3.1. java.io.InputStreamReader and BufferedReader</a></li>
+</ul>
+</li>
+<li><a href="#org1b232d0">1.4. 2 ways to extend Input/OutputStream by Decorator pattern</a>
+<ul>
+<li><a href="#orge47b568">1.4.1. Decorating Streams and Buffering</a></li>
+<li><a href="#orgff42db8">1.4.2. kind-1 : change behavior of reading/writing: BufferedInput/OutputStream</a></li>
+<li><a href="#orgcc9dd05">1.4.3. kind-2 : provid additional funcionality Binary Data</a></li>
+<li><a href="#org9d97e17">1.4.4. if we combine 2 kinds of decorator</a></li>
+<li><a href="#org4c59ddb">1.4.5. Shortcoming and Merit of DataInput/OutputStream</a></li>
+</ul>
+</li>
+<li><a href="#orgecd1001">1.5. Serialization</a>
+<ul>
+<li><a href="#orgbe28418">1.5.1. ObjectInputStream(ObjectOutputStream)</a></li>
+<li><a href="#org5126d74">1.5.2. serialVersionUID incompatible</a></li>
+</ul>
+</li>
+<li><a href="#org1f21a8c">1.6. Details of Serialization</a>
+<ul>
+<li><a href="#org577bf0d">1.6.1. If I don't want to serialize all information of an object</a></li>
+<li><a href="#org6908371">1.6.2. If I modify the class after serialization</a></li>
+<li><a href="#orgb151b25">1.6.3. If I want to customize the saving thing</a></li>
+</ul>
+</li>
+<li><a href="#orgc1e8721">1.7. XML Serialization</a>
+<ul>
+<li><a href="#org6e93b58">1.7.1. drawbacks of obj -&gt; XML -&gt; obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="org07c102a" class="outline-2">
+<h2 id="org07c102a"><span class="section-number-2">1</span> The java.io Package</h2>
+<div class="outline-text-2" id="text-1">
+<ol class="org-ol">
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/">chinese encoding in java</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-javaio/#icomments">deep dive into java IO</a></li>
+</ol>
+
+<p>
+<code>java.io</code> work well with binary data
+</p>
+</div>
+
+<div id="orge74ad87" class="outline-3">
+<h3 id="orge74ad87"><span class="section-number-3">1.1</span> java.io.File</h3>
+<div class="outline-text-3" id="text-1-1">
+<ol class="org-ol">
+<li>ask/change some permission in that file: RXW</li>
+<li>you can delete/create file</li>
+<li><b>you can get all files under certain directory</b> as a String list or a File list.</li>
+</ol>
+</div>
+</div>
+
+
+<div id="org49494dd" class="outline-3">
+<h3 id="org49494dd"><span class="section-number-3">1.2</span> java.io.Input/OutputStream&lt;abs&gt;</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+the basic functionality of an InputStream is it reads arrays of bytes at a <b>fundamental level</b>. all the data on the computer is a bunch of bytes, so you can read whatever you want, its the ONLY question to conver from bytes into the <b>structure</b> that you want
+</p>
+
+<p>
+java.io.Input/OutputStream which is abstract class, and ONLY provide the simplest method which will read/write one byte per time.
+</p>
+<ul class="org-ul">
+<li><code>InputStream</code>
+<code>void read()</code>
+<code>void read(byte[] b)</code></li>
+<li><code>OutputStream</code>
+<code>void write(byte[] b)</code></li>
+</ul>
+
+
+<p>
+java.io.Input/OutputStream has 3 kinds of subclass:
+</p>
+<ol class="org-ol">
+<li>specify the data source
+<ol class="org-ol">
+<li>FileInput/OutputStream</li>
+<li>Socket I/O(not subclass of InputStream, just list here for readon above)</li>
+</ol></li>
+<li>extend Input/OutputStream by Decorator pattern
+<ol class="org-ol">
+<li>change the reading/writing manner
+<ol class="org-ol">
+<li>BufferedInput/OutputStream</li>
+</ol></li>
+<li>providing additional functionality
+<ol class="org-ol">
+<li>DataInput/OutputStream</li>
+</ol></li>
+</ol></li>
+</ol>
+</div>
+
+<div id="orgfb9626d" class="outline-4">
+<h4 id="orgfb9626d"><span class="section-number-4">1.2.1</span> java.io.FileInput/OutputStream</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+inherits from <code>java.io.InputStream</code>, when you read from it, it takes data from the file
+</p>
+
+<p>
+inherits from <code>java.io.OutputStream</code>, when you write to it, it push data to the file
+</p>
+
+<p>
+<a href="https://s7.postimg.cc/ieu6gqb63/screenshot_95.png">illustration of stream and file</a>
+</p>
+</div>
+</div>
+
+
+<div id="org1591789" class="outline-4">
+<h4 id="org1591789"><span class="section-number-4">1.2.2</span> handle Exception by try-catch-finally</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #0000FF;">package</span> <span style="color: #008000;">example</span>
+
+<span style="color: #0000FF;">import</span> scala.swing.<span style="color: #D0372D;">FileChooser</span>
+<span style="color: #0000FF;">import</span> java.io.<span style="color: #D0372D;">FileInputStream</span>
+<span style="color: #0000FF;">import</span> java.io.<span style="color: #D0372D;">FileNotFoundException</span>
+<span style="color: #0000FF;">import</span> scala.swing.<span style="color: #D0372D;">Dialog</span>
+
+
+<span style="color: #0000FF;">object</span> <span style="color: #D0372D;">PlayWithStreams</span> {
+  <span style="color: #0000FF;">def</span> <span style="color: #006699;">main</span>(args<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">Array</span>[<span style="color: #D0372D;">String</span>])<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">Unit</span> <span style="color: #0000FF;">=</span> {
+    <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">chooser</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileChooser</span>
+    <span style="color: #0000FF;">if</span>(chooser.showOpenDialog(<span style="color: #D0372D;">null</span>) == <span style="color: #D0372D;">FileChooser</span>.<span style="color: #D0372D;">Result</span>.<span style="color: #D0372D;">Approve</span>) {
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">file</span> <span style="color: #0000FF;">=</span> chooser.selectedFile
+      <span style="color: #0000FF;">try</span>{
+        <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">fis</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileInputStream</span>(file)
+        <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">buf</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Array</span>[<span style="color: #D0372D;">Byte</span>](file.length.toInt)
+        <span style="color: #0000FF;">try</span>{
+          fis.read(buf)
+        } <span style="color: #0000FF;">catch</span> {
+          <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">IOException</span> <span style="color: #0000FF;">=&gt;</span>
+          <span style="color: #D0372D;">Dialog</span>.showMessage(<span style="color: #D0372D;">null</span>, <span style="color: #008000;">"There was an error while reading the file"</span>, <span style="color: #008000;">"Errro"</span>, <span style="color: #D0372D;">Dialog</span>.<span style="color: #D0372D;">Message</span>.<span style="color: #D0372D;">Error</span>, <span style="color: #D0372D;">null</span>)
+          ex.printStackTrace()
+        } <span style="color: #0000FF;">finally</span> {
+          fis.close()
+          println(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">String</span>(buf))
+        }
+      } <span style="color: #0000FF;">catch</span> {
+        <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">FileNotFoundException</span> <span style="color: #0000FF;">=&gt;</span>
+          <span style="color: #D0372D;">Dialog</span>.showMessage(<span style="color: #D0372D;">null</span>, <span style="color: #008000;">"file not found"</span>, <span style="color: #008000;">"Errro"</span>, <span style="color: #D0372D;">Dialog</span>.<span style="color: #D0372D;">Message</span>.<span style="color: #D0372D;">Error</span>, <span style="color: #D0372D;">null</span>)
+          ex.printStackTrace()
+      }
+    }
+  }
+}
+</pre>
+</div>
+
+<p>
+when we create a <code>new FileInputStream(file)</code> object, there are several ways that could go wrong:
+</p>
+<ol class="org-ol">
+<li>the <code>file</code> we passed in might <b>not exist</b>
+<code>java.io.FileNotFoundException:</code></li>
+<li>file exist, but not have proper <b>permission</b></li>
+</ol>
+
+
+<p>
+how to deal with Exception
+use a <code>try catch</code> block, to check(try) and catch/handle(catch) the exception
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #0000FF;">try</span>{
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">some clauses may lead to exception</span>
+  clause1
+  clause2
+  clause3
+  clause4
+} <span style="color: #0000FF;">catch</span> {
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">a case partial function, eg.</span>
+  <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">exType1</span> <span style="color: #0000FF;">=&gt;</span> exHandlement
+  <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">exType2</span> <span style="color: #0000FF;">=&gt;</span> exHandlement
+  <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">exType3</span> <span style="color: #0000FF;">=&gt;</span> exHandlement
+}
+</pre>
+</div>
+
+<p>
+<b>ATTENTION</b>:
+try block build a variable life time range, so if something refer to the <b>variable in try block</b>, also should be put in try block. Or, you may need embedding another try and catch block which as an <b>inner try block</b> can access the variable of <b>outter try block</b>.
+</p>
+
+
+<p>
+<b>ATTENTION</b>:
+try block will <b>cut the code flow</b> when an exception occur, eg. clause2 cause an exception, then it will jumpt directly to catch block and <b>ignore the clause3 and clause4</b> , the worse thing is, if we <b>open some</b> scoket or file <b>before the exception clause</b>, then they are not closed, and not closed forever until GC start to collect them. THIS IS VERY BAD!
+</p>
+
+<p>
+<b>ATTENTION</b>:
+If you have some code like open socket or file, you should put the <code>close handlement</code> in <code>final</code> block.
+</p>
+</div>
+</div>
+
+
+<div id="orgb41e5f0" class="outline-4">
+<h4 id="orgb41e5f0"><span class="section-number-4">1.2.3</span> <span class="todo TODO">TODO</span> handle Exception by Loan Pattern</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #0000FF;">package</span> <span style="color: #008000;">example</span>
+
+<span style="color: #0000FF;">import</span> scala.swing.<span style="color: #D0372D;">FileChooser</span>
+<span style="color: #0000FF;">import</span> java.io.<span style="color: #D0372D;">FileInputStream</span>
+<span style="color: #0000FF;">import</span> java.io.<span style="color: #D0372D;">FileNotFoundException</span>
+<span style="color: #0000FF;">import</span> scala.swing.<span style="color: #D0372D;">Dialog</span>
+
+
+<span style="color: #0000FF;">object</span> <span style="color: #D0372D;">PlayWithStreams</span> {
+
+  <span style="color: #0000FF;">def</span> <span style="color: #006699;">doWithFileInput</span>[<span style="color: #D0372D;">A</span>](fileName<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">String</span>)(body<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">InputStream</span> <span style="color: #0000FF;">=&gt;</span> <span style="color: #D0372D;">A</span>)<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">A</span> <span style="color: #0000FF;">=</span>{
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">wrap FileInputStream(subclass of InputStream) by BufferedInputSream for efficiency</span>
+    <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">fis</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedInputStream</span>(<span style="color: #D0372D;">FileInputStream</span>(fileName))
+    <span style="color: #0000FF;">try</span>{
+      body(fis)
+    } <span style="color: #0000FF;">finally</span> {
+      fis.close
+    }
+  }
+
+  <span style="color: #0000FF;">def</span> <span style="color: #006699;">main</span>(args<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">Array</span>[<span style="color: #D0372D;">String</span>])<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">Unit</span> <span style="color: #0000FF;">=</span> {
+    <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">chooser</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileChooser</span>
+    <span style="color: #0000FF;">if</span>(chooser.showOpenDialog(<span style="color: #D0372D;">null</span>) == <span style="color: #D0372D;">FileChooser</span>.<span style="color: #D0372D;">Result</span>.<span style="color: #D0372D;">Approve</span>) {
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">file</span> <span style="color: #0000FF;">=</span> chooser.selectedFile
+      <span style="color: #0000FF;">try</span>{
+        doWithFileInput(file.getAbsolutePath()) (fis <span style="color: #0000FF;">=&gt;</span> {
+          <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">buf</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Array</span>[<span style="color: #D0372D;">Byte</span>](file.length.toInt)
+          fis.read(buf)
+          println(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">String</span>(buf))
+        })
+      } <span style="color: #0000FF;">catch</span> {
+        <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">IOException</span> <span style="color: #0000FF;">=&gt;</span>
+          <span style="color: #D0372D;">Dialog</span>.showMessage(<span style="color: #D0372D;">null</span>, <span style="color: #008000;">"There was an error while reading the file"</span>, <span style="color: #008000;">"Errro"</span>, <span style="color: #D0372D;">Dialog</span>.<span style="color: #D0372D;">Message</span>.<span style="color: #D0372D;">Error</span>, <span style="color: #D0372D;">null</span>)
+          ex.printStackTrace()
+
+        <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">ex</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">FileNotFoundException</span> <span style="color: #0000FF;">=&gt;</span>
+          <span style="color: #D0372D;">Dialog</span>.showMessage(<span style="color: #D0372D;">null</span>, <span style="color: #008000;">"file not found"</span>, <span style="color: #008000;">"Errro"</span>, <span style="color: #D0372D;">Dialog</span>.<span style="color: #D0372D;">Message</span>.<span style="color: #D0372D;">Error</span>, <span style="color: #D0372D;">null</span>)
+          ex.printStackTrace()
+      }
+    }
+  }
+}
+
+</pre>
+</div>
+
+<p>
+Usually, <b>IO related API</b> doesn't know how to handle the it if something goes wrong, if you try to access file without proper permission, or some inproper things, the library code desn't know what is the right thing to do.
+</p>
+
+<p>
+So,in most cases, in IO program, exceptions will not be caught(too many kinds of exception to list in catch case clause). It will just <b>propagate to higher method</b>, until being handled.
+</p>
+
+
+<p>
+<b>propagate to higher method</b>, is where the loan pattern comes from: we can define a higher order curry function ONLY embedded the try and finally block, as a HELPER function. What second parameter list do is to accept a function for the purpose to bunch lines of code, which may lead to a IOException or FileNotFoundException.
+</p>
+
+
+<p>
+TODO : need a deep dive into the helper function in code snippet above.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="orgd756001" class="outline-3">
+<h3 id="orgd756001"><span class="section-number-3">1.3</span> java.io.Reader/Writer</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="org90140b5" class="outline-4">
+<h4 id="org90140b5"><span class="section-number-4">1.3.1</span> java.io.InputStreamReader and BufferedReader</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<blockquote>
+<p>
+java.lang.Object
+java.io.Reader
+java.io.InputStreamReader
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+java.lang.Object
+java.io.Reader
+java.io.BufferedReader
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">Creates a buffering character-input stream that uses a default-sized input buffer.</span>
+BufferedReader(<span style="color: #6434A3;">Reader</span> <span style="color: #BA36A5;">in</span>)
+
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">Creates a buffering character-input stream that uses an input buffer of the specified size.</span>
+BufferedReader(<span style="color: #6434A3;">Reader</span> <span style="color: #BA36A5;">in</span>, <span style="color: #6434A3;">int</span> <span style="color: #BA36A5;">sz</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #6434A3;">String</span>  <span style="color: #006699;">readLine</span>()
+Reads a line of text.
+</pre>
+</div>
+
+<p>
+<code>InputStreamReader</code> is a decorator(wrapper) of <code>InputStream</code>, <code>Reader</code> deal with character input instead of byte input, the reason to use a <code>InputStreamReader</code> is to use a <code>BufferedReader</code>, which is analagous deal with <b>character input</b> instead of byte input.
+</p>
+
+<p>
+The <code>BufferedReader</code> class has a method <code>readLine()</code>
+</p>
+</div>
+</div>
+</div>
+
+<div id="org1b232d0" class="outline-3">
+<h3 id="org1b232d0"><span class="section-number-3">1.4</span> 2 ways to extend Input/OutputStream by Decorator pattern</h3>
+<div class="outline-text-3" id="text-1-4">
+</div>
+<div id="orge47b568" class="outline-4">
+<h4 id="orge47b568"><span class="section-number-4">1.4.1</span> Decorating Streams and Buffering</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<blockquote>
+<p>
+Decorating one type by another type, is something like make one type as the type of constructor argument of antoher type.
+</p>
+</blockquote>
+
+<p>
+By introduction before, we know that <code>java.io.InputStream/OutputStream</code> are both <b>abstract</b>, means they don't know from where to read or write; meanwhile <code>java.io.FileInputStream/FileOutputStream</code> as the subclass are concrete, when we create we supposed to specify the file.
+</p>
+
+<p>
+<code>java.io.InputStream/OutputStream</code> supply a very simple API, only allowed to read and write by byte. How we can add some functionality to them? There are different ways you can do, in Java we use a design pattern called <b>decorator</b>.
+</p>
+
+<p>
+<b>Decorator allows us to take an input stream, and wrap it inside of another input stream, the same with output stream.</b>
+</p>
+
+<p>
+This wrapping used to either provide some change of behavior of how things read/write or to provide additional functionality.
+</p>
+
+<p>
+Change <b>behavior</b> of reading or writing, you may wrap it inside of another class,which also be an input stream, like:
+</p>
+<ul class="org-ul">
+<li>BufferedInput/OutputStream</li>
+</ul>
+
+<p>
+Provide some additional <b>functionality</b> to API
+</p>
+<ul class="org-ul">
+<li>FileInputStream</li>
+<li>FileReader</li>
+<li>etc.</li>
+</ul>
+
+<p>
+refer to
+</p>
+<ol class="org-ol">
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-javaio/#icomments">Deep dive into the IO of Java</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/">Deep dive into the byte encoding in java</a></li>
+</ol>
+</div>
+</div>
+
+<div id="orgff42db8" class="outline-4">
+<h4 id="orgff42db8"><span class="section-number-4">1.4.2</span> kind-1 : change behavior of reading/writing: BufferedInput/OutputStream</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<blockquote>
+<p>
+java.lang.Object
+   &#x00ad;java.io.InputStream
+      &#x00ad;java.io.FilterInputStream
+         &#x00ad;java.io.BufferedInputStream
+</p>
+</blockquote>
+
+<p>
+No additional functionality, BUT make reading/writing more efficient
+</p>
+
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">constructor of BufferedInputStream</span>
+BufferedInputStream(<span style="color: #6434A3;">InputStream</span> <span style="color: #BA36A5;">in</span>)
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">or</span>
+BufferedInputStream(<span style="color: #6434A3;">InputStream</span> <span style="color: #BA36A5;">in</span>, <span style="color: #6434A3;">int</span> <span style="color: #BA36A5;">size</span>)
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">`size` here indicate the langth of buffer who used to cache the byte read by inputStream.</span>
+</pre>
+</div>
+
+<p>
+you see that, argument of Ctor has a <b>InputStream</b> type, So BufferedInputStream is a <b>wrapper</b> of the regular InputStream, and InputStream can almost read from anything, which make BufferedInputStream also can read from anything.
+</p>
+
+<p>
+The ONLY reason to use BufferedInputStream is for efficiency:
+</p>
+<ul class="org-ul">
+<li>InputStream read 1byte/time <b>directly</b> from file(or other source)</li>
+<li>BufferedInputStream will <b>implicitly</b> read buch bytes in <b>buffer</b> as <b>cache</b>, then every time call read() will read 1 byte <b>from buffer</b> instead of directly from file(or other source)</li>
+</ul>
+
+
+<p>
+<a href="https://s7.postimg.cc/v2sbchejv/screenshot_97.png">BufferedInputStream vs. InputStream</a>
+</p>
+
+<p>
+<b>Professor recommand that, should wrap all the subclass of InputStream and OutputStream(like FileInputStream,etc) by BufferedInput/OutputStream</b>
+</p>
+</div>
+</div>
+
+<div id="orgcc9dd05" class="outline-4">
+<h4 id="orgcc9dd05"><span class="section-number-4">1.4.3</span> kind-2 : provid additional funcionality Binary Data</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<p>
+How we deal with binary data, how we do type conversion between byte and other type?
+</p>
+
+<p>
+you can do type conversion by your own:
+</p>
+<ol class="org-ol">
+<li>double -&gt; rawBits : `doubleToRawLongBigs(double value)`</li>
+<li>rawBits -&gt; double : `longBitsToDboule(long bits)`</li>
+</ol>
+
+
+<p>
+Some time you don't want to write things out as Strings of numbers(usually, when you read from or write to file, you deal with strings) but actually write out the double itself as just 8 bytes. So we have `DataInput/OutputStream`
+</p>
+
+
+<blockquote>
+<p>
+java.lang.Object
+   &#x00ad;java.io.InputStream
+      &#x00ad;java.io.FilterInputStream
+         &#x00ad;java.io.DataInputStream
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">constructor of DataInputStream, analogous with BufferedInputStream</span>
+DataInputStream(<span style="color: #6434A3;">InputStream</span> <span style="color: #BA36A5;">in</span>)
+</pre>
+</div>
+
+<p>
+<code>DataInputStream</code> gives you the ability to read and write values in a <b>binary format</b>, like method <code>readDouble()</code> and <code>writeDouble(double value)</code>.
+</p>
+
+<p>
+why would you use a binary format instead of a text format, and we've seen that we can use <code>Source</code> for reading text, we can use the <code>printWriter</code> for writing text, we even saw how we could use the <code>FileInputStream</code> and <code>FileOutputStream</code> and also do things with text.
+</p>
+
+<ol class="org-ol">
+<li>print double-string takes more space
+It turns out that the <b>text is not a very efficient way to represent certain types of data in particular numbers</b>, if you write a lot of numbers to a file, writing them as text will <b>takes a lot more space</b>, when you print out a <b>double-string</b> with full accuracy you'll often print out 16 digits in addition to the 16 digits you'll have more things like decimal, comma, negative symbols etc.), but <b>the double in memory is just 8 bytes</b>, a Double can be handled with full information.</li>
+
+<li>print double-string takes more time
+Not only does it take more space but it's really slow, the conversion from a string-double to what goes into memory takes a fair bit of work, but when you're reading 10 million doubles, this conversion to and back will cost too significant time.</li>
+</ol>
+
+
+<p>
+So <code>&lt;DataInputStream&gt;.readDouble()</code> allow us to deal with data more efficiently to put it inside of a file in a way that is fundamentally closer to what's actually in the memory.
+</p>
+</div>
+</div>
+
+
+<div id="org9d97e17" class="outline-4">
+<h4 id="org9d97e17"><span class="section-number-4">1.4.4</span> if we combine 2 kinds of decorator</h4>
+<div class="outline-text-4" id="text-1-4-4">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #6434A3;">val</span> <span style="color: #BA36A5;">os</span> = <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">DataOutputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedOutputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileOutputStream</span>(<span style="color: #008000;">"binary.bin"</span>)))
+</pre>
+</div>
+
+<p>
+you can see that,
+</p>
+<ol class="org-ol">
+<li>we <b>speed up</b> the <code>OutputStream</code> reading efficiency by buffered manner through kind-1 decorator;</li>
+<li>we <b>add API function</b> to the <code>OutputStream</code> by kind-2 decorator;</li>
+<li>when you combine them,must follow the combine order: <code>DataOutpuStream &gt;&gt;&gt; BufferedOutputStream</code>, else you can not use the additional function provide by <code>DataOutpuStream</code></li>
+</ol>
+
+
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #0000FF;">def</span> <span style="color: #006699;">testDecoratorPattern</span> <span style="color: #0000FF;">=</span> {
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">build a binary by DataOutputStream</span>
+  <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">os</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">DataOutputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedOutputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileOutputStream</span>(<span style="color: #008000;">"binary.bin"</span>)))
+  <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">nums</span> <span style="color: #0000FF;">=</span> <span style="color: #D0372D;">Array</span>.tabulate(<span style="color: #D0372D;">100</span>)(i <span style="color: #0000FF;">=&gt;</span> <span style="color: #D0372D;">0</span>.<span style="color: #D0372D;">1</span>*i)
+  os.writeInt(nums.length)
+  nums.foreach(os.writeDouble)
+  os.close
+
+
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">read binary transform to Int or double by method ~readInt/Double~</span>
+  <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">is</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">DataInputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedInputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileInputStream</span>(<span style="color: #008000;">"binary.bin"</span>)))
+  <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">nums</span> <span style="color: #0000FF;">=</span> <span style="color: #D0372D;">Array</span>.fill(is.readInt)(is.readDouble)
+  is.close
+  nums.foreach(println)
+}
+
+</pre>
+</div>
+
+<p>
+BTW, you will find that, <code>DataOutputStream</code> will produce a <b>binary</b> output, and you can use <code>M-x hexl-mode</code> to convert content into hexadecimal after you open it in emacs.
+</p>
+</div>
+</div>
+
+<div id="org4c59ddb" class="outline-4">
+<h4 id="org4c59ddb"><span class="section-number-4">1.4.5</span> Shortcoming and Merit of DataInput/OutputStream</h4>
+<div class="outline-text-4" id="text-1-4-5">
+<p>
+you could find that every <b>primitive type</b> in java has a related method in <code>DataInput/OutputStream</code>:
+</p>
+<ul class="org-ul">
+<li>writeByte</li>
+<li>writeBoolean</li>
+<li>writeChar</li>
+<li>writeChars</li>
+<li>writeInt</li>
+<li>writeDouble</li>
+<li>etc</li>
+</ul>
+
+
+<p>
+<b>Everyone has his shortcomings and merits</b> ,DataInput/OutputStream <b>CANNOT</b> deal with <b>Object IO</b>
+</p>
+</div>
+</div>
+</div>
+
+<div id="orgecd1001" class="outline-3">
+<h3 id="orgecd1001"><span class="section-number-3">1.5</span> Serialization</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+DataInputStream cannot handel object, so we have another weapon:
+Serialization.
+</p>
+
+<p>
+Serialization is the act of taking data <b>object</b> and <b>converting</b> it to a
+<b>stream</b> of something you can save of send ,as opposed to the object in
+memory itself, you can either put out in a file so that you can read it in
+later or you could send it across the network.
+</p>
+
+<p>
+serialization actually is converting an <b>object</b> to a <b>sequence of bytes</b>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">`shapes` is the target to serialize</span>
+  <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">shapes</span> <span style="color: #0000FF;">=</span> <span style="color: #D0372D;">Array</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Circle</span>(<span style="color: #D0372D;">5</span>, <span style="color: #D0372D;">Color</span>.red),
+                  <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Rectangle</span>(<span style="color: #D0372D;">4</span>, <span style="color: #D0372D;">3</span>, <span style="color: #D0372D;">Color</span>.green))
+
+</pre>
+</div>
+
+<p>
+Code above shows that, if you want to convert an object to a stream, what you
+need to do?
+</p>
+<ol class="org-ol">
+<li>you need keep all the <b>values of arguments</b> of Ctor</li>
+<li>if the object has some structure like a list of sub-object, you must keep
+the <b>information of order</b></li>
+</ol>
+
+<p>
+Java has a feature called default serialization and it allows you to do
+binary serialization of objects and do it without you having to write the
+entire code that we just describe.
+</p>
+
+<p>
+may be not suit for all scenario, but for some simple task like transporting
+by network, this default method is enough.
+</p>
+</div>
+
+<div id="orgbe28418" class="outline-4">
+<h4 id="orgbe28418"><span class="section-number-4">1.5.1</span> ObjectInputStream(ObjectOutputStream)</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<div class="org-src-container">
+<pre class="src src-scala">    <span style="color: #0000FF;">object</span> <span style="color: #D0372D;">Serialization</span> {
+  <span style="color: #0000FF;">def</span> <span style="color: #006699;">main</span>(args<span style="color: #0000FF;">:</span> <span style="color: #6434A3;">Array</span>[<span style="color: #D0372D;">String</span>]) {
+    <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">shapes</span> <span style="color: #0000FF;">=</span> <span style="color: #D0372D;">Array</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Circle</span>(<span style="color: #D0372D;">5</span>, <span style="color: #D0372D;">Color</span>.red),
+                       <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Rectangle</span>(<span style="color: #D0372D;">4</span>, <span style="color: #D0372D;">3</span>, <span style="color: #D0372D;">Color</span>.green))
+    <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">oos</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">ObjectOutputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedOutputStream</span>
+                                       (<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileOutputStream</span>(<span style="color: #008000;">"shapes.bin"</span>)))
+    oos.writeObject(shapes)
+    oos.close()
+
+    <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">return: [Llittleexamples.Shape;@3eba23e5</span>
+  }
+}
+
+</pre>
+</div>
+
+<p>
+If you want some object to be <b>serializable</b>, you must tell <b>compiler</b>
+that.The way you do that is to make the type you want to serialize extends
+<code>serializable</code>, you just need declaring <code>extends serializable</code>, and all the
+subclass of this type will automatically serializable.
+</p>
+
+<p>
+Always, when you serialize an object, even the object is a List or other
+collection, in the eyes of compiler, it's <b>ONLY ONE OBJECT</b>, you serialize
+it, you write it to the file, you read it from the file, then you CANNOT
+handle it as a collection, which means <code>foreach()</code> <code>.length</code> is illegal.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">ois</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">ObjectInputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedInputStream</span>
+                                  (<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileInputStream</span>(<span style="color: #008000;">"shapes.bin"</span>)))
+<span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">shapes</span> <span style="color: #0000FF;">=</span> ois.readObject()
+println(shapes)
+shapes.foreach(println)<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">WRONG to use foreach</span>
+ois.close()
+
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">compile error</span>
+</pre>
+</div>
+
+<p>
+How to make compile knows exactly what's the type of serializable object is?
+</p>
+
+<p>
+Yepp, in scala you can use a <b>pattern match</b> to match the result of
+<code>ois.readObject</code> to an type <code>Array[Shape]</code> or <code>Nothing</code>, and when you use
+pattern match to match and get value of a type, and use API of this type
+later. You must make sure the pattern will give back <b>a proper type</b>, in
+general, pattern match produce a <b>sum-type of ADTs</b> value, NOT EXACTLY any
+one type given by case clause.
+</p>
+
+<p>
+In this scenario, there are 2 case, 1st match <code>Array[String]</code>, 2nd match
+<code>Nothing</code>, and we can infer the type of this pattern match clause by the
+<b>sum-type</b> rule:
+</p>
+
+<p>
+<code>Array[String] + Nothing = Array[String]</code>
+</p>
+
+<blockquote>
+<p>
+Keep in mind that, ONLY two types equal based on algebraic data types, which
+means <b>isomorphism</b> in Category Theory, these two types are TRUELY at some
+level same, then you can apply the API function of <code>Array[String]</code> to result
+of pattern match.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">read from binary file</span>
+<span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">ois</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">ObjectInputStream</span>(<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">BufferedInputStream</span>
+                                  (<span style="color: #0000FF;">new</span> <span style="color: #6434A3;">FileInputStream</span>(<span style="color: #008000;">"shapes.bin"</span>)))
+<span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">shapes</span> <span style="color: #0000FF;">=</span> ois.readObject <span style="color: #0000FF;">match</span> {
+  <span style="color: #0000FF;">case</span> <span style="color: #BA36A5;">arr</span><span style="color: #0000FF;">:</span><span style="color: #6434A3;">Array</span>[<span style="color: #D0372D;">Shape</span>] <span style="color: #0000FF;">=&gt;</span> arr
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">Exception will gives you a type: Nothing</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">that is good, because in categor theory, this is a mayor type</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">and may or type is a sume type in algbraic data type, means</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">arr + nothing = arr + 0 = arr, no problem</span>
+  <span style="color: #0000FF;">case</span> <span style="color: #0000FF;">_</span> <span style="color: #0000FF;">=&gt;</span> <span style="color: #0000FF;">throw</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Exception</span>(<span style="color: #008000;">"Value read was not an array"</span>)
+}
+println(shapes)
+shapes.foreach(println)
+ois.close()
+
+<span style="color: #8D8D84;">/* </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">return:</span>
+<span style="color: #8D8D84; background-color: #292e34; font-style: italic;">[Llittleexamples.Shape;@28dacf4e</span>
+<span style="color: #8D8D84; background-color: #292e34; font-style: italic;">littleexamples.Circle@5978845</span>
+<span style="color: #8D8D84; background-color: #292e34; font-style: italic;">littleexamples.Rectangle@7bc99706</span>
+<span style="color: #8D8D84; background-color: #292e34; font-style: italic;">*/</span>
+</pre>
+</div>
+
+<p>
+And you can override the <code>toString</code> method of subclasses to give back more
+specific information about the object.
+</p>
+</div>
+</div>
+
+<div id="org5126d74" class="outline-4">
+<h4 id="org5126d74"><span class="section-number-4">1.5.2</span> serialVersionUID incompatible</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<blockquote>
+<p>
+[error] (run-main-4) java.io.InvalidClassException: littleexamples.Circle;
+local class incompatible:
+</p>
+
+<ul class="org-ul">
+<li>stream classdesc serialVersionUID = -2792271175705076432,</li>
+
+<li>local class serialVersionUID = -2084849081503267771</li>
+</ul>
+</blockquote>
+
+<p>
+you can see this compile information, it occurs when you serialize an object
+and store in file, then you modify the class, after that you get the object
+in file by <code>readObject</code> method, compile will compare the <b>serialization type
+in saved file</b> and <b>local type of .class file</b> each of them have an
+<b>serialVersionUID</b>, ONLY 2 id equal, can do <b>deserialization</b>
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="org1f21a8c" class="outline-3">
+<h3 id="org1f21a8c"><span class="section-number-3">1.6</span> Details of Serialization</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+Drawbacks of default serialization
+</p>
+</div>
+
+
+<div id="org577bf0d" class="outline-4">
+<h4 id="org577bf0d"><span class="section-number-4">1.6.1</span> If I don't want to serialize all information of an object</h4>
+<div class="outline-text-4" id="text-1-6-1">
+<p>
+Tag <code>@transient</code> can be added in <b>front of type/method/variable member</b> of
+class definition to tell the compiler NOT writing out this member when do
+serialization.
+</p>
+
+<p>
+Tag is a kind of metadata information of a class, metadata is a special
+declaration to comunicate directly with compiler telling it to do or not to
+do something.
+</p>
+
+<p>
+And, when using Tag to a <code>val</code> member in class definition there will be some
+thing inevitable happens:
+</p>
+<ul class="org-ul">
+<li><code>val</code> means once assignment happens, can never modify</li>
+<li><code>var</code> is something you can modify at any time</li>
+</ul>
+
+<p>
+So, if you put a @transient tag in front of a <code>val</code> member, you do
+serialization and store the object to a file, the <code>transient val</code> will be
+<b>assigned a default value</b> because the compiler thought that the information
+of <code>transient val</code> should not be kept. This may cause some unknown error.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">BAD</span>
+  <span style="color: #808080;">@transient</span> <span style="color: #006FE0;">private</span> <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">propPanel</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Panel</span>{
+    <span style="color: #8D8D84;">//</span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">..private</span>
+  }
+
+  <span style="color: #0000FF;">def</span> <span style="color: #006699;">getPropPanel</span> <span style="color: #0000FF;">=</span> propPanel
+</pre>
+</div>
+
+<p>
+So, ONLY use <code>@transient</code> tag for <code>var</code> NOT <code>val</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">GOOD</span>
+  <span style="color: #808080;">@transient</span> <span style="color: #006FE0;">private</span> <span style="color: #0000FF;">var</span> <span style="color: #ff0000; background-color: #292b2e; font-weight: bold;">propPanel</span><span style="color: #0000FF;">:</span><span style="color: #6434A3;">Panel</span> <span style="color: #0000FF;">=</span> <span style="color: #D0372D;">null</span>
+
+  <span style="color: #0000FF;">def</span> <span style="color: #006699;">getPropPanel</span> <span style="color: #0000FF;">=</span> {
+    <span style="color: #0000FF;">if</span> (propPanel == <span style="color: #D0372D;">null</span>) propPanel <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Panel</span>
+    <span style="color: #0000FF;">else</span> propPanel
+  }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org6908371" class="outline-4">
+<h4 id="org6908371"><span class="section-number-4">1.6.2</span> If I modify the class after serialization</h4>
+<div class="outline-text-4" id="text-1-6-2">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #808080;">@SerialVersionUID</span>(<span style="color: #D0372D;">128858</span>)
+<span style="color: #0000FF;">class</span> <span style="color: #6434A3;">Rectangle</span>(width<span style="color: #0000FF;">:</span><span style="color: #6434A3;">Double</span>, height<span style="color: #0000FF;">:</span><span style="color: #6434A3;">Double</span>, c<span style="color: #0000FF;">:</span><span style="color: #6434A3;">Color</span>) <span style="color: #0000FF;">extends</span> <span style="color: #6434A3;">Shape</span>(c) {???}
+
+</pre>
+</div>
+
+<p>
+Tag <code>@SerialVersionUID(128858)</code> can be put in front of class declaration of
+a class definition, to bind its serialversionUID to a fixed number.
+</p>
+
+<p>
+The insteresting thing is that, when you force your ID to some fixed value,
+the compile will not annoy you that the ID is imcompatible, GOOD or BAD, the
+bad thing is that when you modify your class like add some val member just
+after you have serialize the object and store it in file. Then when you
+deserialize object from the file, <b>the reconstruction of this object will
+follow a NEW RULE given by the CURRENT definition of class.</b> The new rule
+said "I have a val member, but you dont have, so I'll give you some default
+value." This default may lead to some unknown error in future.
+</p>
+</div>
+</div>
+
+<div id="orgb151b25" class="outline-4">
+<h4 id="orgb151b25"><span class="section-number-4">1.6.3</span> If I want to customize the saving thing</h4>
+<div class="outline-text-4" id="text-1-6-3">
+<p>
+when your serializable class has something that CANNOT serializable(maybe
+not extends Serializable), the serialization will fall. keep in mind that,
+all the members of a serializable class should be serializable or transient.
+</p>
+
+<p>
+how to customize the Serialization is introduced in professor's book, and
+this time will be skipped, for the reason that it's a advanced topic.
+</p>
+</div>
+</div>
+</div>
+
+<div id="orgc1e8721" class="outline-3">
+<h3 id="orgc1e8721"><span class="section-number-3">1.7</span> XML Serialization</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+SUMMARIZATION
+object ==&gt; XML ==&gt; object
+how we can write functions so that we can take our objects and convert them to XML and then have code that converts them back.
+</p>
+
+<p>
+2 things to make this happen:
+</p>
+<ol class="org-ol">
+<li>define a <code>def toXML:xml.Node</code> method to do serialization</li>
+<li>define a <code>apply</code> method in companion object of this class to do
+deserialization.</li>
+</ol>
+
+
+<div class="org-src-container">
+<pre class="src src-scala"> <span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">in shape class</span>
+<span style="color: #0000FF;">def</span> <span style="color: #006699;">toXML</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">xml</span>.<span style="color: #D0372D;">Node</span>
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">in shape companion object</span>
+<span style="color: #0000FF;">def</span> <span style="color: #006699;">apply</span>(node<span style="color: #0000FF;">:</span><span style="color: #6434A3;">xml</span>.<span style="color: #D0372D;">Node</span>)<span style="color: #0000FF;">:</span><span style="color: #6434A3;">Shape</span> <span style="color: #0000FF;">=</span> {
+  (node \ <span style="color: #008000;">"@type"</span>).text <span style="color: #0000FF;">match</span> {
+    <span style="color: #0000FF;">case</span> <span style="color: #D0372D;">Circle</span>.<span style="color: #D0372D;">typeString</span> <span style="color: #0000FF;">=&gt;</span>
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">radius</span> <span style="color: #0000FF;">=</span> (node \ <span style="color: #008000;">"@radius"</span>).text.toDouble
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">rgb</span> <span style="color: #0000FF;">=</span> (node \ <span style="color: #008000;">"@color"</span>).text.toInt
+      <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Circle</span>(radius, <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Color</span>(rgb))
+    <span style="color: #0000FF;">case</span> <span style="color: #008000;">"Rectangle"</span> <span style="color: #0000FF;">=&gt;</span>
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">width</span> <span style="color: #0000FF;">=</span> (node \ <span style="color: #008000;">"@width"</span>).text.toDouble
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">height</span> <span style="color: #0000FF;">=</span> (node \ <span style="color: #008000;">"@height"</span>).text.toDouble
+      <span style="color: #0000FF;">val</span> <span style="color: #BA36A5;">rgb</span> <span style="color: #0000FF;">=</span> (node \ <span style="color: #008000;">"@color"</span>).text.toInt
+      <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Circle</span>(width, height, <span style="color: #0000FF;">new</span> <span style="color: #6434A3;">Color</span>(rgb))
+  }
+
+<span style="color: #8D8D84;">// </span><span style="color: #8D8D84; background-color: #292e34; font-style: italic;">in circle class</span>
+<span style="color: #0000FF;">def</span> <span style="color: #006699;">toXML</span><span style="color: #0000FF;">:</span> <span style="color: #6434A3;">xml</span>.<span style="color: #D0372D;">Node</span> <span style="color: #0000FF;">=</span>
+  &lt;shape <span style="color: #0000FF;">type=</span>{<span style="color: #D0372D;">Circle</span>.typeString} radius<span style="color: #0000FF;">=</span>{radius.toString} color<span style="color: #0000FF;">=</span>{c.getRGB.toString()}/&gt;
+}
+</pre>
+</div>
+</div>
+
+<div id="org6e93b58" class="outline-4">
+<h4 id="org6e93b58"><span class="section-number-4">1.7.1</span> drawbacks of obj -&gt; XML -&gt; obj</h4>
+<div class="outline-text-4" id="text-1-7-1">
+<p>
+there are certain types of data that XML is NOT GOOD at representing, <b>for
+any large data set</b>, XML is probably not ideal; <b>whole thing with lots of
+doubles</b>, XML is probably not ideal; <b>for thins like bufferedImage</b>, XML is
+probably not ideal; bufferedImage should be writen out in binary format.
+</p>
+
+<p>
+XML always used to refer to some other file like PNG,JPEG, and give you a
+filename and then when you do the saving off of the XML, you also save the
+images assuming that they're going to change.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

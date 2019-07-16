@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-08 三 23:21 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spark SQL-2</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Spark SQL-2</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3f14bc3">how to read different type apart from .csv</a></li>
+<li><a href="#org18ea4cf">general process of using DataFrame and SparkSQL</a></li>
+<li><a href="#org25072fc">non standard format data file</a></li>
+<li><a href="#orgd30d525"><code>as</code> clause</a></li>
+<li><a href="#org655b861">DataFrame API</a>
+<ul>
+<li><a href="#org181e7c5">DataFrame.cache()</a></li>
+<li><a href="#org94a004a">DataFrame.groupBy(cols: Column*)</a></li>
+<li><a href="#orge04869a">RelationalGroupedDataset.agg()</a></li>
+</ul>
+</li>
+<li><a href="#org24321a6">Memory usage in Spark</a></li>
+<li><a href="#org733eb74">RDD and DataSet</a></li>
+<li><a href="#orgb388b19">two important funcions set in SPARK SQL</a></li>
+<li><a href="#orgfbfa922">one important implicits</a></li>
+</ul>
+</div>
+</div>
+<p>
+I want to plot out by latitude and longitude all of the temperature averages
+across the global in data set. so need the take into account each weather
+station, so we need latitude and longitude
+</p>
+
+
+<div id="org3f14bc3" class="outline-2">
+<h2 id="org3f14bc3">how to read different type apart from .csv</h2>
+<div class="outline-text-2" id="text-org3f14bc3">
+<p>
+read by RDD, transform it to an column format, and conver to DataSet, then
+build proper DataFrameReader( schema and option) to read it in.
+</p>
+</div>
+</div>
+
+<div id="org18ea4cf" class="outline-2">
+<h2 id="org18ea4cf">general process of using DataFrame and SparkSQL</h2>
+<div class="outline-text-2" id="text-org18ea4cf">
+<ol class="org-ol">
+<li>build proper DataFrameReader( schema&lt;-StructType+StructField and option)</li>
+<li>wether data file is standard format?
+<ul class="org-ul">
+<li>no : need respecify how to read and how to store
+<ul class="org-ul">
+<li>for how to read: drf.option("typeName", "formatDescription")</li>
+<li>for how to store: drf.schema( StructType(StructField,StructField, &#x2026;) )</li>
+</ul></li>
+<li>no : need fall back from SparkSession to SparkContext <code>ss.SparkContext</code>
+<ul class="org-ul">
+<li>using <code>sc.textFile(path)</code> to read in RDD[String]</li>
+<li>RDD[String].map { line =&gt; spark.sql.Row }: RDD[Row]</li>
+</ul></li>
+<li>yes: need <code>ss.read.csv/text/json</code></li>
+</ul></li>
+<li>create DataFrame from step2 and step1
+<ul class="org-ul">
+<li>for non-standard fomat file:
+<ul class="org-ul">
+<li>ss.createDataFrame( schema(StructType+StructField) , RDD[Row] )</li>
+</ul></li>
+</ul></li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-scala" id="orgcf3c653"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">tschema for Temperature data</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">tschema</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">StructType</span>(<span style="color: #a45bad;">Array</span>( <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">ONLY select and modify the front 4 columns</span>
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"sid"</span>,<span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"date"</span>,<span style="color: #a45bad;">DateType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"mtype"</span>,<span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"value"</span>,<span style="color: #a45bad;">DoubleType</span>)
+                         ))
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">data2017 is a DataFrame</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">data2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> spark.read.schema(tschema).option(<span style="color: #2d9574;">"dateFormat"</span>, <span style="color: #2d9574;">"yyyyMMdd"</span>).csv(<span style="color: #2d9574;">"data/2017.csv"</span>)
+data2017.show()
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-scala" id="org7f9934d"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">sschema</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">StructType</span>(<span style="color: #a45bad;">Array</span>(
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"sid"</span>, <span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"lat"</span>, <span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"lon"</span>, <span style="color: #a45bad;">StringType</span>),
+                           <span style="color: #a45bad;">StructField</span>(<span style="color: #2d9574;">"name"</span>, <span style="color: #a45bad;">StringType</span>)
+                         ))
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">stationRDD</span> <span style="color: #4f97d7; font-weight: bold;">=</span> spark.sparkContext.textFile(<span style="color: #2d9574;">"data/ghcnd-station.txt"</span>).map { line <span style="color: #4f97d7; font-weight: bold;">=&gt;</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">id</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.substring(<span style="color: #a45bad;">0</span>, <span style="color: #a45bad;">11</span>)
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">lat</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.substring(<span style="color: #a45bad;">12</span>, <span style="color: #a45bad;">20</span>)
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">lon</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.substring(<span style="color: #a45bad;">21</span>, <span style="color: #a45bad;">30</span>)
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">name</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.substring(<span style="color: #a45bad;">41</span>, <span style="color: #a45bad;">71</span>)
+  <span style="color: #a45bad;">Row</span>(id, lat, lon, name)
+}
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">stations</span> <span style="color: #4f97d7; font-weight: bold;">=</span> spark.createDataFrame(stationRDD, sschema).cache()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org25072fc" class="outline-2">
+<h2 id="org25072fc">non standard format data file</h2>
+<div class="outline-text-2" id="text-org25072fc">
+<pre class="example">
+&gt;&gt;&gt;&gt; ghcnd-stations.txt
+ACW00011604  17.1167  -61.7833   10.1    ST JOHNS COOLIDGE FLD
+ACW00011647  17.1333  -61.7833   19.2    ST JOHNS
+AE000041196  25.3330   55.5170   34.0    SHARJAH INTER. AIRP            GSN     41196
+AEM00041194  25.2550   55.3640   10.4    DUBAI INTL                             41194
+AEM00041217  24.4330   54.6510   26.8    ABU DHABI INTL                         41217
+
+&gt;&gt;&gt;&gt; readme.txt explaination of the format of ghcnd-stations.txt
+IV. FORMAT OF "ghcnd-stations.txt"
+------------------------------
+Variable   Columns   Type
+------------------------------
+ID            1-11   Character
+LATITUDE     13-20   Real
+LONGITUDE    22-30   Real
+ELEVATION    32-37   Real
+STATE        39-40   Character
+NAME         42-71   Character
+GSN FLAG     73-75   Character
+HCN/CRN FLAG 77-79   Character
+WMO ID       81-85   Character
+------------------------------
+</pre>
+</div>
+</div>
+<div id="orgd30d525" class="outline-2">
+<h2 id="orgd30d525"><code>as</code> clause</h2>
+<div class="outline-text-2" id="text-orgd30d525">
+<p>
+a shortname version of <code>withColumnRename()</code>, but more convenient.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">dailyTemp2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> combinedTemps2017
+  .select(<span style="color: #2d9574;">'sid</span>, <span style="color: #2d9574;">'date</span>, (<span style="color: #2d9574;">'tmax</span> + <span style="color: #2d9574;">'tmin</span>)/<span style="color: #a45bad;">20</span> as <span style="color: #2d9574;">"tave"</span>)
+
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">stationTemp2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> dailyTemp2017
+  .groupBy(<span style="color: #2d9574;">'sid</span>)
+  .agg(avg(<span style="color: #2d9574;">'tave</span>) as <span style="color: #2d9574;">"tave"</span>)
+stationTemp2017.show
+
+</pre>
+</div>
+
+<p>
+<code>.agg(avg('tave) as "tave")</code>
+<code>.select('sid, 'date, ('tmax + 'tmin)/20 as "tave")</code>
+</p>
+
+<p>
+<code>as</code> follow after a numeric computation, followed by a String, used to named a new column.
+</p>
+
+<p>
+<code>.somemethod( computation as "columnName")</code>
+</p>
+</div>
+</div>
+
+<div id="org655b861" class="outline-2">
+<h2 id="org655b861">DataFrame API</h2>
+<div class="outline-text-2" id="text-org655b861">
+</div>
+<div id="org181e7c5" class="outline-3">
+<h3 id="org181e7c5">DataFrame.cache()</h3>
+<div class="outline-text-3" id="text-org181e7c5">
+<p>
+<b>RDD</b> has cache() method, because Transform is like a pass-by-name, everytime you refer to a <b>RDD</b>, it will compute: <b>RDD acts like a function name</b>, so the frequently used <b>RDD</b> should be cached in meory or bigger should be in disk; The same for the <b>DataFrame</b>, <b>DataSet</b> has both kinds of API methods: transform and action.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">stations</span> <span style="color: #4f97d7; font-weight: bold;">=</span> spark.createDataFrame(stationRDD, sschema).cache()
+</pre>
+</div>
+</div>
+</div>
+<div id="org94a004a" class="outline-3">
+<h3 id="org94a004a">DataFrame.groupBy(cols: Column*)</h3>
+<div class="outline-text-3" id="text-org94a004a">
+<p>
+def groupBy( cols: Column* ): <b>RelationalGroupedDataset</b>
+</p>
+
+<p>
+class <b>RelationalGroupedDataset</b> extends AnyRef
+</p>
+
+<p>
+Similar to <code>org.apache.spark.sql.functions</code> holding huge number of predefined functions, <code>RelationalGroupedDataset</code> also has some predefined functions especially for the target of <b>aggregations on a DataFrame</b>
+</p>
+
+<p>
+A set of methods for aggregations on a DataFrame, created by <b>groupBy, cube or rollup (and also pivot)</b>.
+</p>
+
+<p>
+The main method is the agg function, which has multiple variants. This class also contains some first-order statistics such as mean, sum for convenience.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">stationTemp2017</span> <span style="color: #4f97d7; font-weight: bold;">=</span> dailyTemp2017
+  .groupBy(<span style="color: #2d9574;">'sid</span>)
+  .agg(avg(<span style="color: #2d9574;">'tave</span>) as <span style="color: #2d9574;">"tave"</span>)<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">every group with same 'id compute the averate and as a new column</span>
+                            <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">same as collection.aggregate and PairRDD.aggregateByKey, these three</span>
+                            <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">all get the (1 key: 1 value) format for each the value we groupby</span>
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">sid</th>
+<th scope="col" class="org-right">tave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">AE000041196</td>
+<td class="org-right">18.975</td>
+</tr>
+
+<tr>
+<td class="org-left">AEM00041194</td>
+<td class="org-right">22.65</td>
+</tr>
+
+<tr>
+<td class="org-left">AEM00041217</td>
+<td class="org-right">20.883333333333333</td>
+</tr>
+
+<tr>
+<td class="org-left">AEM00041218</td>
+<td class="org-right">20.483333333333334</td>
+</tr>
+
+<tr>
+<td class="org-left">AGM00060461</td>
+<td class="org-right">13.6625</td>
+</tr>
+
+<tr>
+<td class="org-left">ALM00013615</td>
+<td class="org-right">0.7100000000000002</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="orge04869a" class="outline-3">
+<h3 id="orge04869a">RelationalGroupedDataset.agg()</h3>
+<div class="outline-text-3" id="text-orge04869a">
+<p>
+Refering to the code of this class, find other format to invocate <code>agg()</code>
+</p>
+
+<p>
+Selects the age of the oldest employee and the aggregate expense for each department
+</p>
+
+<p>
+RelationalGroupDataset = rgd
+import org.apache.spark.sql.functions._ = fs
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">method 1 :  rgd.agg + rgd.avg</span>
+df.groupBy(<span style="color: #2d9574;">"department"</span>).agg(
+  <span style="color: #2d9574;">"age"</span> -&gt; <span style="color: #2d9574;">"max"</span>,
+  <span style="color: #2d9574;">"expense"</span> -&gt; <span style="color: #2d9574;">"sum"</span>
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">method 2 :  rgd.agg + rgd.avg</span>
+df.groupBy(<span style="color: #2d9574;">"department"</span>).agg(<span style="color: #a45bad;">Map</span>(
+  <span style="color: #2d9574;">"age"</span> -&gt; <span style="color: #2d9574;">"max"</span>,
+  <span style="color: #2d9574;">"expense"</span> -&gt; <span style="color: #2d9574;">"sum"</span>
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">method 3 :  rgd.agg + fs.avg</span>
+<span style="color: #4f97d7; font-weight: bold;">import</span> org.apache.spark.sql.functions.<span style="color: #4f97d7; font-weight: bold;">_</span>
+df.groupBy(<span style="color: #2d9574;">"department"</span>).agg(max(<span style="color: #2d9574;">"age"</span>), sum(<span style="color: #2d9574;">"expense"</span>))
+</pre>
+</div>
+
+<p>
+Note that, the useage manner of <code>rgd</code> predefined methods are huge different from it of <code>fs</code>. Although, the underneath logic both are <b>apply method to each element of column</b>
+</p>
+
+<ul class="org-ul">
+<li>rgd usage manner: [colName] -&gt; [method]</li>
+<li>fs  usage manner: [method]([colName])</li>
+</ul>
+
+<p>
+for different usage manner, you must declare different package for it, like
+</p>
+
+<p>
+// method 3 :  rgd.agg + fs.avg
+import org.apache.spark.sql.functions._
+df.groupBy("department").agg(max("age"), sum("expense"))
+</p>
+</div>
+</div>
+</div>
+
+<div id="org24321a6" class="outline-2">
+<h2 id="org24321a6">Memory usage in Spark</h2>
+<div class="outline-text-2" id="text-org24321a6">
+<p>
+<b>Don't displaying the values early</b>
+</p>
+
+<p>
+this is important, if you display the value early, you might have been
+forcing spark SQL to do some stuff with memory intensive, that it might
+actually be able to optimize out if I went through the whole process ,
+clearly we use the master mode <code>.setMaster("loca[*]")</code>, which also gives us
+lot constain.
+</p>
+</div>
+</div>
+
+<div id="org733eb74" class="outline-2">
+<h2 id="org733eb74">RDD and DataSet</h2>
+<div class="outline-text-2" id="text-org733eb74">
+<p>
+DataSet has almost all the higher-order methods of RDD, map/filter/groupBy/flatmap, etc.
+they both have same two features: <b>Transform</b> and <b>Action</b>
+they both store data <b>distributely</b> in cluster of machines
+</p>
+
+<pre class="example">
+                +-----------+------------------+
+                |        sid|              tave|
+                +-----------+------------------+
+                |AE000041196|            18.975|
+                |AEM00041194|             22.65|
+                |AEM00041217|20.883333333333333|
+                |AEM00041218|20.483333333333334|
+                |AGM00060461|           13.6625|
+                |ALM00013615|0.7100000000000002|
+                +-----------+------------------+
+                              |
+                              |
+    +---------+---------+-----+---+-------------------+
+    |         |         |         |                   |
+    |         |         |         |                   |
++---+--+  +---+--+  +---+--+  +---+--+            +---+--+
+| pc1  |  | pc2  |  |  pc3 |  | pc4  |   ......   | pcn  |
++------+  +------+  +------+  +------+            +------+
+
+</pre>
+
+<p>
+when you want to plot/sort/collect the whole DataSet or RDD, you must <code>collect()</code> all data from other machines.
+</p>
+</div>
+</div>
+
+<div id="orgb388b19" class="outline-2">
+<h2 id="orgb388b19">two important funcions set in SPARK SQL</h2>
+<div class="outline-text-2" id="text-orgb388b19">
+<ol class="org-ol">
+<li>org.apache.spark.sql.functions</li>
+<li>org.apache.spark.RelationalGroupedDataset</li>
+</ol>
+
+<p>
+they have different basic format, but same underneath logic
+</p>
+<ul class="org-ul">
+<li>fs : method(colName)</li>
+<li>rgd: colName -&gt; method</li>
+<li>same logic: apply method to each element of column</li>
+</ul>
+</div>
+</div>
+
+<div id="orgfbfa922" class="outline-2">
+<h2 id="orgfbfa922">one important implicits</h2>
+<div class="outline-text-2" id="text-orgfbfa922">
+<ol class="org-ol">
+<li>SparkSession.implicits</li>
+</ol>
+
+<p>
+lots shortname inside of it, like:
+</p>
+<ul class="org-ul">
+<li>'colName -&gt; col</li>
+<li>$(colName) -&gt; col</li>
+<li>StrtoCol implicit conversion</li>
+</ul>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-11 六 03:34 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rugular Expression</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Rugular Expression</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9de720f">1. Regular Expressions</a>
+<ul>
+<li><a href="#org1c832bf">1.1. list of patterns supported in java</a>
+<ul>
+<li><a href="#org71ad75f">1.1.1. creating regex using method <code>r</code></a></li>
+<li><a href="#orgb2adcfa">1.1.2. <code>\</code> in regex means <code>escape</code></a></li>
+<li><a href="#orgd0999f7">1.1.3. <code>\</code> must be embedded in a <code>raw</code> string.</a></li>
+<li><a href="#org365ad9c">1.1.4. create a <code>regex</code> by <code>&lt;String/rawString&gt;.r</code></a></li>
+<li><a href="#org513d350">1.1.5. create a <code>regex</code> by <code>new</code></a></li>
+<li><a href="#org19813dd">1.1.6. split method is using the regex match to where to split the string</a></li>
+</ul>
+</li>
+<li><a href="#org9f922c7">1.2. using regular expression</a></li>
+<li><a href="#org8335a26">1.3. Regex for parsing a polynomial</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="org9de720f" class="outline-2">
+<h2 id="org9de720f"><span class="section-number-2">1</span> Regular Expressions</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="org1c832bf" class="outline-3">
+<h3 id="org1c832bf"><span class="section-number-3">1.1</span> list of patterns supported in java</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Summary of regular-expression constructs</a>
+</p>
+</div>
+
+
+<div id="org71ad75f" class="outline-4">
+<h4 id="org71ad75f"><span class="section-number-4">1.1.1</span> creating regex using method <code>r</code></h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+<code>scala.util.matching.Regex</code>
+<code>java.util.regex</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">val</span> <span style="color: #7590db;">date</span> <span style="color: #4f97d7;">=</span> raw<span style="color: #2d9574;">"(&lt;regex&gt;)"</span>.r
+</pre>
+</div>
+</div>
+</div>
+
+<div id="orgb2adcfa" class="outline-4">
+<h4 id="orgb2adcfa"><span class="section-number-4">1.1.2</span> <code>\</code> in regex means <code>escape</code></h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+<b>escape</b> the following character to another namespace where another means embedded
+</p>
+
+<ul class="org-ul">
+<li><code>\d</code> : 0~9</li>
+</ul>
+</div>
+</div>
+
+<div id="orgd0999f7" class="outline-4">
+<h4 id="orgd0999f7"><span class="section-number-4">1.1.3</span> <code>\</code> must be embedded in a <code>raw</code> string.</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">raw and """ are with same meaning</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">str1</span> <span style="color: #4f97d7;">=</span> raw"\d"
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">str2</span> <span style="color: #4f97d7;">=</span> ""<span style="color: #2d9574;">"\d"</span>""
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala">scala&gt; "\d\d"
+&lt;console<span style="color: #4f97d7;">&gt;:</span><span style="color: #a45bad;">1</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">error</span><span style="color: #4f97d7;">:</span> invalid escape character
+       "\d\d"
+         ^
+&lt;console<span style="color: #4f97d7;">&gt;:</span><span style="color: #a45bad;">1</span><span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">error</span><span style="color: #4f97d7;">:</span> invalid escape character
+       "\d\d"
+           ^
+scala&gt; <span style="color: #2d9574;">"""\d\d"""</span>
+res14<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">String</span> <span style="color: #4f97d7;">=</span> \d\d
+scala&gt; raw"\d\d"
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org365ad9c" class="outline-4">
+<h4 id="org365ad9c"><span class="section-number-4">1.1.4</span> create a <code>regex</code> by <code>&lt;String/rawString&gt;.r</code></h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+<code>val date = raw"(&lt;regex&gt;)".r</code>
+</p>
+</div>
+</div>
+
+<div id="org513d350" class="outline-4">
+<h4 id="org513d350"><span class="section-number-4">1.1.5</span> create a <code>regex</code> by <code>new</code></h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+<code>new scala.util.matching.Regex("""&lt;regex&gt;""", "year", "month", "day")</code>
+</p>
+</div>
+</div>
+
+
+<div id="org19813dd" class="outline-4">
+<h4 id="org19813dd"><span class="section-number-4">1.1.6</span> split method is using the regex match to where to split the string</h4>
+<div class="outline-text-4" id="text-1-1-6">
+<blockquote>
+<p>
+Regex means, what kind of things can I see it as a whole, the whole is
+unsplitable.
+</p>
+
+<p>
+Regex with group, can be used as a match pattern.
+</p>
+</blockquote>
+
+<p>
+&lt;str&gt;.split(&lt;strOfRegex&gt;) take string(not call <code>.r</code> method) as parameter,
+and implicitly call `.r` method on the parameter string to get a regex, by
+witch split the string who call <code>split()</code> method
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">val</span> <span style="color: #7590db;">date</span> <span style="color: #4f97d7;">=</span> raw"(\d{<span style="color: #a45bad;">4</span>})-(\d{<span style="color: #a45bad;">2</span>})-(\d{<span style="color: #a45bad;">2</span>})"
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">reg</span> <span style="color: #4f97d7;">=</span> date.r
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">txt</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"sdfsdfsdf2018-05-01sdfsdfsdf"</span>
+<span style="color: #4f97d7;">val</span> <span style="color: #7590db;">arr</span> <span style="color: #4f97d7;">=</span> txt.split(date)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="org9f922c7" class="outline-3">
+<h3 id="org9f922c7"><span class="section-number-3">1.2</span> using regular expression</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">package</span> <span style="color: #2d9574;">regex</span>
+
+<span style="color: #4f97d7;">object</span> <span style="color: #a45bad;">RegEx</span> <span style="color: #4f97d7;">extends</span> <span style="color: #ce537a;">App</span>{
+
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">--------------------</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">date</span> <span style="color: #4f97d7;">=</span> raw"(\d{<span style="color: #a45bad;">4</span>})-(\d{<span style="color: #a45bad;">2</span>})-(\d{<span style="color: #a45bad;">2</span>})".r
+  <span style="color: #4f97d7;">val</span> <span style="color: #ce537a;">date</span>(<span style="color: #7590db;">y</span>, <span style="color: #7590db;">m</span>, <span style="color: #7590db;">d</span>) <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"2018-08-02"</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">unanchdate</span> <span style="color: #4f97d7;">=</span> raw"(\d{<span style="color: #a45bad;">4</span>})-(\d{<span style="color: #a45bad;">2</span>})-(\d{<span style="color: #a45bad;">2</span>})".r.unanchored
+  <span style="color: #4f97d7;">val</span> <span style="color: #ce537a;">unanchdate</span>(<span style="color: #7590db;">uy</span>, <span style="color: #7590db;">um</span>, <span style="color: #7590db;">ud</span>) <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"sdf2432018-08-02sdfsdfsdf"</span>
+
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">--------------------</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">numbers</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"1, -23, 42, 79, 136"</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">intRegex</span> <span style="color: #4f97d7;">=</span> raw"[-+]?\d+".r.unanchored
+  <span style="color: #8D8D84;">///////////////////////////////////////////////////////////////////</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">compareing with                                               //</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">two groups bound there, is better than above, because you can //</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">extract information from related groups                       //</span>
+  <span style="color: #8D8D84;">///////////////////////////////////////////////////////////////////</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">IntRegex</span> <span style="color: #4f97d7;">=</span> raw"([-+]?(\d+))".r.unanchored
+
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">note that Iterator itself is a collection, has the same API methods</span>
+  <span style="color: #8D8D84;">//////////////////////////////////////////////////</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">val matchItor  = intRegex.findAllIn(numbers) //</span>
+  <span style="color: #8D8D84;">//                                              </span><span style="color: #2aa1ae; background-color: #292e34;">//</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">while(matchItor.hasNext) {                   //</span>
+  <span style="color: #8D8D84;">//   </span><span style="color: #2aa1ae; background-color: #292e34;">println("enter matchItor")                 //</span>
+  <span style="color: #8D8D84;">//   </span><span style="color: #2aa1ae; background-color: #292e34;">println(matchItor.next)                    //</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">}                                            //</span>
+  <span style="color: #8D8D84;">//////////////////////////////////////////////////</span>
+  <span style="color: #4f97d7;">for</span> (i <span style="color: #4f97d7;">&lt;-</span> intRegex.findAllIn(numbers)) println(i)
+
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">do pattern match by using regex as a pattern</span>
+  <span style="color: #4f97d7;">for</span> (<span style="color: #a45bad;">IntRegex</span>(sym, num) <span style="color: #4f97d7;">&lt;-</span> <span style="color: #a45bad;">IntRegex</span>.findAllIn(numbers)) println(num)
+
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">--------------------</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">VarRegEx</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"""^(\w+)=(\d+), (\w+)=(\d+), (\w+)=(\d+)$"""</span>.r
+  <span style="color: #8D8D84;">//////////////////////////////////////////////////////////////////////</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">compare with the code below, as an astonishment, it will lead an //</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">interpolation error                                              //</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">val VarRegEx = raw"^(\w+)=(\d+), (\w+)=(\d+), (\w+)=(\d+)$".r    //</span>
+  <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">so ,use """ instead of raw, in daily programming                 //</span>
+  <span style="color: #8D8D84;">//////////////////////////////////////////////////////////////////////</span>
+  <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">source</span> <span style="color: #4f97d7;">=</span> <span style="color: #a45bad;">List</span>("<span style="color: #a45bad;">2</span>")
+
+  <span style="color: #4f97d7;">for</span> ( <span style="color: #a45bad;">VarRegEx</span>(n1,v1,n2,v2,n3,v3) <span style="color: #4f97d7;">&lt;-</span> source) println(n1)
+}
+</pre>
+</div>
+
+<p>
+Note that:
+</p>
+<ol class="org-ol">
+<li><code>"""</code> different with <code>raw</code>, so use <code>"""</code> instead</li>
+<li><b>Upper-case front char</b> and <b>define group</b> when using regex as pattern</li>
+<li><code>for</code> is still the KING even in handling regex</li>
+</ol>
+</div>
+</div>
+
+<div id="org8335a26" class="outline-3">
+<h3 id="org8335a26"><span class="section-number-3">1.3</span> Regex for parsing a polynomial</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Note, that if you want to match <code>^</code> not the <b>front symbol</b>, you should give <code>\^</code>
+</p>
+
+<p>
+and every symbol you used to building regex, can get its <b>literal meaning</b> by <code>\&lt;symbol&gt;</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7;">package</span> <span style="color: #2d9574;">regex</span>
+<span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">x^4 - 3x^2 - 5x + 4</span>
+<span style="color: #4f97d7;">object</span> <span style="color: #a45bad;">RegexPoly</span> {
+  <span style="color: #4f97d7;">case</span> <span style="color: #4f97d7;">class</span> <span style="color: #ce537a;">Term</span>(coef<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>, power<span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Int</span>)
+  <span style="color: #4f97d7;">def</span> <span style="color: #bc6ec5;">main</span>(args<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Array</span>[<span style="color: #a45bad;">String</span>])<span style="color: #4f97d7;">:</span> <span style="color: #ce537a;">Unit</span> <span style="color: #4f97d7;">=</span> {
+    <span style="color: #8D8D84;">// </span><span style="color: #2aa1ae; background-color: #292e34;">First Try Fail: val PolyRegex = """\t?[+-]\t?(\d)*(x)?(^)?(\d)*""".r.unanchored</span>
+    <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">PolyRegex</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"""([+-]?\d)*x\^?(\d+)?|(\d)+"""</span>.r.unanchored
+    <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">polyWithSpace</span> <span style="color: #4f97d7;">=</span> <span style="color: #2d9574;">"x^4 - 3x^2 - 5x + 4"</span>
+    <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">poly</span> <span style="color: #4f97d7;">=</span> polyWithSpace.replaceAll(<span style="color: #2d9574;">"""\s*"""</span>, <span style="color: #2d9574;">""</span>)
+
+    <span style="color: #4f97d7;">for</span>( term <span style="color: #4f97d7;">@</span> <span style="color: #a45bad;">PolyRegex</span>(cf, pw, num) <span style="color: #4f97d7;">&lt;-</span> <span style="color: #a45bad;">PolyRegex</span>.findAllMatchIn(poly)) println(term)
+    <span style="color: #4f97d7;">val</span> <span style="color: #7590db;">terms</span><span style="color: #4f97d7;">:</span><span style="color: #ce537a;">Iterator</span>[<span style="color: #a45bad;">Option</span>[<span style="color: #a45bad;">Term</span>]] <span style="color: #4f97d7;">=</span> <span style="color: #4f97d7;">for</span>( term <span style="color: #4f97d7;">@</span> <span style="color: #a45bad;">PolyRegex</span>(cf, pw, num) <span style="color: #4f97d7;">&lt;-</span> <span style="color: #a45bad;">PolyRegex</span>.findAllIn(poly)) <span style="color: #4f97d7;">yield</span> {
+      term <span style="color: #4f97d7;">match</span> {
+        <span style="color: #4f97d7;">case</span> <span style="color: #ce537a;">PolyRegex</span>(<span style="color: #7590db;">cf</span>, <span style="color: #7590db;">pw</span>, <span style="color: #7590db;">num</span>) <span style="color: #4f97d7;">if</span> num != <span style="color: #a45bad;">null</span> <span style="color: #4f97d7;">=&gt;</span> <span style="color: #a45bad;">Some</span>(<span style="color: #a45bad;">Term</span>(num.toInt, <span style="color: #a45bad;">0</span>))
+        <span style="color: #4f97d7;">case</span> <span style="color: #ce537a;">PolyRegex</span>(<span style="color: #7590db;">cf</span>, <span style="color: #7590db;">pw</span>, <span style="color: #7590db;">num</span>) <span style="color: #4f97d7;">if</span> cf == <span style="color: #a45bad;">null</span> &amp;&amp; num == <span style="color: #a45bad;">null</span> <span style="color: #4f97d7;">=&gt;</span> <span style="color: #a45bad;">Some</span>(<span style="color: #a45bad;">Term</span>(<span style="color: #a45bad;">1</span>, pw.toInt))
+        <span style="color: #4f97d7;">case</span> <span style="color: #ce537a;">PolyRegex</span>(<span style="color: #7590db;">cf</span>, <span style="color: #7590db;">pw</span>, <span style="color: #7590db;">num</span>) <span style="color: #4f97d7;">if</span> cf != <span style="color: #a45bad;">null</span> &amp;&amp; pw == <span style="color: #a45bad;">null</span> <span style="color: #4f97d7;">=&gt;</span> <span style="color: #a45bad;">Some</span>(<span style="color: #a45bad;">Term</span>(cf.toInt, <span style="color: #a45bad;">1</span>))
+        <span style="color: #4f97d7;">case</span> <span style="color: #ce537a;">PolyRegex</span>(<span style="color: #7590db;">cf</span>, <span style="color: #7590db;">pw</span>, <span style="color: #7590db;">num</span>) <span style="color: #4f97d7;">if</span> cf != <span style="color: #a45bad;">null</span> &amp;&amp; pw != <span style="color: #a45bad;">null</span> <span style="color: #4f97d7;">=&gt;</span> <span style="color: #a45bad;">Some</span>(<span style="color: #a45bad;">Term</span>(cf.toInt, pw.toInt))
+        <span style="color: #4f97d7;">case</span> <span style="color: #4f97d7;">_</span> <span style="color: #4f97d7;">=&gt;</span> <span style="color: #a45bad;">None</span>
+      }
+    }
+    <span style="color: #4f97d7;">for</span>(i<span style="color: #4f97d7;">&lt;-</span>terms) println(i.getOrElse(<span style="color: #2d9574;">"No matched Term"</span>))
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

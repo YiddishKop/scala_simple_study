@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-08 三 23:03 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lec-2 Data Processing with higher-order methods</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Lec-2 Data Processing with higher-order methods</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8225754">API of Souce, Iterator</a>
+<ul>
+<li><a href="#orga60d9c6"><span class="todo TODO">TODO</span> : how to read txt from file</a></li>
+<li><a href="#org3f28ecc"><span class="todo TODO">TODO</span> : how to get whole text's Iterator by unit of line</a></li>
+<li><a href="#org182b671"><span class="todo TODO">TODO</span> : how to get 30 lines from front of the whole text's Iteratror</a></li>
+<li><a href="#org704f6dd"><span class="todo TODO">TODO</span> : not get <code>length</code> of a iterator</a></li>
+</ul>
+</li>
+<li><a href="#org0cfd5ed">how to deal with value non-present in data source file</a></li>
+<li><a href="#org5b67db8">Do Sorting</a></li>
+<li><a href="#org3a0062f">Do Counting</a></li>
+<li><a href="#org1af169f">Do something respectively on group</a></li>
+<li><a href="#orgd377ad0">summarization</a>
+<ul>
+<li><a href="#org36ab8df">1. pre-process</a></li>
+<li><a href="#orgc3794c3">2. computation</a>
+<ul>
+<li><a href="#org9dd4630">max:</a></li>
+<li><a href="#org8a4662b">count:</a></li>
+<li><a href="#org90707ea">none-independent variable:</a></li>
+<li><a href="#org3351f48">group related variable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="org8225754" class="outline-2">
+<h2 id="org8225754">API of Souce, Iterator</h2>
+<div class="outline-text-2" id="text-org8225754">
+<ol class="org-ol">
+<li>build a <b>case class</b> for the columns of data source file you concern
+<ol class="org-ol">
+<li>each <b>line</b> will be represented as an <b>case object</b></li>
+<li>why case class, maybe use it as a <b>pattern</b> later.</li>
+</ol></li>
+<li>do some <b>filtering</b> to read-in data
+<ol class="org-ol">
+<li>read in and handle it
+<ul class="org-ul">
+<li>make non-present value <code>Option</code> <b>OR</b></li>
+<li>give default value to related case class Ctor parameter
+<ul class="org-ul">
+<li>in case class definition <b>OR</b></li>
+<li>in process of <b>line to case object</b></li>
+</ul></li>
+</ul></li>
+<li>throw out everything of line that have a dot
+throw out means <code>Ignore</code> using <code>flatMap</code> and <code>for</code></li>
+</ol></li>
+<li>do <b>transformation</b> from line to case object</li>
+</ol>
+</div>
+<div id="orga60d9c6" class="outline-3">
+<h3 id="orga60d9c6"><span class="todo TODO">TODO</span> : how to read txt from file</h3>
+<div class="outline-text-3" id="text-orga60d9c6">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">source</span> <span style="color: #4f97d7; font-weight: bold;">=</span> scala.io.<span style="color: #a45bad;">Source</span>.fromFile(&lt;filePath&gt;)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org3f28ecc" class="outline-3">
+<h3 id="org3f28ecc"><span class="todo TODO">TODO</span> : how to get whole text's Iterator by unit of line</h3>
+<div class="outline-text-3" id="text-org3f28ecc">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">linIter</span> <span style="color: #4f97d7; font-weight: bold;">=</span> source.getLines
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org182b671" class="outline-3">
+<h3 id="org182b671"><span class="todo TODO">TODO</span> : how to get 30 lines from front of the whole text's Iteratror</h3>
+<div class="outline-text-3" id="text-org182b671">
+<p>
+Note that , <code>Iterator</code> is a special kind of <code>collection</code>, which can be ONLY traverse
+ONCE( extends from TraversableOnce[T]). It has most API methods of <code>collection</code>:
+</p>
+<ul class="org-ul">
+<li>take</li>
+<li>drop</li>
+<li>map</li>
+<li>flatMap</li>
+<li>etc</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">seq</span> <span style="color: #4f97d7; font-weight: bold;">=</span> linIter.take(<span style="color: #a45bad;">30</span>).toSeq
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org704f6dd" class="outline-3">
+<h3 id="org704f6dd"><span class="todo TODO">TODO</span> : not get <code>length</code> of a iterator</h3>
+<div class="outline-text-3" id="text-org704f6dd">
+<p>
+<code>iterator.length</code> will consume the <code>next</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">arr</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Array</span>.fill(<span style="color: #a45bad;">30</span>)(<span style="color: #a45bad;">2</span>)
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">lines</span> <span style="color: #4f97d7; font-weight: bold;">=</span> arr.iterator
+lines.hasNext <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">true</span>
+lines.length  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">30</span>
+lines.hasNext <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">false</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="org0cfd5ed" class="outline-2">
+<h2 id="org0cfd5ed">how to deal with value non-present in data source file</h2>
+<div class="outline-text-2" id="text-org0cfd5ed">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">package</span> <span style="color: #2d9574;">standardscala</span>
+
+<span style="color: #2aa1ae; background-color: #292e34;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> </span><span style="color: #cc9393;">TODO</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 0. read in dataset, build case class, build your object line by line</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 1. handle the non-present data --- read-in and handle for precip and snow</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 2. handle the non-present data --- ignore the whole line if exist in tave,tmax,tmin</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 3. compute the highest temperature(2good,1bad)</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 4. get number of rainy day and rainy probability(1 methods)</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 5. for all rainy days, get the average high temperature(1good,1better)</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 6. get the average temperature by month</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> */</span>
+
+<span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #4f97d7; font-weight: bold;">class</span> <span style="color: #ce537a; font-weight: bold;">TempInfo</span>(day<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Int</span>,
+                    doy<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Int</span>,
+                    month<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Int</span>,
+                    year<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Int</span>,
+                    prcp<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Double</span>,
+                    snow<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Double</span>,
+                    tave<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Double</span>,
+                    tmax<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Double</span>,
+                    tmin<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Double</span>)
+
+<span style="color: #4f97d7; font-weight: bold;">object</span> <span style="color: #a45bad;">TempInfo</span> <span style="color: #4f97d7; font-weight: bold;">extends</span> <span style="color: #ce537a; font-weight: bold;">App</span>{
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">read in dataset</span>
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">deal with non-present value</span>
+  <span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">toDoubleOrNeg</span>(str<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">String</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Double</span> <span style="color: #4f97d7; font-weight: bold;">=</span> {
+    <span style="color: #4f97d7; font-weight: bold;">try</span> {
+      str.toDouble
+    } <span style="color: #4f97d7; font-weight: bold;">catch</span> {
+      <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #4f97d7; font-weight: bold;">_:</span><span style="color: #ce537a; font-weight: bold;">NumberFormatException</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> -<span style="color: #a45bad;">1</span>
+    }
+  }
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">get source from file</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">src</span> <span style="color: #4f97d7; font-weight: bold;">=</span> scala.io.<span style="color: #a45bad;">Source</span>.fromFile(<span style="color: #2d9574;">"/Users/yiddishkop/Worklap/StudyBDAS/MN212142_9392.csv"</span>)
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">get line iterator from source</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">lines</span> <span style="color: #4f97d7; font-weight: bold;">=</span> src.getLines.drop(<span style="color: #a45bad;">1</span>)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">lines is an iterator[String] so data is an iterator[TempInfo]</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">flatmap maybe the best method to ignore some items of collection who call it.</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">data</span> <span style="color: #4f97d7; font-weight: bold;">=</span> lines.flatMap {
+    line <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> {
+      <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">arr</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.split(<span style="color: #2d9574;">",'|',|,"</span>)
+      <span style="color: #4f97d7; font-weight: bold;">if</span> (arr(<span style="color: #a45bad;">7</span>) == <span style="color: #2d9574;">"."</span> || arr(<span style="color: #a45bad;">8</span>) == <span style="color: #2d9574;">"."</span> ||arr(<span style="color: #a45bad;">9</span>) == <span style="color: #2d9574;">"."</span>) <span style="color: #a45bad;">Seq</span>.empty
+      <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #a45bad;">Seq</span>(<span style="color: #a45bad;">TempInfo</span>(arr(<span style="color: #a45bad;">0</span>).toInt,
+                        arr(<span style="color: #a45bad;">1</span>).toInt,
+                        arr(<span style="color: #a45bad;">2</span>).toInt,
+                        arr(<span style="color: #a45bad;">4</span>).toInt,
+                        toDoubleOrNeg(arr(<span style="color: #a45bad;">5</span>)),
+                        toDoubleOrNeg(arr(<span style="color: #a45bad;">6</span>)),
+                        arr(<span style="color: #a45bad;">7</span>).toDouble,
+                        arr(<span style="color: #a45bad;">8</span>).toDouble,
+                        arr(<span style="color: #a45bad;">9</span>).toDouble))
+    }
+  }.toArray
+
+  src.close
+
+  data.take(<span style="color: #a45bad;">5</span>).foreach(println)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">compute the highest temperature(2good,1bad)</span>
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">bad 1, traverse 3 time, and build 2 same-size cache data by filter,map.</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">maxTmax</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.filter(<span style="color: #4f97d7; font-weight: bold;">_</span>!= <span style="color: #a45bad;">null</span>).map(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax).max
+  println(maxTmax)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">better 1 : reduceLeft</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">maxTempInfo</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.reduceLeft((a,b) <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #4f97d7; font-weight: bold;">if</span> (a.tmax &gt; b.tmax) a <span style="color: #4f97d7; font-weight: bold;">else</span> b)
+  println(maxTempInfo)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">better 2 : sortWith</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">use Ordering, where must exist implicit conversion from a.tmax.type to Ordering[a.tmax.type]</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">which pre-defined in Ordering[T]</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">maxTempInfo2</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.maxBy { a <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> a.tmax }
+  println(maxTempInfo2)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">get number of rainy day and rainy probability</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">rainyDays</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.count(<span style="color: #4f97d7; font-weight: bold;">_</span>.prcp&gt;=<span style="color: #a45bad;">1</span>.<span style="color: #a45bad;">0</span>)
+  println(s<span style="color: #2d9574;">"rainy days: </span><span style="color: #7590db;">$rainyDays</span><span style="color: #2d9574;">, and rainy probability: </span><span style="color: #7590db;">${rainyDays * 100.0/data.length}</span><span style="color: #2d9574;">"</span>)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">for all rainy days, get the average high temperature</span>
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">This is why foldLeft is bettern than reduceLeft, who require the same return type with element itself</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">reduceLeft: (A,A)=&gt;A composeNext A</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">foldLeft: (B,A)=&gt;B composeNext A</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> (<span style="color: #7590db;">rainyTmp</span>, <span style="color: #7590db;">rainyDays2</span>) <span style="color: #4f97d7; font-weight: bold;">=</span> data.foldLeft(<span style="color: #a45bad;">0</span>.<span style="color: #a45bad;">0</span> -&gt; <span style="color: #a45bad;">0</span>) {
+    <span style="color: #4f97d7; font-weight: bold;">case</span> ((<span style="color: #7590db;">a</span>, <span style="color: #7590db;">b</span>), <span style="color: #7590db;">tempInfo</span>) <span style="color: #4f97d7; font-weight: bold;">if</span> tempInfo.prcp &gt;= <span style="color: #a45bad;">1</span>.<span style="color: #a45bad;">0</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> (a+tempInfo.tmax, b+<span style="color: #a45bad;">1</span>)
+    <span style="color: #4f97d7; font-weight: bold;">case</span> ((<span style="color: #7590db;">a</span>, <span style="color: #7590db;">b</span>), <span style="color: #4f97d7; font-weight: bold;">_</span>)                                <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> (a,b)
+  }
+
+  println(s<span style="color: #2d9574;">"There are rainyDays: </span><span style="color: #7590db;">$rainyDays2</span><span style="color: #2d9574;">, sum together: </span><span style="color: #7590db;">$rainyTmp</span><span style="color: #2d9574;">, avg tmp:</span><span style="color: #7590db;">${rainyTmp/rainyDays2}</span><span style="color: #2d9574;">"</span>)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">a worse method: flatMap</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">use flatMap to ignore the non-rainy days, to get a subset to hold all desire elements</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">rainyData</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.flatMap {
+    <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">a</span> <span style="color: #4f97d7; font-weight: bold;">if</span> a.prcp &gt;= <span style="color: #a45bad;">1</span>.<span style="color: #a45bad;">0</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #a45bad;">Seq</span>(a.tmax)
+    <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #4f97d7; font-weight: bold;">_</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #a45bad;">Seq</span>.empty
+  }
+  println(s<span style="color: #2d9574;">"The avg tmp:</span><span style="color: #7590db;">${rainyData.sum/rainyData.length}</span><span style="color: #2d9574;">"</span>)
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">get the average temperature by month</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">get a Map[Int,List[TempInfo]] like(1 -&gt; (tempinfo1, tempinfo2, tempinfo23), 2-&gt; (tempinfo4, tempinfor56))</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">monthTemp</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.groupBy(<span style="color: #4f97d7; font-weight: bold;">_</span>.month)
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">get Map(month, avgTmax)</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">monthSeq</span> <span style="color: #4f97d7; font-weight: bold;">=</span> monthTemp.map{
+    <span style="color: #4f97d7; font-weight: bold;">case</span> (<span style="color: #7590db;">m</span>, <span style="color: #7590db;">l</span>) <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> m -&gt; {
+      l.foldLeft(<span style="color: #a45bad;">0</span>.<span style="color: #a45bad;">0</span>) { (a, tmp) <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> (a + tmp.tmax) } / l.length
+    }
+  }
+  monthSeq.toSeq.sortBy(<span style="color: #4f97d7; font-weight: bold;">_</span>._1).foreach(println)
+}
+
+</pre>
+</div>
+<ol class="org-ol">
+<li>read in and handle it
+<ol class="org-ol">
+<li>make non-present value <code>Option</code> <b>OR</b></li>
+<li>give default value to related case class Ctor parameter
+<ol class="org-ol">
+<li>in case class definition <b>OR</b></li>
+<li>in process of <b>line to case object</b></li>
+</ol></li>
+</ol></li>
+<li>throw out the line
+throw out means <code>Ignore</code> like codes below</li>
+</ol>
+
+<blockquote>
+<p>
+Ignoring the elements not fit requirement, 2 methods:
+</p>
+<ol class="org-ol">
+<li>flatMap(using the hidden mixing operation)</li>
+<li>for(using the hidden pattern match operation)</li>
+</ol>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">arr</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Array</span>.fill(<span style="color: #a45bad;">30</span>)(scala.util.<span style="color: #a45bad;">Random</span>.nextInt(<span style="color: #a45bad;">100</span>))
+
+<span style="color: #2aa1ae; background-color: #292e34;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> Ignoring the elements not fit requirement, 2 methods:</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 1. flatMap(using the hidden mixing operation)</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 2. for(using the hidden pattern match operation)</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> */</span>
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">method 1</span>
+arr.flatMap{
+  <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">i</span> <span style="color: #4f97d7; font-weight: bold;">if</span> i &gt; <span style="color: #a45bad;">30</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #a45bad;">Seq</span>.empty
+  <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">i</span>           <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #a45bad;">Seq</span>(i)
+}
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">method 2</span>
+<span style="color: #4f97d7; font-weight: bold;">for</span> (i <span style="color: #4f97d7; font-weight: bold;">&lt;-</span> arr
+     <span style="color: #4f97d7; font-weight: bold;">if</span> i &lt; <span style="color: #a45bad;">30</span>) <span style="color: #4f97d7; font-weight: bold;">yield</span> i
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org5b67db8" class="outline-2">
+<h2 id="org5b67db8">Do Sorting</h2>
+<div class="outline-text-2" id="text-org5b67db8">
+<blockquote>
+<p>
+you should always try your best to get the result you want ,by <b>ONLY ONE TRAVERSE</b>.
+</p>
+</blockquote>
+
+<p>
+when refer to Ordering or Sorting or compute Max, one key thing should be kept in mind that, you are dealing with BIG DATA, try your best to traverse as least times as you can.
+</p>
+
+<p>
+there are 3 useful methods for compute or ordering:
+</p>
+<ol class="org-ol">
+<li>map &amp; filter (<b>VERY BAD</b>, consume too mem and time)</li>
+<li>reduceLeft or foldLeft</li>
+<li>maxBy, maxWith, sortBy, sortWith</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">Then you get the data ,and may ask some question, like:</span>
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">what is highest temperature</span>
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">BAD method</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">maxTemp</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.map(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax).max
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">hotDays</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.filter(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax == maxTemp)
+println(s<span style="color: #2d9574;">"Hot days are ${hotDays.mkString("</span>, <span style="color: #2d9574;">")}"</span>)
+
+<span style="color: #2aa1ae; background-color: #292e34;">/* </span><span style="color: #2aa1ae; background-color: #292e34;">why bad?</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> BUUUT, drawbacks of code above is that, you do TRAVERSE directly</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> on WHOLE dataset THREE times, and create WHOLE NEW dataset TWO time:</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> Traverse: data.map, data.map.max, data.filter. ===&gt; time consumer</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> New: data.map, data.filter                     ===&gt; memo consumer</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> If size of dataset is very large, this will get down the speed</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> and even lead to "Stack Over Flow"</span>
+<span style="color: #2aa1ae; background-color: #292e34;">*/</span>
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">GOOD method</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">hotDay</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.maxBy(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax)
+println(s<span style="color: #2d9574;">"Hot day is </span><span style="color: #7590db;">$hotDay</span><span style="color: #2d9574;">"</span>)
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">another GOOD</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">hotDay2</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.reduceLeft((d1,d2) <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #4f97d7; font-weight: bold;">if</span> ( d1.tmax &gt;= d2.tmax ) d1 <span style="color: #4f97d7; font-weight: bold;">else</span> d2 )
+println(s<span style="color: #2d9574;">"Hot day is </span><span style="color: #7590db;">$hotDay2</span><span style="color: #2d9574;">"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org3a0062f" class="outline-2">
+<h2 id="org3a0062f">Do Counting</h2>
+<div class="outline-text-2" id="text-org3a0062f">
+<p>
+[Q]why using <code>x -&gt; y</code> instead of <code>(x,y)</code>
+[A]you see that two <code>()</code> there :) , some time forgetting will lead a big error.
+</p>
+
+<blockquote>
+<p>
+you should always try your best to get the result you want ,by <b>ONLY ONE TRAVERSE</b>.
+</p>
+</blockquote>
+
+<p>
+So, <code>map</code> and <code>filter</code> is BAD, forget about them unless you have no choice.
+</p>
+
+<p>
+<code>count</code> can hold, if do counting without other computation, else <code>foldLeft</code> and <code>flatMap</code> are two powerful tool to handle this
+</p>
+
+<ol class="org-ol">
+<li>count</li>
+<li>foldLeft</li>
+<li>flatMap</li>
+</ol>
+</div>
+</div>
+
+<div id="org1af169f" class="outline-2">
+<h2 id="org1af169f">Do something respectively on group</h2>
+<div class="outline-text-2" id="text-org1af169f">
+<ol class="org-ol">
+<li>groupBy =&gt; map</li>
+<li>grouped =&gt; Iterator</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">arr</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Array</span>((<span style="color: #a45bad;">1</span>,<span style="color: #a45bad;">2</span>,<span style="color: #a45bad;">3</span>), (<span style="color: #a45bad;">4</span>,<span style="color: #a45bad;">2</span>,<span style="color: #a45bad;">4</span>), (<span style="color: #a45bad;">22</span>,<span style="color: #a45bad;">2</span>,<span style="color: #a45bad;">2342</span>),(<span style="color: #a45bad;">121</span>,<span style="color: #a45bad;">1</span>,<span style="color: #a45bad;">234</span>),(<span style="color: #a45bad;">11</span>,<span style="color: #a45bad;">1</span>,<span style="color: #a45bad;">111</span>))
+arr.groupBy(<span style="color: #4f97d7; font-weight: bold;">_</span>._2)
+<span style="color: #2aa1ae; background-color: #292e34;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> scala.collection.immutable.Map[Int,Array[(Int, Int, Int)]] =</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> Map(2 -&gt; Array((1,2,3), (4,2,4), (22,2,2342)),</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> 1 -&gt; Array((121,1,234), (11,1,111)))</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> */</span>
+
+arr.grouped(<span style="color: #a45bad;">2</span>).toArray
+<span style="color: #2aa1ae; background-color: #292e34;">/*</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> Array[Array[(Int, Int, Int)]] =</span>
+<span style="color: #2aa1ae; background-color: #292e34;"> Array(Array((1,2,3), (4,2,4)),</span>
+<span style="color: #2aa1ae; background-color: #292e34;">       Array((22,2,2342), (121,1,234)),</span>
+<span style="color: #2aa1ae; background-color: #292e34;">       Array((11,1,111)))</span>
+<span style="color: #2aa1ae; background-color: #292e34;">*/</span>
+</pre>
+</div>
+
+<p>
+groupBy give us back a collection that makes it much easier to work on groupings of values which is often used very significant in the big data framework, eg. Hadoop was completely set up to work with key-value pairs, this key-value pair type of approach to things winds up being significant for a lot of our data analysis in SPARK
+</p>
+</div>
+</div>
+
+<div id="orgd377ad0" class="outline-2">
+<h2 id="orgd377ad0">summarization</h2>
+<div class="outline-text-2" id="text-orgd377ad0">
+<pre class="example">
+|-------------+-----------------------------+-------------------------------------|
+| program     | process                     | key-tech                            |
+|-------------+-----------------------------+-------------------------------------|
+| pre-process | define case class           |                                     |
+|             | .csv -&gt; source              | scala.io.Source.fromFile            |
+|             | source -&gt; iterator          | getLines                            |
+|             | iterator -&gt; Array[caseObje] | flatMap to filter out unrequirement |
+|-------------+-----------------------------+-------------------------------------|
+| computation | max                         | maxBy, reduceLeft                   |
+|             | count                       | count                               |
+|             | non-independent variable    | foldLeft, flatMap                   |
+|             | group related variable      | groupBy -&gt; map((a,b)=&gt;a-&gt;{fnOnB}    |
+|             |                             | -&gt; toSeq.sortBy                     |
+|-------------+-----------------------------+-------------------------------------|
+</pre>
+</div>
+
+<div id="org36ab8df" class="outline-3">
+<h3 id="org36ab8df">1. pre-process</h3>
+<div class="outline-text-3" id="text-org36ab8df">
+<ul class="org-ul">
+<li>define case class</li>
+<li>.csv =&gt; scala.io.Source.fromFile =&gt; source</li>
+<li>source =&gt; getLines =&gt; line iterator[String]</li>
+<li>iterator =&gt; flatMap to ignore garbage data =&gt; array[caseObj]</li>
+</ul>
+</div>
+</div>
+<div id="orgc3794c3" class="outline-3">
+<h3 id="orgc3794c3">2. computation</h3>
+<div class="outline-text-3" id="text-orgc3794c3">
+</div>
+<div id="org9dd4630" class="outline-4">
+<h4 id="org9dd4630">max:</h4>
+<div class="outline-text-4" id="text-org9dd4630">
+<ul class="org-ul">
+<li><code>array.reduceLeft</code></li>
+<li><code>array.maxBy</code></li>
+</ul>
+</div>
+</div>
+<div id="org8a4662b" class="outline-4">
+<h4 id="org8a4662b">count:</h4>
+<div class="outline-text-4" id="text-org8a4662b">
+<p>
+<code>array.count</code>
+</p>
+</div>
+</div>
+<div id="org90707ea" class="outline-4">
+<h4 id="org90707ea">none-independent variable:</h4>
+<div class="outline-text-4" id="text-org90707ea">
+<p>
+get embedded variable all at once by
+</p>
+<ul class="org-ul">
+<li><code>array.foldLeft</code>, BAB</li>
+<li><code>array.flatMap</code>, get a subset of requirement elements, get rid of others by its implicit fitering</li>
+</ul>
+</div>
+</div>
+<div id="org3351f48" class="outline-4">
+<h4 id="org3351f48">group related variable</h4>
+<div class="outline-text-4" id="text-org3351f48">
+<ol class="org-ol">
+<li><code>array.groupBy</code> , to get a map(group, <b>listOfCaseObject</b>)</li>
+<li><code>Map.map{(a,b) =&gt; a -&gt; {fn on b}}</code>, to extract information you want and get another <code>Map</code></li>
+<li><code>Map.toSeq.sortBy</code>, the thing sortBy must have some implicit coversion to Ordering[T]</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-10 五 03:22 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AKKA and a simple Actor Example</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">AKKA and a simple Actor Example</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org290c245">1. Defining an Actor class</a></li>
+<li><a href="#orgf184b6c">2. Build a <code>ActorSystem</code></a>
+<ul>
+<li><a href="#orga2161c4">2.1. what is ActorSystem?</a></li>
+<li><a href="#org983f3f7">2.2. two methods to build an <code>Actor</code> obj</a>
+<ul>
+<li><a href="#orgbcffae2">2.2.1. we CAN NOT build by <code>new</code></a></li>
+<li><a href="#orgf5341f0">2.2.2. method-1: create <code>actor</code> on <code>ActorSystem</code></a></li>
+<li><a href="#orgb0fd225">2.2.3. what is a <code>Props</code> ?</a></li>
+<li><a href="#org66cc97e">2.2.4. <span class="todo TODO">TODO</span> method-2: create <code>actor</code> inside of a <code>context</code> inside of <code>system</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org49b31ac">3. How to send message to an Actor</a></li>
+<li><a href="#orgf80c226">4. 代码</a></li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="org290c245" class="outline-2">
+<h2 id="org290c245"><span class="section-number-2">1</span> Defining an Actor class</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Actors are implemented by extending the <code>Actor</code> base trait and implementing the
+<code>receive</code> method. The <code>receive</code> method should define a series of case statements
+(which has the type <code>PartialFunction[Any, Unit]</code>) that defines which messages
+your Actor can handle, using standard Scala pattern matching, along with the
+implementation of how the messages should be processed.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">class</span> <span style="color: #ce537a; font-weight: bold;">SimpleActor</span> <span style="color: #4f97d7; font-weight: bold;">extends</span> <span style="color: #ce537a; font-weight: bold;">Actor</span>{
+  <span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">receive</span> <span style="color: #4f97d7; font-weight: bold;">=</span>{
+    <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">s</span><span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">String</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> println(<span style="color: #2d9574;">"String: "</span> + s)
+    <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">i</span><span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Int</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> println(<span style="color: #2d9574;">"Number: "</span> + i)
+  }
+
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">foo CAN NOT be access by others</span>
+  <span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">foo</span> <span style="color: #4f97d7; font-weight: bold;">=</span> println(<span style="color: #2d9574;">"Normal method"</span>)
+}
+</pre>
+</div>
+
+<p>
+Please note that the Akka Actor <code>receive</code> message loop is exhaustive(极其详细的),
+which is different compared to Erlang and the late Scala Actors. This means that
+you need to provide a pattern match for <code>all messages that it can accept</code> and if
+you want to be able to handle unknown messages then you need to have a default
+case as in the example above. Otherwise an <code>akka.actor.UnhandledMessage(message,
+sender, recipient)</code> will be published to the <code>ActorSystem~’s ~EventStream</code>.
+</p>
+
+<p>
+Note further that the return type of the behavior defined above is <code>Unit</code>; if
+the actor shall reply to the received message then this must be done explicitly
+as explained below.
+</p>
+
+<p>
+The result of the <code>receive</code> method is a partial function object, which is stored
+within the actor as its “initial behavior”, see Become/Unbecomefor further
+information on changing the behavior of an actor after its construction.
+</p>
+</div>
+</div>
+
+<div id="orgf184b6c" class="outline-2">
+<h2 id="orgf184b6c"><span class="section-number-2">2</span> Build a <code>ActorSystem</code></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+in order to use Akka we need to have our classes for actors, also we have to
+build something called <code>ActorSystem</code>
+</p>
+</div>
+
+<div id="orga2161c4" class="outline-3">
+<h3 id="orga2161c4"><span class="section-number-3">2.1</span> what is ActorSystem?</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<div class="figure">
+<p><img src="dropbox page/screenshot_2018-08-10_02-54-54.png" alt="screenshot_2018-08-10_02-54-54.png" />
+</p>
+</div>
+
+<p>
+An actor system is a hierarchical group of actors which share common
+configuration, e.g. dispatchers, deployments, remote capabilities and
+addresses. It is also the entry point for creating or looking up actors.
+</p>
+
+<p>
+Make a <code>akka.actor.ActorSystem</code> by call apply method on it, and give
+<code>ActorSystem</code> a name:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">system</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">ActorSystem</span>(<span style="color: #2d9574;">"SimpleSystem"</span>)
+</pre>
+</div>
+
+
+<p>
+The <code>apply</code> method of <code>ActorSystem</code> constructor has the following defition and
+the interpretation in offical website
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">apply</span>(name<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">String</span>,
+          config<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Option</span>[<span style="color: #a45bad;">Config</span>] <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">None</span>,
+          classLoader<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Option</span>[<span style="color: #a45bad;">ClassLoader</span>] <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">None</span>,
+          defaultExecutionContext<span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Option</span>[<span style="color: #a45bad;">ExecutionContext</span>] <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">None</span>
+)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ActorSystem</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+Creates a new ActorSystem with the specified name, the specified ClassLoader if
+given, otherwise obtains the current ClassLoader by first inspecting the current
+threads' getContextClassLoader, then tries to walk the stack to find the callers
+class loader, then falls back to the ClassLoader associated with the ActorSystem
+class. If an ExecutionContext is given, it will be used as the default executor
+inside this ActorSystem. If no ExecutionContext is given, the system will
+fallback to the executor configured under
+"akka.actor.default-dispatcher.default-executor.fallback". The system will use
+the passed in config, or falls back to the default reference configuration using
+the ClassLoader.
+</p>
+</blockquote>
+
+<p>
+<code>ActorSystem</code> has potentially multiple threads and it’s just sitting there
+waiting to receive messages.
+</p>
+</div>
+</div>
+
+<div id="org983f3f7" class="outline-3">
+<h3 id="org983f3f7"><span class="section-number-3">2.2</span> two methods to build an <code>Actor</code> obj</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="orgbcffae2" class="outline-4">
+<h4 id="orgbcffae2"><span class="section-number-4">2.2.1</span> we CAN NOT build by <code>new</code></h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+we now make an <code>Actor</code>, note that we can not make it by <code>new</code>
+</p>
+
+<p>
+<del>val actor = new SimpleActor</del>
+</p>
+
+<p>
+Exception in thread "main" akka.actor.ActorInitializationException: You cannot
+create an instance of [chap20multithreading.SimpleActorExample$SimpleActor]
+explicitly using the constructor (new).
+</p>
+</div>
+</div>
+
+
+<div id="orgf5341f0" class="outline-4">
+<h4 id="orgf5341f0"><span class="section-number-4">2.2.2</span> method-1: create <code>actor</code> on <code>ActorSystem</code></h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">system</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">ActorSystem</span>(<span style="color: #2d9574;">"SimpleSystem"</span>)
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">actor</span> <span style="color: #4f97d7; font-weight: bold;">=</span> system.actorOf(<span style="color: #a45bad;">Props</span>[<span style="color: #a45bad;">SimpleActor</span>], <span style="color: #2d9574;">"SimpleActor"</span>)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="dropbox page/screenshot_2018-08-10_03-01-30.png" alt="screenshot_2018-08-10_03-01-30.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>the whole process of building a Actor object</p>
+</div>
+</div>
+</div>
+
+
+<div id="orgb0fd225" class="outline-4">
+<h4 id="orgb0fd225"><span class="section-number-4">2.2.3</span> what is a <code>Props</code> ?</h4>
+<div class="outline-text-4" id="text-2-2-3">
+
+<div class="figure">
+<p><img src="dropbox page/screenshot_2018-08-10_03-02-28.png" alt="screenshot_2018-08-10_03-02-28.png" />
+</p>
+</div>
+
+<p>
+<code>Props</code> is a configuration object using in creating an Actor; it is immutable,
+so it is thread-safe and fully shareable.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">props</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Props</span>.empty
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">props</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Props</span>[<span style="color: #a45bad;">MyActor</span>]
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">props</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Props</span>(classOf[<span style="color: #a45bad;">MyActor</span>], arg1, arg2)
+
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">otherProps</span> <span style="color: #4f97d7; font-weight: bold;">=</span> props.withDispatcher(<span style="color: #2d9574;">"dispatcher-id"</span>)
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">otherProps</span> <span style="color: #4f97d7; font-weight: bold;">=</span> props.withDeploy(&lt;deployment info&gt;)
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="org66cc97e" class="outline-4">
+<h4 id="org66cc97e"><span class="section-number-4">2.2.4</span> <span class="todo TODO">TODO</span> method-2: create <code>actor</code> inside of a <code>context</code> inside of <code>system</code></h4>
+</div>
+</div>
+</div>
+
+<div id="org49b31ac" class="outline-2">
+<h2 id="org49b31ac"><span class="section-number-2">3</span> How to send message to an Actor</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<code>! reads 'bang'</code>
+</p>
+
+
+<div class="figure">
+<p><img src="dropbox page/screenshot_2018-08-10_03-03-29.png" alt="screenshot_2018-08-10_03-03-29.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span>build an Actor and pass a message</p>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-scala">println(<span style="color: #2d9574;">"before message"</span>)
+actor ! <span style="color: #2d9574;">"Hi there."</span>
+println(<span style="color: #2d9574;">"after string"</span>)
+actor ! <span style="color: #a45bad;">42</span>
+println(<span style="color: #2d9574;">"after Int"</span>)
+actor ! <span style="color: #2d9574;">'a'</span>
+println(<span style="color: #2d9574;">"after char"</span>)
+</pre>
+</div>
+
+
+<pre class="example">
+before message
+after string
+after Int
+String: Hi there.
+after char
+Number: 42
+Chara
+</pre>
+
+<p>
+通过这段程序的打印序列，可以看出，actor 对 message 的处理也是 异步 的
+</p>
+</div>
+</div>
+
+
+<div id="orgf80c226" class="outline-2">
+<h2 id="orgf80c226"><span class="section-number-2">4</span> 代码</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">import</span> akka.actor.{<span style="color: #a45bad;">Actor</span>, <span style="color: #a45bad;">ActorSystem</span>, <span style="color: #a45bad;">Props</span>}
+
+<span style="color: #4f97d7; font-weight: bold;">object</span> <span style="color: #a45bad;">SimpleActorExample</span> <span style="color: #4f97d7; font-weight: bold;">extends</span> <span style="color: #ce537a; font-weight: bold;">App</span>{
+  <span style="color: #4f97d7; font-weight: bold;">class</span> <span style="color: #ce537a; font-weight: bold;">SimpleActor</span> <span style="color: #4f97d7; font-weight: bold;">extends</span> <span style="color: #ce537a; font-weight: bold;">Actor</span>{
+    <span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">receive</span> <span style="color: #4f97d7; font-weight: bold;">=</span>{
+      <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">s</span><span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">String</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> println(<span style="color: #2d9574;">"String: "</span> + s)
+      <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">i</span><span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Int</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> println(<span style="color: #2d9574;">"Number: "</span> + i)
+      <span style="color: #4f97d7; font-weight: bold;">case</span> <span style="color: #7590db;">c</span><span style="color: #4f97d7; font-weight: bold;">:</span><span style="color: #ce537a; font-weight: bold;">Char</span> <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> println(<span style="color: #2d9574;">"Char: "</span> + c)
+    }
+
+    <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">foo CAN NOT be</span>
+    <span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">foo</span> <span style="color: #4f97d7; font-weight: bold;">=</span> println(<span style="color: #2d9574;">"Normal method"</span>)
+  }
+
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">system</span> <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">ActorSystem</span>(<span style="color: #2d9574;">"SimpleSystem"</span>)
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">actor</span> <span style="color: #4f97d7; font-weight: bold;">=</span> system.actorOf(<span style="color: #a45bad;">Props</span>[<span style="color: #a45bad;">SimpleActor</span>], <span style="color: #2d9574;">"SimpleActor"</span>)
+
+  println(<span style="color: #2d9574;">"before message"</span>)
+  actor ! <span style="color: #2d9574;">"Hi there."</span>
+  println(<span style="color: #2d9574;">"after string"</span>)
+  actor ! <span style="color: #a45bad;">42</span>
+  println(<span style="color: #2d9574;">"after Int"</span>)
+  actor ! <span style="color: #2d9574;">'a'</span>
+  println(<span style="color: #2d9574;">"after char"</span>)
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

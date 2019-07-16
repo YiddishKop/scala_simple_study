@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-08-08 三 23:06 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Big Data and Spark</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddishkop" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme.css" >
+<script src="https://hypothes.is/embed.js" async></script>
+<script type="application/json" class="js-hypothesis-config">
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Big Data and Spark</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org479dc99">Big data and Spark</a></li>
+<li><a href="#orgb0e8e6c">Run code on Spark</a></li>
+<li><a href="#orgb197869">Spark RDDs</a></li>
+<li><a href="#orgb18c675">More about RDD, Transform and Action</a>
+<ul>
+<li><a href="#orgb2acee3">1. give back OTHER RDD, map,filter,flatMap</a></li>
+<li><a href="#orgfa9c335">more about <code>collect</code></a></li>
+<li><a href="#org6dd38e6">IMPORTANT NOTE about Transform</a></li>
+<li><a href="#org88fca30">2. give back sth not a RDD</a></li>
+</ul>
+</li>
+<li><a href="#org2d988d4">API of collection TO API of RDD</a></li>
+<li><a href="#org6799755">The good in collection The BAD in RDD</a></li>
+<li><a href="#orgf9e6fcd">Lazy filter and Eager filter</a></li>
+<li><a href="#org2226f51">Order and No Order</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="org479dc99" class="outline-2">
+<h2 id="org479dc99">Big data and Spark</h2>
+<div class="outline-text-2" id="text-org479dc99">
+<p>
+MapReduce was an appraoch to dealing with very large data sets, MapReduce aimed at the enviroment make up by clusters of computers.And should <b>resilient</b> against that I have to be recover from the situtation when some computers down at some time. That is the way the MapReduce algorithm work:
+</p>
+
+<ul class="org-ul">
+<li>do some processing</li>
+<li>save the results off</li>
+<li>do more processing based on the results</li>
+<li>save the results off</li>
+</ul>
+
+
+<p>
+There is a big drawbacks that in hadoop, everytime doing the reduce, it saves the results off to <b>disk</b>, and this has a huge influence to the computation speed.
+</p>
+
+<p>
+<a href="http://i.imgur.com/k0t1e.png">Latency Nubmers Every Programmer Shoud Know</a>
+</p>
+
+<blockquote>
+<p>
+Latency Comparison Numbers
+</p>
+<hr />
+<p>
+L1 cache reference                            0.5 ns
+Branch mispredict                             5   ns
+L2 cache reference                            7   ns             14x L1 cache
+Mutex lock/unlock                            25   ns
+Main memory reference                       100   ns             20x L2 cache, 200x L1 cache
+Compress 1K bytes with Zippy              3,000   ns
+Send 1K bytes over 1 Gbps network        10,000   ns    0.01 ms
+Read 4K randomly from SSD*              150,000   ns    0.15 ms
+Read 1 MB sequentially from memory      250,000   ns    0.25 ms
+Round trip within same datacenter       500,000   ns    0.5  ms
+Read 1 MB sequentially from SSD*      1,000,000   ns    1    ms  4X memory
+Disk seek                            10,000,000   ns   10    ms  20x datacenter roundtrip
+Read 1 MB sequentially from disk     20,000,000   ns   20    ms  80x memory, 20X SSD
+Send packet CA-&gt;Netherlands-&gt;CA     150,000,000   ns  150    ms
+</p>
+
+<p>
+Notes
+</p>
+<hr />
+<p>
+1 ns = 10-9 seconds
+1 ms = 10-3 seconds
+Assuming ~1GB/sec SSD
+</p>
+</blockquote>
+
+
+<blockquote>
+<p>
+HADOOP:
+Read 1 MB sequentially from disk     20,000,000   ns   20    ms  80x memory, 20X SSD
+SPARK:
+Read 1 MB sequentially from memory      250,000   ns    0.25 ms
+</p>
+</blockquote>
+
+<p>
+This is where SPARK comes in. SPARK does a lot more of its operations in memory. It's still distributed, still has to do communication across the network. BUUUT, SPARK <b>doesn't save very ofen</b>, the way that it does this is through <b>RDD</b> (resilient distributed data set).
+</p>
+
+<p>
+They both should deal with the same problem, that computer will down, but SPARK deals with it in a <b>fundamentally different</b> way than HADOOP, and still allows us to do the majority of our operations in the memory, and only go out to memory occasionally.
+</p>
+</div>
+</div>
+
+<div id="orgb0e8e6c" class="outline-2">
+<h2 id="orgb0e8e6c">Run code on Spark</h2>
+<div class="outline-text-2" id="text-orgb0e8e6c">
+<p>
+SPARK shell
+</p>
+<hr />
+<div class="org-src-container">
+<pre class="src src-sh" id="org902682b">spark-shell --master local[*]
+</pre>
+</div>
+
+<blockquote>
+<p>
+Spark context Web UI available at <a href="http://192.168.199.134:4040">http://192.168.199.134:4040</a>
+<b>Spark context</b> available as '<b>sc</b>' (master = local[*], app id = local-1525585118689).
+<b>Spark session</b> available as '<b>spark</b>'.
+</p>
+</blockquote>
+
+<ol class="org-ol">
+<li>&#x2013;master : master node</li>
+<li>local : local mode</li>
+<li>[*] : use threads or CPU cores as many as possible.</li>
+</ol>
+
+
+<p>
+Then we can do some computation like:
+</p>
+<div class="org-src-container">
+<pre class="src src-scala">scala&gt; sc.textFile(<span style="color: #2d9574;">"MN212142_9392.csv"</span>)
+res0<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">org</span>.apache.spark.rdd.<span style="color: #a45bad;">RDD</span>[<span style="color: #a45bad;">String</span>] <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">MN212142_9392</span>.csv <span style="color: #a45bad;">MapPartitionsRDD</span>[<span style="color: #a45bad;">1</span>] at textFile at &lt;console<span style="color: #4f97d7; font-weight: bold;">&gt;:</span><span style="color: #a45bad;">25</span>
+
+scala&gt; res0.take(<span style="color: #a45bad;">5</span>)
+res1<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Array</span>[<span style="color: #a45bad;">String</span>] <span style="color: #4f97d7; font-weight: bold;">=</span> <span style="color: #a45bad;">Array</span>(
+  <span style="color: #2d9574;">"Day  ,JD  ,Month  ,State_id  ,Year  ,PRCP (in),SNOW (in),TAVE (F),TMAX (F),TMIN (F) "</span>, <span style="color: #2d9574;">"1,335,12,'212142',1895,0,0,12,26,-2 "</span>,
+  <span style="color: #2d9574;">"2,336,12,'212142',1895,0,0,-3,11,-16 "</span>,
+  <span style="color: #2d9574;">"3,337,12,'212142',1895,0,0,6,11,0 "</span>,
+  <span style="color: #2d9574;">"4,338,12,'212142',1895,0,0,2,12,-9 "</span>)
+</pre>
+</div>
+
+
+<p>
+SPARK program
+</p>
+<hr />
+<p>
+some codes on local, like regular codes in eclipse or emacs
+</p>
+
+
+<p>
+SPARK submit
+</p>
+<hr />
+<ul class="org-ul">
+<li>setup your own spark context</li>
+<li>setup a cluster by fat JARs using sbt-assembly, exporting a fat JARs</li>
+<li>addSbtPlugin <code>sbt-assembly</code> to the Project/assembly.sbt</li>
+<li>using spark-commit &#x2013;class ??? target/scala ??? to run those things</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-sh">spark-submit --master local[*] -- class ??? target/scala ???
+</pre>
+</div>
+</div>
+</div>
+
+<div id="orgb197869" class="outline-2">
+<h2 id="orgb197869">Spark RDDs</h2>
+<div class="outline-text-2" id="text-orgb197869">
+<p>
+The use of RDDs has declined with the rise of SPARK SQL, data sets and data frames are kind of used more commonly in SPARK, but RDDs is still helpful to know what's underneath the hood.
+</p>
+
+
+<p>
+process:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">&#xa0;</th>
+<th scope="col" class="org-left">var</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-left">hwo to get</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1.</td>
+<td class="org-left">conf</td>
+<td class="org-left">SparkConf</td>
+<td class="org-left">new SparkConf .-&gt; set app name .-&gt; set master</td>
+</tr>
+
+<tr>
+<td class="org-right">2.</td>
+<td class="org-left">sc</td>
+<td class="org-left">SparkContext</td>
+<td class="org-left">new SparkContext &lt;- conf</td>
+</tr>
+
+<tr>
+<td class="org-right">3.</td>
+<td class="org-left">lines</td>
+<td class="org-left">RDD[String]</td>
+<td class="org-left">sc.textFile &lt;- parth</td>
+</tr>
+
+<tr>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+lines as an RDD follow somewhat different rules than scala collection.
+</p>
+
+<blockquote>
+<p>
+Read a text file from HDFS, a local file system (available on all nodes), or any Hadoop-supported file system URI, and return it as an RDD of Strings.
+</p>
+</blockquote>
+
+
+<p>
+<code>RDD[A]</code> is a Monad that support <code>map,filter,fold,reduce,flatMap,aggregate</code>, looks like the collection of scala, but they're huge different under the neath.
+</p>
+
+<p>
+From this point of view, <b>RDD</b> is a <b>special collection</b>
+</p>
+
+<p>
+Just compare:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">lines is Iterator[String]</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">lines</span> <span style="color: #4f97d7; font-weight: bold;">=</span> source.getLines().drop(<span style="color: #a45bad;">1</span>)
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">lines is RDD[String]</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">lines</span> <span style="color: #4f97d7; font-weight: bold;">=</span> sc.textFile(<span style="color: #2d9574;">"MN212142_9392.csv"</span>).filter(!<span style="color: #4f97d7; font-weight: bold;">_</span>.contains(<span style="color: #2d9574;">"Day"</span>))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="orgb18c675" class="outline-2">
+<h2 id="orgb18c675">More about RDD, Transform and Action</h2>
+<div class="outline-text-2" id="text-orgb18c675">
+<p>
+RDD has 2 separate types of API methods on them:
+</p>
+</div>
+<div id="orgb2acee3" class="outline-3">
+<h3 id="orgb2acee3">1. give back OTHER RDD, map,filter,flatMap</h3>
+<div class="outline-text-3" id="text-orgb2acee3">
+<blockquote>
+<p>
+<code>def map[U](f: (T) ⇒ U)(implicit arg0: ClassTag[U]): RDD[U]</code>
+<code>def collect[U](f: PartialFunction[T, U])(implicit arg0: ClassTag[U]): RDD[U]</code>
+Return an RDD that contains all matching values by applying f.
+</p>
+</blockquote>
+
+
+
+<blockquote>
+<p>
+<b>All</b> the operations on the scala <b>collections</b> were <b>Eager</b>, means return you result as soon as you called them.
+</p>
+</blockquote>
+
+<p>
+Transform
+</p>
+<hr />
+<p>
+For map of RDD, what it does is transform from one <code>Monad</code> to another <code>Monad</code>, and in scala this is called <b>Transform</b>, and <b>Transform are lazy</b>,
+</p>
+
+<p>
+Actually, Transform <b>is more like a function</b> than an object, it <b>ONLY save the recipe</b>, NOT do it in practice. SPARK transforms are all lazy, so simply calls them will have nothing happen. <b>This just schedules some code to be run out across the cluster</b>, it doesn't actually happend until there is an <b>action</b>.
+</p>
+
+<p>
+which means that:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">collection</th>
+<th scope="col" class="org-left">RDD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">filter</td>
+<td class="org-left">eager -&gt; inefficiency</td>
+<td class="org-left">lazy -&gt; efficiency</td>
+</tr>
+
+<tr>
+<td class="org-left">map</td>
+<td class="org-left">eager</td>
+<td class="org-left">lazy</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="orgfa9c335" class="outline-3">
+<h3 id="orgfa9c335">more about <code>collect</code></h3>
+<div class="outline-text-3" id="text-orgfa9c335">
+<blockquote>
+<p>
+there two collect() method of RDD: one is a <b>Transform</b>, the other is an <b>Action</b>
+// Transform
+def collect[U](f: PartialFunction[T, U])(implicit arg0: ClassTag[U]): RDD[U]
+Return an RDD that contains all matching values by applying f.
+// Action
+def collect(): Array[T]
+Return an array that contains all of the elements in this RDD.
+</p>
+</blockquote>
+
+<p>
+<b>the <code>def collect()</code> is used to capture all data from other machines(you know RDD may store his data into many machines, so every RDD include build by Transform, all may store in many machines) into master( current machine )</b>
+</p>
+
+<p>
+<b>when you do some operation(like sort, plot) in master computer, which require the whole data of some RDD, you should do <code>thisRDD.collect()</code> to collect all data from other computers, ONLY AFTER THAT, you can do this operation.</b>
+</p>
+
+<p>
+<b>the <code>def collect(pf)</code> acts like it in scala.collection</b>
+</p>
+</div>
+</div>
+<div id="org6dd38e6" class="outline-3">
+<h3 id="org6dd38e6">IMPORTANT NOTE about Transform</h3>
+<div class="outline-text-3" id="text-org6dd38e6">
+<p>
+Two features of <b>Transform</b> when it acts like a function, that is the reson why RDD is core concept of SPAR
+</p>
+<ol class="org-ol">
+<li>because it is (almost)a function, you can pass it to other functions, even to other machines, which make computation move around between computers.</li>
+
+<li>because it is (almost)a function, it's some like <b>pass by-name</b>, means whenever its name occur, it will do compute once, it's <b>not a pass by-value</b>. More occurance, More times it computes. Huge inefficiency.</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">RDD[TempData]</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">data</span> <span style="color: #4f97d7; font-weight: bold;">=</span> lines.flatMap { line <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> ...}
+</pre>
+</div>
+
+<p>
+eveytime 'data' occur, it will do lines.flatMap one more time:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala">println(<span style="color: #2d9574;">"============================="</span> + data.max()(<span style="color: #a45bad;">Ordering</span>.by(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax)))
+println(<span style="color: #2d9574;">"============================="</span> + data.reduce((td1, td2) <span style="color: #4f97d7; font-weight: bold;">=&gt;</span> <span style="color: #4f97d7; font-weight: bold;">if</span>(td1.tmax &gt;= td2.tmax) td1 <span style="color: #4f97d7; font-weight: bold;">else</span> td2))
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">maxTemp</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.map(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax).max
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">hotDays</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.filter(<span style="color: #4f97d7; font-weight: bold;">_</span>.tmax == maxTemp)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="org88fca30" class="outline-3">
+<h3 id="org88fca30">2. give back sth not a RDD</h3>
+<div class="outline-text-3" id="text-org88fca30">
+<blockquote>
+<p>
+<code>def take(num: Int): Array[T]</code>
+<code>def collect(): Array[T]</code> // different from the collect(pf)
+Return an array that contains all of the elements in this RDD.
+collect() is a method convert an RDD to an Array, very useful
+</p>
+</blockquote>
+
+<p>
+Action
+</p>
+<hr />
+<p>
+Action are the methods of Spark that don't return other RDD, Action force some level of computation to actually occur.
+</p>
+</div>
+</div>
+</div>
+
+<div id="org2d988d4" class="outline-2">
+<h2 id="org2d988d4">API of collection TO API of RDD</h2>
+<div class="outline-text-2" id="text-org2d988d4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">collcAPI</th>
+<th scope="col" class="org-left">RDDAPI</th>
+<th scope="col" class="org-left">get round with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">drop</td>
+<td class="org-left">X</td>
+<td class="org-left">filter(!_.contains())</td>
+</tr>
+
+<tr>
+<td class="org-left">maxBy</td>
+<td class="org-left">X</td>
+<td class="org-left">max()(Ordering.by(_.tmax))</td>
+</tr>
+
+<tr>
+<td class="org-left">mkString</td>
+<td class="org-left">X</td>
+<td class="org-left">collect().mkString</td>
+</tr>
+
+<tr>
+<td class="org-left">par</td>
+<td class="org-left">X</td>
+<td class="org-left">[NO NEED] aggregate directly</td>
+</tr>
+
+<tr>
+<td class="org-left">length</td>
+<td class="org-left">X</td>
+<td class="org-left">count</td>
+</tr>
+
+<tr>
+<td class="org-left">count(predict)</td>
+<td class="org-left">count()</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">take</td>
+<td class="org-left">take</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">reduce</td>
+<td class="org-left">reduce</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">map</td>
+<td class="org-left">map</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">flatMap</td>
+<td class="org-left">flatMap</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">filter</td>
+<td class="org-left">filter</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">aggregate</td>
+<td class="org-left">aggregate</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">collect</span>[<span style="color: #a45bad;">U</span>](f<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">PartialFunction</span>[<span style="color: #a45bad;">T</span>, <span style="color: #a45bad;">U</span>])(<span style="color: #4f97d7;">implicit</span> arg0<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ClassTag</span>[<span style="color: #a45bad;">U</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>[<span style="color: #a45bad;">U</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return an RDD that contains all matching values by applying f.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">filter</span>(f<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">Boolean</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>[<span style="color: #a45bad;">T</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return a new RDD containing only the elements that satisfy a predicate</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">map</span>[<span style="color: #a45bad;">U</span>](f<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">U</span>)(<span style="color: #4f97d7;">implicit</span> arg0<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ClassTag</span>[<span style="color: #a45bad;">U</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>[<span style="color: #a45bad;">U</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return a new RDD by applying a function to all elements of this RDD.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">flatMap</span>[<span style="color: #a45bad;">U</span>](f<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">TraversableOnce</span>[<span style="color: #a45bad;">U</span>])(<span style="color: #4f97d7;">implicit</span> arg0<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ClassTag</span>[<span style="color: #a45bad;">U</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>[<span style="color: #a45bad;">U</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return a new RDD by first applying a function to all elements of this RDD, and then flattening the results.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">groupBy</span>[<span style="color: #a45bad;">K</span>](f<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">K</span>)(<span style="color: #4f97d7;">implicit</span> kt<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">ClassTag</span>[<span style="color: #a45bad;">K</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>[(<span style="color: #a45bad;">K</span>, <span style="color: #a45bad;">Iterable</span>[<span style="color: #a45bad;">T</span>])]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return an RDD of grouped items. Each group consists of a key and a sequence of elements mapping to that key. The ordering of elements within each group is not guaranteed, and may even differ each time the resulting RDD is evaluated.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">max</span>()(<span style="color: #4f97d7;">implicit</span> ord<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Ordering</span>[<span style="color: #a45bad;">T</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Returns the max of this RDD as defined by the implicit Ordering[T].</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">min</span>()(<span style="color: #4f97d7;">implicit</span> ord<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Ordering</span>[<span style="color: #a45bad;">T</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Returns the min of this RDD as defined by the implicit Ordering[T].</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">reduce</span>(f<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>, <span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">T</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Reduces the elements of this RDD using the specified commutative and associative binary operator.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">take</span>(num<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Int</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Array</span>[<span style="color: #a45bad;">T</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Take the first num elements of the RDD.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">foreach</span>(f<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">Unit</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Unit</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Applies a function f to all elements of this RDD.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">fold</span>(zeroValue<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>)(op<span style="color: #4f97d7; font-weight: bold;">:</span> (<span style="color: #a45bad;">T</span>, <span style="color: #a45bad;">T</span>) <span style="color: #4f97d7; font-weight: bold;">&#8658;</span> <span style="color: #a45bad;">T</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Aggregate the elements of each partition, and then the results for all the partitions, using a given associative function and a neutral "zero value".</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">first</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return the first element in this RDD.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">cache</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>.<span style="color: #4f97d7; font-weight: bold;">this</span>.<span style="color: #4f97d7; font-weight: bold;">type</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Persist this RDD with the default storage level (MEMORY_ONLY).</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">collect</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Array</span>[<span style="color: #a45bad;">T</span>]
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return an array that contains all of the elements in this RDD.</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">count</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Long</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return the number of elements in the RDD.</span>
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-scala">~<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">collect</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Array</span>[<span style="color: #a45bad;">T</span>]~ <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">different from the collect(pf)</span>
+<span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Return an array that contains all of the elements in this RDD. collect() is a method convert an RDD to an Array, very useful</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">max</span>()(<span style="color: #4f97d7;">implicit</span> ord<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">Ordering</span>[<span style="color: #a45bad;">T</span>])<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">T</span>
+<span style="color: #a45bad;">Returns</span> the max of <span style="color: #4f97d7; font-weight: bold;">this</span> <span style="color: #a45bad;">RDD</span> as defined by the <span style="color: #4f97d7;">implicit</span> <span style="color: #a45bad;">Ordering</span>[<span style="color: #a45bad;">T</span>].
+</pre>
+</div>
+<p>
+we have 2 choices to make this max() work for our TempData class:
+</p>
+<ol class="org-ol">
+<li>build an implicit conversion from TempData to Ordering</li>
+<li>build an Ordering object by <code>Ordering.by[A,B]</code> or <code>Ordering[A,B].on</code>, then passed explicitly in.</li>
+</ol>
+</div>
+</div>
+
+<div id="org6799755" class="outline-2">
+<h2 id="org6799755">The good in collection The BAD in RDD</h2>
+<div class="outline-text-2" id="text-org6799755">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">TOO BAD</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">data</span> <span style="color: #4f97d7; font-weight: bold;">=</span> lines.flatMap { line <span style="color: #4f97d7; font-weight: bold;">=&gt;</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">p</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.split(<span style="color: #2d9574;">","</span>)
+  <span style="color: #4f97d7; font-weight: bold;">if</span> (p(<span style="color: #a45bad;">7</span>)==<span style="color: #2d9574;">"."</span>||p(<span style="color: #a45bad;">8</span>)==<span style="color: #2d9574;">"."</span> || p(<span style="color: #a45bad;">9</span>)==<span style="color: #2d9574;">"."</span>) <span style="color: #a45bad;">Seq</span>.empty <span style="color: #4f97d7; font-weight: bold;">else</span>
+                                                     <span style="color: #a45bad;">Seq</span>(<span style="color: #a45bad;">TempData</span>(p(<span style="color: #a45bad;">0</span>).toInt,
+                                                                  p(<span style="color: #a45bad;">1</span>).toInt,
+                                                                  p(<span style="color: #a45bad;">2</span>).toInt,
+                                                                  p(<span style="color: #a45bad;">4</span>).toInt,
+                                                                  <span style="color: #a45bad;">TempData</span>.toDoubleOrNeg(p(<span style="color: #a45bad;">5</span>)),
+                                                                  <span style="color: #a45bad;">TempData</span>.toDoubleOrNeg(p(<span style="color: #a45bad;">6</span>)),
+                                                                  p(<span style="color: #a45bad;">7</span>).toDouble,
+                                                                  p(<span style="color: #a45bad;">8</span>).toDouble,
+                                                                  p(<span style="color: #a45bad;">9</span>).toDouble))
+}
+</pre>
+</div>
+
+<p>
+Very Inefficient.
+</p>
+
+<p>
+Why? Because of the Lazy Transform is (almost)a function, everytime it occur,one more time it computes, it's not a value.
+</p>
+
+<p>
+So, if you use some RDD more often, you should have more technique to deal with it.
+</p>
+
+<p>
+<b>cache</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">cache</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>.<span style="color: #4f97d7; font-weight: bold;">this</span>.<span style="color: #4f97d7; font-weight: bold;">type</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">//</span><span style="color: #2aa1ae; background-color: #292e34;">Persist this RDD with the default storage level (MEMORY_ONLY).</span>
+</pre>
+</div>
+<p>
+cache persist this RDD inside of memory.
+</p>
+
+<p>
+<b>persist</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">persist</span>()<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>.<span style="color: #4f97d7; font-weight: bold;">this</span>.<span style="color: #4f97d7; font-weight: bold;">type</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">Persist this RDD with the default storage level (MEMORY_ONLY).</span>
+
+<span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">persist</span>(newLevel<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>)<span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">RDD</span>.<span style="color: #4f97d7; font-weight: bold;">this</span>.<span style="color: #4f97d7; font-weight: bold;">type</span>
+  <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">Set this RDD's storage level to persist its values across operations after the first time it is computed.</span>
+</pre>
+</div>
+<p>
+persist can choose the <code>StorageLevel</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala" id="org6339625"><span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">DISK_ONLY</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">DISK_ONLY_2</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_AND_DISK</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_AND_DISK_2</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_AND_DISK_SER</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_AND_DISK_SER_2</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_ONLY</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_ONLY_2</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_ONLY_SER</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">MEMORY_ONLY_SER_2</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">NONE</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">OFF_HEAP</span><span style="color: #4f97d7; font-weight: bold;">:</span> <span style="color: #ce537a; font-weight: bold;">StorageLevel</span>
+</pre>
+</div>
+
+<p>
+Happy to persisit it on RDD, BUUUT if it's too large you may choose <code>MEMORY_AND_DISK</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">GOOD NOW</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">data</span> <span style="color: #4f97d7; font-weight: bold;">=</span> lines.flatMap { line <span style="color: #4f97d7; font-weight: bold;">=&gt;</span>
+  <span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">p</span> <span style="color: #4f97d7; font-weight: bold;">=</span> line.split(<span style="color: #2d9574;">","</span>)
+  <span style="color: #4f97d7; font-weight: bold;">if</span> (p(<span style="color: #a45bad;">7</span>)==<span style="color: #2d9574;">"."</span>||p(<span style="color: #a45bad;">8</span>)==<span style="color: #2d9574;">"."</span> || p(<span style="color: #a45bad;">9</span>)==<span style="color: #2d9574;">"."</span>) <span style="color: #a45bad;">Seq</span>.empty <span style="color: #4f97d7; font-weight: bold;">else</span>
+                                                     <span style="color: #a45bad;">Seq</span>(<span style="color: #a45bad;">TempData</span>(p(<span style="color: #a45bad;">0</span>).toInt,
+                                                                  p(<span style="color: #a45bad;">1</span>).toInt,
+                                                                  p(<span style="color: #a45bad;">2</span>).toInt,
+                                                                  p(<span style="color: #a45bad;">4</span>).toInt,
+                                                                  <span style="color: #a45bad;">TempData</span>.toDoubleOrNeg(p(<span style="color: #a45bad;">5</span>)),
+                                                                  <span style="color: #a45bad;">TempData</span>.toDoubleOrNeg(p(<span style="color: #a45bad;">6</span>)),
+                                                                  p(<span style="color: #a45bad;">7</span>).toDouble,
+                                                                  p(<span style="color: #a45bad;">8</span>).toDouble,
+                                                                  p(<span style="color: #a45bad;">9</span>).toDouble))
+}.cache() <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">just add method to persist the frequently used RDD</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="orgf9e6fcd" class="outline-2">
+<h2 id="orgf9e6fcd">Lazy filter and Eager filter</h2>
+<div class="outline-text-2" id="text-orgf9e6fcd">
+<p>
+all operations in scala collection are EAGER, it will immediately return; transform in RDD are lazy, it will just <b>compute in brain not in paper</b>.
+</p>
+
+<ul class="org-ul">
+<li>filter in scala.collection is inefficient</li>
+<li>filter in spark.RDD is efficient</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">collection.count</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">rainyCount</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.count(<span style="color: #4f97d7; font-weight: bold;">_</span>.precip &gt;= <span style="color: #a45bad;">1</span>.<span style="color: #a45bad;">0</span>)
+
+<span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">RDD.filter.count</span>
+<span style="color: #4f97d7; font-weight: bold;">val</span> <span style="color: #7590db;">rainyCount</span> <span style="color: #4f97d7; font-weight: bold;">=</span> data.filter(<span style="color: #4f97d7; font-weight: bold;">_</span>.precip &gt;= <span style="color: #a45bad;">1</span>.<span style="color: #a45bad;">0</span>).count
+</pre>
+</div>
+</div>
+</div>
+<div id="org2226f51" class="outline-2">
+<h2 id="org2226f51">Order and No Order</h2>
+<div class="outline-text-2" id="text-org2226f51">
+<div class="org-src-container">
+<pre class="src src-scala">monthlyTem.collect.sortBy(<span style="color: #4f97d7; font-weight: bold;">_</span>._1) foreach println
+</pre>
+</div>
+
+<blockquote>
+<p>
+[info] (1,16.16281112737921)
+[info] (2,21.044573643410853)
+[info] (3,34.81650848432557)
+[info] (4,52.93286010056197)
+[info] (5,66.64433135425502)
+[info] (6,75.19371727748691)
+[info] (7,80.85272625070264)
+[info] (8,78.97310170916224)
+[info] (9,68.98621877691644)
+[info] (10,55.87532097004279)
+[info] (11,36.33536029188203)
+[info] (12,21.44126804415511)
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-scala">monthlyTem.sortBy(<span style="color: #4f97d7; font-weight: bold;">_</span>._1) foreach println
+</pre>
+</div>
+<blockquote>
+<p>
+[info] (7,80.85272625070264)
+[info] (8,78.97310170916224)
+[info] (9,68.98621877691644)
+[info] (10,55.87532097004279)
+[info] (11,36.33536029188203)
+[info] (12,21.44126804415511)
+[info] (1,16.16281112737921)
+[info] (2,21.044573643410853)
+[info] (3,34.81650848432557)
+[info] (4,52.93286010056197)
+[info] (5,66.64433135425502)
+[info] (6,75.19371727748691)
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+</body>
+</html>

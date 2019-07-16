@@ -1,0 +1,63 @@
+# -*- org-export-babel-evaluate: nil -*-
+#+PROPERTY: header-args :eval never-export
+#+PROPERTY: header-args:python :session What is Ordered
+#+PROPERTY: header-args:ipython :session What is Ordered
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+#+HTML_HEAD: <script src="https://hypothes.is/embed.js" async></script>
+#+HTML_HEAD: <script type="application/json" class="js-hypothesis-config">
+#+HTML_HEAD: <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:nil html-preamble:t
+#+OPTIONS: H:3 num:t ^:nil _:nil tags:not-in-toc
+#+TITLE: What is Ordered
+#+AUTHOR: yiddishkop
+#+EMAIL: [[mailto:yiddishkop@163.com][yiddi's email]]
+#+TAGS: {PKGIMPT(i) DATAVIEW(v) DATAPREP(p) GRAPHBUILD(b) GRAPHCOMPT(c)} LINAGAPI(a) PROBAPI(b) MATHFORM(f) MLALGO(m)
+
+
+* What is Ordered?
+~scala.math.Ordered~ official site
+
+[[file:What%20is%20Ordered/screenshot_2018-08-10_09-17-01.png]]
+
+A trait for data that have a ~single~, ~natural ordering~. See
+scala.math.Ordering before using this trait for more information about whether
+to use scala.math.Ordering instead. What problem it solved?
+
+Classes that implement this trait can be ~sorted~ with scala.util.Sorting and
+can be compared with standard comparison operators (e.g. > and <).
+
+- ~Ordered~ should be used for data with a ~single~, ~natural ordering~ (like
+  integers) while ~Ordering~ allows for ~multiple ordering~ implementations. An
+  Ordering instance will be implicitly created if necessary.
+
+- ~scala.math.Ordering~ is an alternative to this trait that allows multiple
+  orderings to be defined for the same type.
+
+- ~scala.math.PartiallyOrdered~ is an alternative to this trait for partially
+  ordered data.
+
+For example, create a simple class that implements ~Ordered~ and then sort it
+with scala.util.Sorting:
+
+#+BEGIN_SRC scala
+    case class OrderedClass(n:Int) extends Ordered[OrderedClass] {
+            def compare(that: OrderedClass) =  this.n - that.n
+    }
+
+    val x = Array(OrderedClass(1), OrderedClass(5), OrderedClass(3))
+    scala.util.Sorting.quickSort(x)
+    x
+#+END_SRC
+
+It is important that the ~equals~ method for an instance of ~Ordered[A]~ be
+consistent with the compare method. However, due to limitations inherent in the
+type erasure semantics, there is no reasonable way to provide a default
+implementation of equality for instances of ~Ordered[A]~. Therefore, if you need
+to be able to use equality on an instance of ~Ordered[A]~ you must provide it
+yourself either when inheriting or instantiating.
+
+It is important that the ~hashCode~ method for an instance of ~Ordered[A]~ be
+consistent with the ~compare~ method. However, it is not possible to provide a
+sensible default implementation. Therefore, if you need to be able compute the
+hash of an instance of ~Ordered[A]~ you must provide it yourself either when
+inheriting or instantiating.

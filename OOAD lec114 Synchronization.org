@@ -1,0 +1,28 @@
+# -*- org-export-babel-evaluate: nil -*-
+#+PROPERTY: header-args :eval never-export
+#+PROPERTY: header-args:python :session Synchronization
+#+PROPERTY: header-args:ipython :session Synchronization
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+#+HTML_HEAD: <script src="https://hypothes.is/embed.js" async></script>
+#+HTML_HEAD: <script type="application/json" class="js-hypothesis-config">
+#+HTML_HEAD: <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:nil html-preamble:t
+#+OPTIONS: H:3 num:nil ^:nil _:nil tags:not-in-toc
+#+TITLE: Synchronization
+#+AUTHOR: yiddishkop
+#+EMAIL: [[mailto:yiddishkop@163.com][yiddi's email]]
+#+TAGS: {PKGIMPT(i) DATAVIEW(v) DATAPREP(p) GRAPHBUILD(b) GRAPHCOMPT(c)} LINAGAPI(a) PROBAPI(b) MATHFORM(f) MLALGO(m)
+
+
+* Synchronization
+
+1.  *[Q] How to get around the thread scheduling by OS?*
+
+2.  [A] *the easiest way* is called *synchronization* but synchronization has
+   some inevitable drawbacks:
+      1. too much synchronization will make parallelism slower
+      2. 因为 synchronization 每次只允许一个线程访问，所以这就把 parallel 退化为
+         sequential 了。
+
+1.  [A] *the good way* is use Futures and Actors --- structure our code in ways
+   that avoid race conditions as much as possible

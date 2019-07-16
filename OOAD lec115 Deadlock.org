@@ -1,0 +1,96 @@
+# -*- org-export-babel-evaluate: nil -*-
+#+PROPERTY: header-args :eval never-export
+#+PROPERTY: header-args:python :session What is DeadLock
+#+PROPERTY: header-args:ipython :session What is DeadLock
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+#+HTML_HEAD: <script src="https://hypothes.is/embed.js" async></script>
+#+HTML_HEAD: <script type="application/json" class="js-hypothesis-config">
+#+HTML_HEAD: <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:nil html-preamble:t
+#+OPTIONS: H:3 num:nil ^:nil _:nil tags:not-in-toc
+#+TITLE: What is DeadLock
+#+AUTHOR: yiddishkop
+#+EMAIL: [[mailto:yiddishkop@163.com][yiddi's email]]
+#+TAGS: {PKGIMPT(i) DATAVIEW(v) DATAPREP(p) GRAPHBUILD(b) GRAPHCOMPT(c)} LINAGAPI(a) PROBAPI(b) MATHFORM(f) MLALGO(m)
+
+
+* OOAD lec 115 Deadlock
+  1. synchronization 的第一个缺点： （lec114）downgrade parallel to sequential
+     speed.
+  2. synchronization 的第二个缺点：当你多度使用 synchronization 时，容易导致
+     deadlock — a group of threads waiting for each other.
+
+** 不止 parallel collection 会发生 race condition, Future 也会
+
+*** 异步问题
+    count  or calculation  always used parallel loop or parallel collection like:
+
+    #+BEGIN_SRC scala
+    for(i <- (1 to 100).par) {...}
+    #+END_SRC
+
+    but this is not the ONLY way to do couting and calculation.
+
+    #+BEGIN_SRC scala
+    var cnt = 0
+    Future {for(i <- 1 to 1000000) cnt += 1}
+    Future {for(i <- 1 to 1000000) cnt += 1}
+    println(cnt)
+    #+END_SRC
+
+    > 上面代码结果为： cnt = 0
+
+    I’m just using these 2 *Future* to spawn threads that do work as soon as the main thread finishes those will be done.
+
+    #+BEGIN_QUOTE
+    [Q]what spawn means?
+    [A]Spawn in computing refers to a function that loads and executes a new child process. The current process may wait for the child to terminate or may continue to execute concurrent computing.
+    #+END_QUOTE
+
+    但是需要注意，因为 Future 本身是 non-blocking(非阻) asynchonized(异步)的，所
+    以他不会阻塞调用:
+    - 调用 apply
+    - 调用 其他方法：sequence/onCompletedOf
+    他的线程的运行，这里就是不会阻塞 main thread 的运行，所以上面代码段运行结果
+    过时 print cnt = 0
+
+    如果想要get the result of Future 对 cnt 的计算结果，需要让 main thread 等待
+    Future 运行完毕，这里可以选择使用 Thread.sleep 方法等待较长一段时间。
+
+    #+BEGIN_EXAMPLE
+    Futures race condition
+
+    1009648
+    #+END_EXAMPLE
+
+    这是上面代码的运行结果，很明显存在 race condition .
+
+** Future DeadLock
+
+   整理 Multithreading.BankAccount
+
+   #+BEGIN_SRC scala
+    import collection.mutable
+    var b1 = mutable.Buffer[String]()
+    var b2 = mutable.Buffer[String]()
+
+    def doWork(count: Int): Unit = Thread.sleep(count)
+
+    def useBuffers(buf1: mutable.Buffer[String], buf2: mutable.Buffer[String]): Unit = {
+      buf1.synchronized{
+        doWork(1000)
+        buf2.synchronized{
+          doWork(1000)
+        }
+      }
+    }
+
+    // 写这个 foreach 有什么作用呢，上节课说过，foreach 是异步的执行
+    // 而且只有在 Future 完成之后，才会执行，通过这条语句是否打印(因为 foreach
+    // 不需要返回结果， def foreach(f: (A) ⇒ Unit): Unit) 就可以判断
+    // Future 是否执行完毕。
+    Future { useBuffers(b2,b1) }.foreach( _ => println("call 1 done."))
+
+    Thread.sleep(3000)
+    println("main done")
+   #+END_SRC
